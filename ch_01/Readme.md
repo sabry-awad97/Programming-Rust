@@ -80,3 +80,36 @@ fn main() {
     handle.join().unwrap();
 }
 ```
+
+In this example, `thread::spawn` is used to create a new thread that calculates the sum of elements in a vector concurrently. The closure passed to spawn takes ownership of `data` using the `move` keyword, allowing the thread to work with the vector independently.
+
+**Threads and Synchronization**:
+Rust provides built-in support for threads through its standard library. Threads allow for concurrent execution of code segments. Additionally, Rust offers synchronization primitives like mutexes, atomics, and channels to manage shared data and communication between threads in a safe and controlled manner.
+
+```rs
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+    let shared_data = Arc::new(Mutex::new(0));
+
+    let handles: Vec<_> = (0..5).map(|_| {
+        let data = Arc::clone(&shared_data);
+        thread::spawn(move || {
+            // Lock the mutex to access shared data
+            let mut val = data.lock().unwrap();
+            *val += 1;
+        })
+    }).collect();
+
+    for handle in handles {
+        // Wait for the spawned thread to finish
+        handle.join().unwrap();
+    }
+
+    // Access the final value of shared data
+    println!("Final value: {:?}", shared_data.lock().unwrap());
+}
+```
+
+Here, a mutex (`Mutex`) is used to safely modify a shared counter (`shared_data`). The `Arc` (Atomic Reference Counter) allows multiple threads to share ownership of the data. Each thread increments the counter by locking the mutex for exclusive access and modifying the value within the locked scope.
