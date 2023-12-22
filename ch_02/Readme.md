@@ -155,3 +155,46 @@ Here is a summary of the `rustup` and `cargo` commands:
 | `cargo fmt`            | Format Rust code according to specified style conventions                                |
 | `cargo update`         | Update dependencies as per the versions specified in the `Cargo.toml` file               |
 | `cargo bench`          | Run benchmarks to measure code performance and analyze execution time                    |
+
+The `Cargo.toml` file is a configuration file used by Cargo, Rust's package manager and build system. It's located at the root of a Rust project and holds essential metadata and configuration settings for the project.
+
+### Contents of `Cargo.toml`
+
+1. **Project Metadata:**
+
+   - **`[package]` Section:** Contains metadata about the project.
+     - `name`: The name of the package.
+     - `version`: The version of the package in semantic versioning format (`X.Y.Z`).
+     - `authors`: Names or email addresses of the project authors.
+     - `edition`: Specifies the Rust edition used in the project (`2021`).
+
+2. **Dependencies:**
+
+   - **`[dependencies]` Section:** Lists external crates (Rust packages) and their versions.
+     - `crate_name`: Dependency crate name followed by its version or version constraints.
+   - **`[dev-dependencies]` Section:** Lists crates used for development and testing purposes.
+
+3. **Build Configuration:**
+
+   - **`[build]` Section:** Allows specifying a build script or additional build settings.
+
+### Example `Cargo.toml`
+
+```toml
+[package]
+name = "my-project"
+version = "0.1.0"
+authors = ["Your Name <email@example.com>"]
+edition = "2021"
+
+[dependencies]
+somecrate = "1.2.3"
+
+[dev-dependencies]
+somecrate = "1.2.3"
+
+[build]
+# Additional build configurations, if needed
+```
+
+This file is vital for Cargo to manage project metadata, dependencies, build settings, and other project-specific configurations. It enables seamless project management, ensuring consistent builds, proper dependency resolution, and version control for Rust projects.
