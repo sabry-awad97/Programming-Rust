@@ -327,3 +327,21 @@ Overhead refers to the additional resources or time required to perform a task b
 In software optimization, reducing overhead often involves streamlining code, minimizing unnecessary computations or memory usage, and optimizing algorithms to improve performance without sacrificing functionality.
 
 In the context of programming languages like Rust, reducing overhead might involve optimizing code, leveraging compiler optimizations, choosing efficient data structures, and minimizing unnecessary abstractions to ensure optimal performance and resource utilization.
+
+## Zero-overhead principle
+
+The zero-overhead principle is a principle in computer science that states that "what you don't use, you don't pay for." In other words, an implementation should not impose any unnecessary overhead or performance penalties on the programmer.
+
+In essence, adhering to the zero-overhead principle means that language features, abstractions, or runtime mechanisms should not introduce unnecessary runtime costs, such as extra memory consumption, slower execution times, or increased code size.
+
+In the context of Rust:
+
+1. **Abstractions without Overheads**: Rust provides high-level abstractions (like iterators or pattern matching) that are designed to be as efficient as their low-level counterparts. For instance, using Rust's high-level constructs shouldn't incur performance penalties compared to manually written low-level code.
+
+2. **Compiler-Driven Optimizations**: Rust's compiler aims to optimize code aggressively without developers needing to sacrifice safety or correctness. The goal is to generate highly optimized machine code without imposing significant runtime overhead.
+
+3. **Predictable Performance**: Rust aims to provide predictable performance characteristics. By leveraging its ownership system and strict compile-time checks, Rust ensures that code executes efficiently without unexpected performance penalties.
+
+4. **Optimizing without Sacrificing Safety**: While Rust emphasizes performance, it doesn't compromise on safety. The language ensures memory safety, prevents data races, and catches many bugs at compile time, all without introducing unnecessary runtime overhead.
+
+Adhering to the zero-overhead principle enables developers to write expressive, high-level code without worrying excessively about runtime performance penalties. Rust's focus on efficiency without sacrificing safety aligns with this principle, allowing developers to write performant code while leveraging the language's powerful abstractions and safety features.
