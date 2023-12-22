@@ -1,25 +1,22 @@
-use std::sync::{Arc, Mutex};
+use std::sync::mpsc;
 use std::thread;
 
 fn main() {
-    let shared_data = Arc::new(Mutex::new(0));
+    // Create a channel for sending integers
+    let (sender, receiver) = mpsc::channel();
 
-    let handles: Vec<_> = (0..5)
-        .map(|_| {
-            let data = Arc::clone(&shared_data);
-            thread::spawn(move || {
-                // Lock the mutex to access shared data
-                let mut val = data.lock().unwrap();
-                *val += 1;
-            })
-        })
-        .collect();
+    // Spawn a new thread to send messages
+    let sender_thread = thread::spawn(move || {
+        for i in 1..=5 {
+            sender.send(i).unwrap(); // Sending integers through the channel
+        }
+    });
 
-    for handle in handles {
-        // Wait for the spawned thread to finish
-        handle.join().unwrap();
+    // Main thread receives and prints the messages
+    for received in receiver {
+        println!("Received: {}", received);
     }
 
-    // Access the final value of shared data
-    println!("Final value: {:?}", shared_data.lock().unwrap());
+    // Wait for the sender thread to finish
+    sender_thread.join().unwrap();
 }
