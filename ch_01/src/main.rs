@@ -1,13 +1,16 @@
 fn main() {
-    let present_value: Option<i32> = Some(42); // A value is present
-    let absent_value: Option<i32> = None; // No value present
+    let mut data = vec![1, 2, 3]; // Vector data
 
-    // Accessing the value from Option
-    match present_value {
-        Some(value) => println!("Value is: {}", value), // Prints: Value is: 42
-        None => println!("No value!"),
-    }
+    let reference_to_data = &data; // Reference to data
 
-    // Uncommenting the line below would cause a compile-time error
-    // let value = absent_value.unwrap(); // This line triggers a compile-time error (used `unwrap()` on `None` value)
+    // Attempting to modify 'data' while it's borrowed causes a compile-time error
+    // data.push(4); // This line would cause a compile error
+
+    println!("Data: {:?}", reference_to_data); // Prints: Data: [1, 2, 3]
+
+    // 'reference_to_data' goes out of scope here
+    // 'data' can be modified again safely
+    data.push(4); // This is allowed after the reference goes out of scope
+
+    println!("Modified Data: {:?}", data); // Prints: Modified Data: [1, 2, 3, 4]
 }

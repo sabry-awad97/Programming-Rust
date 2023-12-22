@@ -23,3 +23,30 @@ fn main() {
 ```
 
 In this example, `present_value` holds a value (Some(42)), while `absent_value` is explicitly set as `None`. Trying to directly access a value from `None` using `unwrap()` would result in a compile-time error, preventing potential issues with null references at runtime.
+
+**Dangling Pointers**: Rust's ownership system ensures memory safety by tracking ownership and managing the lifetimes of variables. This prevents issues like dangling pointers where a pointer references memory that has already been deallocated.
+
+```rs
+fn main() {
+    let mut data = vec![1, 2, 3]; // Vector data
+
+    let reference_to_data = &data; // Reference to data
+
+    // Attempting to modify 'data' while it's borrowed causes a compile-time error
+    // data.push(4); // This line would cause a compile error
+
+    println!("Data: {:?}", reference_to_data); // Prints: Data: [1, 2, 3]
+
+    // 'reference_to_data' goes out of scope here
+    // 'data' can be modified again safely
+    data.push(4); // This is allowed after the reference goes out of scope
+
+    println!("Modified Data: {:?}", data); // Prints: Modified Data: [1, 2, 3, 4]
+}
+```
+
+In this case, `reference_to_data` borrows data, restricting the ability to modify `data` while the reference is active. Attempting to modify `data` within that borrowing scope would result in a compile-time error, ensuring that no dangling pointers occur due to invalid memory access.
+
+Rust's borrowing rules ensure that while a reference is active (in this case, `reference_to_data` borrowing `data`), you can't directly modify the borrowed data. However, once the reference goes out of scope, which happens after the `println!` statement, the borrow ends, allowing modifications to the original data.
+
+So, after printing `reference_to_data`, the borrowing of data ends, and we regain the ability to modify `data` without violating Rust's ownership rules.
