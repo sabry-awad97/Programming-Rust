@@ -50,3 +50,33 @@ In this case, `reference_to_data` borrows data, restricting the ability to modif
 Rust's borrowing rules ensure that while a reference is active (in this case, `reference_to_data` borrowing `data`), you can't directly modify the borrowed data. However, once the reference goes out of scope, which happens after the `println!` statement, the borrow ends, allowing modifications to the original data.
 
 So, after printing `reference_to_data`, the borrowing of data ends, and we regain the ability to modify `data` without violating Rust's ownership rules.
+
+Another key feature of Rust is its support for concurrent programming.
+
+Rust's support for concurrent programming revolves around its ownership and borrowing model, enabling safe execution of code across multiple threads. This concurrency model allows multiple parts of a program to run simultaneously, enhancing performance and efficiency, especially crucial in systems programming where handling multiple tasks concurrently is common.
+
+The key principles of Rust's concurrency model include:
+
+**Ownership and Borrowing**:
+Rust's ownership system ensures that only one thread can have mutable access to data at a time, preventing data races and conflicts. By adhering to ownership rules, Rust guarantees that concurrent access to data is safe, without risking issues like race conditions commonly encountered in other languages.
+
+```rs
+use std::thread;
+
+fn main() {
+    let data = [1, 2, 3];
+
+    // Spawn a new thread
+    let handle = thread::spawn(move || {
+        // Thread performs some computation
+        let sum: i32 = data.iter().sum();
+        println!("Sum in thread: {}", sum);
+    });
+
+    // Main thread continues its own work
+    // ...
+
+    // Wait for the spawned thread to finish
+    handle.join().unwrap();
+}
+```
