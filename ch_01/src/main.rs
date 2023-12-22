@@ -1,22 +1,8 @@
-use std::sync::mpsc;
-use std::thread;
-
 fn main() {
-    // Create a channel for sending integers
-    let (sender, receiver) = mpsc::channel();
+    let mut a = [0u64; 1]; // Declaring an array 'a' of length 1
 
-    // Spawn a new thread to send messages
-    let sender_thread = thread::spawn(move || {
-        for i in 1..=5 {
-            sender.send(i).unwrap(); // Sending integers through the channel
-        }
-    });
+    // Attempting to assign a value to an out-of-bounds index would result in a compile-time error
+    // a[3] = 0x7ffff7b36ceb;
 
-    // Main thread receives and prints the messages
-    for received in receiver {
-        println!("Received: {}", received);
-    }
-
-    // Wait for the sender thread to finish
-    sender_thread.join().unwrap();
+    // Uncommenting the line above would cause a compile-time error due to out-of-bounds access
 }

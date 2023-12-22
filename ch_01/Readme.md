@@ -229,3 +229,32 @@ fn main() {
     // Compiler optimizes code for efficiency
 }
 ```
+
+Here is some code in C:
+
+```c
+int main(int argc, char **argv) {
+    unsigned long a[1];
+    a[3] = 0x7ffff7b36cebUL;
+    return 0;
+}
+```
+
+It declares an array `a` of length `1` and attempts to assign a value to an index that is out of bounds (`a[3]`). This results in undefined behavior because the array a has only one element (indexed as `a[0]`), and accessing index `a[3]` exceeds the array's bounds.
+
+Additionally, the code seems to assign a hexadecimal value (`0x7ffff7b36cebUL`) to `a[3]`. In `C`, this can lead to unexpected behavior since it's accessing memory beyond the array's allocated space.
+
+Here's a modified version in Rust that showcases safety and memory control:
+
+```rs
+fn main() {
+    let mut a = [0u64; 1]; // Declaring an array 'a' of length 1
+
+    // Attempting to assign a value to an out-of-bounds index would result in a compile-time error
+    // a[3] = 0x7ffff7b36ceb;
+
+    // Uncommenting the line above would cause a compile-time error due to out-of-bounds access
+}
+```
+
+In Rust, the code snippet defines an array a with a length of 1 (`[0u64; 1]`). Trying to assign a value to `a[3]` would trigger a compile-time error, preventing any attempt to access memory outside the array bounds. This showcases Rust's safety features, ensuring memory safety and preventing undefined behavior at compile time.
