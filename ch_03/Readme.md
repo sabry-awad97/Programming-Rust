@@ -993,3 +993,35 @@ Here is a summary of the main points about the tuple type in Rust:
        }
    }
    ```
+
+1. Tuples can be used as the elements of a `Queue`, allowing you to create a FIFO (first-in, first-out) data structure with ordered groups of values:
+
+   ```rs
+   use std::collections::VecDeque;
+
+   fn main() {
+       let mut q = VecDeque::new();
+       q.push_back((1, 2));
+       q.push_back((3, 4));
+
+       assert_eq!(q.pop_front(), Some((1, 2)));
+       assert_eq!(q.pop_front(), Some((3, 4)));
+       assert_eq!(q.pop_front(), None);
+   }
+   ```
+
+1. Tuples can be used as the elements of a `Stack`, allowing you to create a LIFO (last-in, first-out) data structure with ordered groups of values:
+
+   ```rs
+   use std::collections::VecDeque;
+
+   fn main() {
+       let mut s = VecDeque::new();
+       s.push_back((1, 2));
+       s.push_back((3, 4));
+
+       assert_eq!(s.pop_back(), Some((3, 4)));
+       assert_eq!(s.pop_back(), Some((1, 2)));
+       assert_eq!(s.pop_back(), None);
+   }
+   ```
