@@ -202,3 +202,25 @@ let h: usize = 18446744073709551615;
   | Unicode character | b'\\u{hhhhh}' | hhhhhh (hexadecimal) |
 
   Note that these byte literals are not the same as ASCII character literals, which are written using regular characters and are not preceded by a `b`. For example, the ASCII character literal for the single quote character is `'\''` (with no `b`), and the numeric equivalent is 39i8.
+
+In Rust, you can use the `as` operator to convert from one integer type to another. This can be useful when you need to perform arithmetic or other operations on integers with different precisions or when you need to match the type of an integer to a particular function or API.
+
+```rust
+let x: i32 = 42;
+let y: i64 = x as i64;
+
+println!("x = {} (i32), y = {} (i64)", x, y);
+```
+
+This will print `x = 42 (i32), y = 42 (i64)`.
+
+It's also possible to use the `as` operator to convert from an unsigned integer type to a signed integer type, as long as the value is within the range of the signed type. For example:
+
+```rust
+let x: u32 = 42;
+let y: i32 = x as i32;
+
+println!("x = {} (u32), y = {} (i32)", x, y);
+```
+
+This will also print `x = 42 (u32), y = 42 (i32)`.
