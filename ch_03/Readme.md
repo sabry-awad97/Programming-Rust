@@ -424,9 +424,9 @@ In the above example, the variable `x` is of type `f64`, while `y` is of type `f
 
 Keep in mind that floating-point numbers can be imprecise due to the fixed number of bits they use to represent their mantissa and exponent. You should be aware of this limitation when using them in your code.
 
-| Type  | Description                                                      | Mantissa Bits | Exponent Bits | Precision |
-| ----- | ---------------------------------------------------------------- | ------------- | ------------- | ------------- |
-| `f32` | Single-precision floating point, based on the IEEE 754 standard. | 24            | 8             | Approximately 7 digits |
+| Type  | Description                                                      | Mantissa Bits | Exponent Bits | Precision               |
+| ----- | ---------------------------------------------------------------- | ------------- | ------------- | ----------------------- |
+| `f32` | Single-precision floating point, based on the IEEE 754 standard. | 24            | 8             | Approximately 7 digits  |
 | `f64` | Double-precision floating point, based on the IEEE 754 standard. | 53            | 11            | Approximately 15 digits |
 
 - The `f32` and `f64` types both have associated constants that represent special floating-point values, such as positive and negative infinity, the not-a-number (NaN) value, and the minimum and maximum finite values.
@@ -441,4 +441,19 @@ Keep in mind that floating-point numbers can be imprecise due to the fixed numbe
   let z = f32::NAN; // z is the NaN value
   let w = f32::MIN; // w is the smallest finite f32 value
   let v = f32::MAX; // v is the largest finite f32 value
+  ```
+
+- You can also check whether a floating-point value is one of these special values using the `is_infinite`, `is_nan`, and `is_finite` methods provided by the `Float` trait. For example:
+
+  ```rust
+  fn main() {
+      let x = f32::INFINITY;
+      assert!(x.is_infinite());
+
+      let y = f32::NAN;
+      assert!(y.is_nan());
+
+      let z: f32 = 1.0;
+      assert!(z.is_finite());
+  }
   ```
