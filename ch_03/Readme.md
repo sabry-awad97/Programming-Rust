@@ -383,3 +383,41 @@ fn main() {
     let (overflowing_result, overflowed) = x.overflowing_shr(y as u32);
 }
 ```
+
+## Floating Point Types
+
+In Rust, there are two main types of floating-point numbers: `f32` for single-precision floating point and `f64` for double-precision floating point. Both types are based on the IEEE 754 standard and have the following properties:
+
+- They can represent positive and negative infinity, as well as “not a number” (NaN) values.
+- They have a fixed number of bits to represent the mantissa (the fractional part of a number) and the exponent (the power of 10 by which the mantissa is multiplied).
+- They provide a relatively high precision for representing real numbers, but they do have limitations due to the fixed number of bits they use.
+- Both `f32` and `f64` implement the `Float` trait, which provides a number of methods for working with floating-point numbers, such as `abs`, `ceil`, `floor`, and others.
+
+Here are some examples of using floating-point types in Rust:
+
+```rust
+fn main() {
+    let x: f64 = 2.0;
+    let y: f32 = 3.0;
+
+    // Error! No implicit conversion
+    // let z = x + y;
+
+    // addition
+    let sum = x + y as f64;
+
+    // subtraction
+    let difference = x - y as f64;
+
+    // multiplication
+    let product = x * y as f64;
+
+    // division
+    let quotient = x / y as f64;
+
+    // remainder
+    let remainder = x % y as f64;
+}
+```
+
+In the above example, the variable `x` is of type `f64`, while `y` is of type `f32`. When we try to add `x` and `y` directly, we get a compile-time error because there is no implicit conversion between these two types. We can fix the error by explicitly casting `x` to an `f32` using the `as` operator.
