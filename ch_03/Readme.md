@@ -729,3 +729,14 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        assert_eq!(c, d);
    }
    ```
+
+1. The `char` type implements the `PartialEq`, `Eq`, and `Ord` traits, which means that you can compare `char` values using the comparison operators (e.g., `==`, `!=`, `<`, `>`, etc.) and the `cmp` method.
+
+   ```rs
+   fn main() {
+       let a: char = 'a';
+       let b: char = 'b';
+       assert!(a < b);
+       assert!(a != b);
+   }
+   ```
