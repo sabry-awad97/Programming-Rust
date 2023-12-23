@@ -1,11 +1,13 @@
 fn main() {
-    let b = Box::new(5);
+    let mut num = 42;
 
-    // `b` is moved into `b2`
-    let b2 = b;
+    // Creating unsafe mutable raw pointer
+    let unsafe_ptr: *mut i32 = &mut num;
 
-    // `b` is no longer valid
-    // println!("{}", b); // error: use of moved value
+    // Dereferencing the raw pointer within unsafe block
+    unsafe {
+        *unsafe_ptr = 10;
+    }
 
-    println!("{}", b2);
+    println!("Modified value: {}", num);
 }
