@@ -502,3 +502,29 @@ Keep in mind that floating-point numbers can be imprecise due to the fixed numbe
   ```
 
   In this example, we use the `sqrt`, `sin`, `cos`, `tan`, `ln`, `log10`, `log2`, `powf`, `abs`, `max`, and `min` methods on the `f64` type, as well as the `E`, `PI`, and `SQRT_2` constants from the `std::f64::consts` module.
+
+- In Rust, the precedence of method calls is higher than the precedence of prefix operators such as `!` or `-`. This means that if you have a method call on a negated value, you need to use parentheses to ensure that the method call is evaluated before the negation.
+
+  For example, consider the following code:
+
+  ```rust
+  let x = 2_f32;
+  let y = -x.abs();
+
+  println!("{}", y);
+  ```
+
+  In this code, the `abs` method is called on `-x`, which returns the absolute value of `x`. However, because the precedence of the method call is higher than the precedence of the negation operator, the `abs` method is called first and then the result is negated. This means that the value of `y` will be `-2`, not `2`.
+
+  To correctly evaluate this expression, you need to use parentheses to specify that the negation should be applied first:
+
+  ```rust
+  let x = 2_f32;
+  let y = (-x).abs();
+
+  println!("{}", y);
+  ```
+
+  Now, the value of `y` will be `2`, as expected.
+
+  It's always a good idea to use parentheses to clarify the order of operations in your code, especially when using multiple operators or method calls. This can help prevent confusion and reduce the chance of errors.
