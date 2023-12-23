@@ -825,3 +825,13 @@ fn main() {
        assert_eq!(f, 'a');
    }
    ```
+
+1. The char type implements the Copy and Clone traits
+
+   ```rust
+   fn main() {
+       let c: char = 'a';
+       let d = c;
+       assert_eq!(c, d);
+   }
+   ```
