@@ -563,7 +563,7 @@ fn main() {
 }
 ```
 
-You can use the `!` operator to negate the value of a `bool` variable.
+**Negating the value of a `bool` variable**.
 
 ```rs
 fn main() {
@@ -578,7 +578,9 @@ fn main() {
 }
 ```
 
-Checking for equality and inequality between `bool` variables:
+In this example, we use the `!` operator to negate the value of `x` and `y`. The negation of `true` is `false`, and the negation of `false` is `true`.
+
+**Checking for equality and inequality between `bool` variables**:
 
 ```rust
 fn main() {
@@ -592,3 +594,22 @@ fn main() {
     let x_ne_y = x != y; // x_ne_y is true
 }
 ```
+
+In this example, we use the `==` and `!=` operators to check for equality and inequality between `x` and `y`. The `==` operator returns `true` if the two operands are equal, and `false` otherwise. The `!=` operator returns `true` if the two operands are not equal, and `false` otherwise.
+
+**Performing logical AND and OR operations on `bool` variables**:
+
+```rust
+fn main() {
+    let x = true;
+    let y = false;
+
+    // Check if x is true and y is false
+    let x_and_y = x && y; // x_and_y is false
+
+    // Check if x is true or y is false
+    let x_or_y = x || y; // x_or_y is true
+}
+```
+
+In this example, we use the `&&` and `||` operators to perform logical AND and OR operations on `x` and `y`. The `&&` operator returns `true` if both operands are `true`, and `false` otherwise. The `||` operator returns `true` if either operand is `true`, and `false` otherwise.
