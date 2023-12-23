@@ -673,3 +673,94 @@ In this example, the spawned thread acquires the lock on the mutex using the `lo
   ```
 
   In this example, the `send_data_to_other_thread` function transfers ownership of the `data` structure to the `other_thread` by using the `move` keyword in the closure that is passed to the `spawn` function. This ensures that the current thread no longer has access to the `data` structure and cannot modify it.
+
+## Filesystems and Command-Line Tools
+
+### `QuickReplace` CLI
+
+```rust
+#[derive(Debug)]
+struct Arguments {
+    target: String,
+    replacement: String,
+    filename: String,
+    output: String,
+}
+```
+
+The `#[derive(Debug)]` attribute tells the Rust compiler to automatically implement the `Debug` trait for the `Arguments` struct. This allows you to print the values of an `Arguments` instance using the `{:?}` debug format specifier. For example:
+
+```rust
+let args = Arguments {
+    target: "hello".to_string(),
+    replacement: "world".to_string(),
+    filename: "input.txt".to_string(),
+    output: "output.txt".to_string(),
+};
+
+println!("{:?}", args);
+```
+
+This would print something like:
+
+```shell
+    Arguments { target: "hello", replacement: "world", filename: "input.txt", output: "output.txt" }
+```
+
+```rust
+use colored::*;
+
+fn print_usage() {
+    eprintln!(
+        "{} - change occurrences of one string into another",
+        "quickreplace".green()
+    );
+    eprintln!("Usage: quickreplace <target> <replacement> <INPUT> <OUTPUT>");
+}
+```
+
+This function appears to print out usage information for a command line program called `quickreplace`. The function takes no arguments, and uses the `eprintln!` macro to print to the standard error output.
+
+The first line of the function uses string interpolation to print out a message explaining what the program does. The message is printed in green color, which is achieved by calling the `green()` method on the string.
+
+The second line of the function prints out usage information for the program, including the required arguments that the program expects: `target`, `replacement`, `INPUT`, and `OUTPUT`. These arguments correspond to the string that the program will search for, the string that it will replace it with, the input file to read from, and the output file to write to, respectively.
+
+```rust
+fn parse_args() -> Arguments {
+    let args: Vec<String> = env::args().skip(1).collect();
+    if args.len() != 4 {
+        print_usage();
+        eprintln!(
+            "{} wrong number of arguments: expected 4, got {}.",
+            "Error:".red().bold(),
+            args.len()
+        );
+        std::process::exit(1);
+    }
+    Arguments {
+        target: args[0].clone(),
+        replacement: args[1].clone(),
+        filename: args[2].clone(),
+        output: args[3].clone(),
+    }
+}
+```
+
+This function returns an instance of a struct called `Arguments`, which has four fields: `target`, `replacement`, `filename`, and `output`. These fields correspond to the string that the program will search for, the string that it will replace it with, the input file to read from, and the output file to write to, respectively.
+
+The function begins by collecting the command line arguments into a vector of `String`s, skipping the first argument (which is the name of the program itself). It then checks whether the number of arguments is equal to 4. If it is not, the function calls `print_usage()` to print out usage information and then prints an error message to the standard error output using the `eprintln!` macro. The error message includes the string "Error:", printed in red and bold text. Finally, the function exits the program with an exit code of 1, indicating that an error occurred.
+
+If the number of arguments is equal to 4, the function constructs an `Arguments` struct using the four command line arguments and returns it.
+
+```rust
+fn main() {
+    let args = parse_args();
+    println!("{:?}", args);
+}
+```
+
+This is the main function of the program. It calls the `parse_args()` function to parse the command line arguments, and then prints out the resulting `Arguments` struct using the `println!` macro and the `Debug` trait.
+
+The `main()` function is the entry point of every Rust program. It is the first function that is executed when the program is run. In this case, the `main()` function simply calls `parse_args()` to parse the command line arguments and then prints out the resulting `Arguments` struct.
+
+It is good practice to keep the `main()` function short and simple, and to delegate more complex tasks to other functions. This makes the program easier to understand and maintain.
