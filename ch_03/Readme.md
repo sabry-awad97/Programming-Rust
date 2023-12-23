@@ -931,3 +931,18 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(v[2], (5, 6));
    }
    ```
+
+1. Tuples can be used as the elements of a `HashMap`, allowing you to create a mapping from ordered groups of values to other values:
+
+   ```rs
+   fn main() {
+       use std::collections::HashMap;
+
+       let mut m = HashMap::new();
+       m.insert((1, 2), "foo");
+       m.insert((3, 4), "bar");
+
+       assert_eq!(m.get(&(1, 2)), Some(&"foo"));
+       assert_eq!(m.get(&(3, 4)), Some(&"bar"));
+   }
+   ```
