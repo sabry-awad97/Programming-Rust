@@ -850,7 +850,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-2. A tuple is an ordered collection of values with potentially different types.
+1. A tuple is an ordered collection of values with potentially different types.
 
    ```rs
    fn main() {
@@ -858,7 +858,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-3. Tuples can be destructured using pattern matching, allowing you to extract the values from a tuple and bind them to variables.
+1. Tuples can be destructured using pattern matching, allowing you to extract the values from a tuple and bind them to variables.
 
    ```rs
    fn main() {
@@ -870,7 +870,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-4. Tuples can be accessed using indexing, allowing you to retrieve the value at a specific position in the tuple.
+1. Tuples can be accessed using indexing, allowing you to retrieve the value at a specific position in the tuple.
 
    ```rs
    fn main() {
@@ -886,7 +886,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-5. Tuples have a fixed size, determined by the number of values they contain.
+1. Tuples have a fixed size, determined by the number of values they contain.
 
    ```rs
    fn tuple_length<T: std::fmt::Debug + Sized>(tuple: &T) -> usize {
@@ -907,7 +907,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-6. Tuples can be used as the return type of a function to allow the function to return multiple values.
+1. Tuples can be used as the return type of a function to allow the function to return multiple values.
 
    ```rs
    fn divmod(x: i32, y: i32) -> (i32, i32) {
@@ -921,7 +921,7 @@ Here is a summary of the main points about the tuple type in Rust:
    }
    ```
 
-7. Tuples can be used as the elements of an array or vector, allowing you to create a collection of ordered groups of values.
+1. Tuples can be used as the elements of an array or vector, allowing you to create a collection of ordered groups of values.
 
    ```rs
    fn main() {
