@@ -389,7 +389,7 @@ fn main() {
 In Rust, there are two main types of floating-point numbers: `f32` for single-precision floating point and `f64` for double-precision floating point. Both types are based on the IEEE 754 standard and have the following properties:
 
 - They can represent positive and negative infinity, as well as “not a number” (NaN) values.
-- They have a fixed number of bits to represent the mantissa (the fractional part of a number) and the exponent (the power of 10 by which the mantissa is multiplied).
+- Floating-point numbers are represented using a sign bit, an exponent, and a fractional part (mantissa).
 - They provide a relatively high precision for representing real numbers, but they do have limitations due to the fixed number of bits they use.
 - Both `f32` and `f64` implement the `Float` trait, which provides a number of methods for working with floating-point numbers, such as `abs`, `ceil`, `floor`, and others.
 
@@ -421,3 +421,24 @@ fn main() {
 ```
 
 In the above example, the variable `x` is of type `f64`, while `y` is of type `f32`. When we try to add `x` and `y` directly, we get a compile-time error because there is no implicit conversion between these two types. We can fix the error by explicitly casting `x` to an `f32` using the `as` operator.
+
+Keep in mind that floating-point numbers can be imprecise due to the fixed number of bits they use to represent their mantissa and exponent. You should be aware of this limitation when using them in your code.
+
+| Type  | Description                                                      | Mantissa Bits | Exponent Bits | Precision |
+| ----- | ---------------------------------------------------------------- | ------------- | ------------- | ------------- |
+| `f32` | Single-precision floating point, based on the IEEE 754 standard. | 24            | 8             | Approximately 7 digits |
+| `f64` | Double-precision floating point, based on the IEEE 754 standard. | 53            | 11            | Approximately 15 digits |
+
+- The `f32` and `f64` types both have associated constants that represent special floating-point values, such as positive and negative infinity, the not-a-number (NaN) value, and the minimum and maximum finite values.
+
+  Here are some examples of using these constants:
+
+  ```rust
+  use std::f32;
+
+  let x = f32::INFINITY; // x is positive infinity
+  let y = f32::NEG_INFINITY; // y is negative infinity
+  let z = f32::NAN; // z is the NaN value
+  let w = f32::MIN; // w is the smallest finite f32 value
+  let v = f32::MAX; // v is the largest finite f32 value
+  ```

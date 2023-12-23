@@ -1,22 +1,7 @@
 fn main() {
-    let x: f64 = 2.0;
-    let y: f32 = 3.0;
-
-    // Error! No implicit conversion
-    // let z = x + y;
-
-    // addition
-    let sum = x + y as f64;
-
-    // subtraction
-    let difference = x - y as f64;
-
-    // multiplication
-    let product = x * y as f64;
-
-    // division
-    let quotient = x / y as f64;
-
-    // remainder
-    let remainder = x % y as f64;
+    let x = f32::INFINITY; // x is positive infinity
+    let y = f32::NEG_INFINITY; // y is negative infinity
+    let z = f32::NAN; // z is the NaN value
+    let w = f32::MIN; // w is the smallest finite f32 value
+    let v = f32::MAX; // v is the largest finite f32 value
 }
