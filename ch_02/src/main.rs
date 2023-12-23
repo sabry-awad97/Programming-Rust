@@ -1,37 +1,29 @@
-use std::env;
 use std::str::FromStr;
 
-fn gcd(mut n: u64, mut m: u64) -> u64 {
-    assert!(n != 0 && m != 0);
-    while m != 0 {
-        if m < n {
-            (m, n) = (n, m)
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl FromStr for Point {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let coords: Vec<&str> = s.split(',').collect();
+        if coords.len() != 2 {
+            return Err(format!("Error parsing point: {}", s));
         }
-        m %= n;
+        let x = coords[0].parse::<i32>().map_err(|e| e.to_string())?;
+        let y = coords[1].parse::<i32>().map_err(|e| e.to_string())?;
+        Ok(Self { x, y })
     }
-    n
 }
 
 fn main() {
-    // Parse command line arguments
-    let mut numbers = Vec::new();
-    for arg in env::args().skip(1) {
-        // Attempt to parse each argument as a u64
-        numbers.push(u64::from_str(&arg).expect("error parsing argument"));
-    }
+    let p: Point = "1,2".parse().unwrap();
+    println!("{:?}", p); // prints "Point { x: 1, y: 2 }"
 
-    // Handle empty input
-    if numbers.is_empty() {
-        eprintln!("Usage: gcd NUMBER ...");
-        std::process::exit(1);
-    }
-
-    // Calculate the GCD
-    let mut d = numbers[0];
-    for m in &numbers[1..] {
-        d = gcd(d, *m);
-    }
-
-    // Print the result
-    println!("The greatest common divisor of {:?} is {}", numbers, d);
+    let q: Result<Point, String> = "3,4,5".parse();
+    println!("{:?}", q); // prints "Err("Error parsing point: 3,4,5")"
 }
