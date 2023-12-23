@@ -303,3 +303,55 @@ Here is an ultra-summary of the steps in the function
 | Return | The loop ends when `m` becomes zero. At this point, `n` is returned as the result. |
 
 This function has a time complexity of O(log(n)), which means that the number of steps required to compute the GCD grows at most logarithmically with the size of the input numbers. This makes the function efficient for calculating the GCD of large numbers.
+
+## Writing and Running Unit Tests
+
+To write and run unit tests in Rust, you'll need to use the #[test] attribute, which marks a function as a unit test. You can then run your tests using the cargo test command.
+
+To test this function, you can define some test cases and then use assertions to check that the function returns the expected results for those test cases. Here is an example of how you could do this in Rust:
+
+```rust
+#[test]
+fn test_gcd() {
+    assert_eq!(gcd(14, 21), 7);
+    assert_eq!(gcd(49, 14), 7);
+    assert_eq!(gcd(1, 100), 1);
+    assert_eq!(gcd(6, 9), 3);
+}
+```
+
+| Input values | Expected output |
+| ------------ | --------------- |
+| (14, 21)     | 7               |
+| (49, 14)     | 7               |
+| (1, 100)     | 1               |
+| (6, 9)       | 3               |
+
+This defines a test function test_gcd that contains five test cases. The assert_eq! macro checks that the value returned by the gcd function is equal to the expected result. If any of the assertions fails, the test function will produce an error.
+
+The `#[test]` marker is an example of an attribute.
+In Rust, attributes are a way to attach additional information to your code.
+They are used for a wide range of purposes, **including setting compiler options**, **defining test functions**, and **controlling how functions are called**.
+
+Attributes are written in square brackets and are placed before the item they apply to. For example, the `#[test]` attribute is used to mark a function as a unit test, and the `#[should_panic]` attribute is used to indicate that a test function should panic.
+
+```rs
+#[test]
+#[should_panic]
+fn test_gcd_of_zero_number() {
+    let n = 30;
+    let m = 0;
+    gcd(n, m);
+}
+```
+
+Here's an example of how to use the `#[cfg]` attribute to enable or disable a block of code based on the current configuration:
+
+```rust
+#[cfg(target_os = "linux")]
+fn test_function() {
+    // Code that is only compiled on Linux goes here
+}
+```
+
+Attributes are a powerful feature in Rust and are used extensively in the Rust ecosystem.
