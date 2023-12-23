@@ -965,15 +965,31 @@ Here is a summary of the main points about the tuple type in Rust:
 
 1. Tuples can be used as the elements of a `Set`, allowing you to create a collection of unique ordered groups of values:
 
-```rs
-use std::collections::HashSet;
+   ```rs
+   use std::collections::HashSet;
 
-fn main() {
-    let mut s = HashSet::new();
-    s.insert((1, 2));
-    s.insert((3, 4));
+   fn main() {
+       let mut s = HashSet::new();
+       s.insert((1, 2));
+       s.insert((3, 4));
 
-    assert!(s.contains(&(1, 2)));
-    assert!(s.contains(&(3, 4)));
-}
-```
+       assert!(s.contains(&(1, 2)));
+       assert!(s.contains(&(3, 4)));
+   }
+   ```
+
+1. Tuples can be used as the keys of a `BTreeSet`, allowing you to create an ordered collection of unique ordered groups of values:
+
+   ```rs
+   use std::collections::BTreeSet;
+
+   fn main() {
+       let mut s = BTreeSet::new();
+       s.insert((1, 2));
+       s.insert((3, 4));
+
+       for x in s.iter() {
+           println!("{:?}", x);
+       }
+   }
+   ```
