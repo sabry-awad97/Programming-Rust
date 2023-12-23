@@ -1194,3 +1194,13 @@ _**Zero Tuple**_
   ```
 
 - The zero-tuple is a special case of the tuple type in Rust and is treated differently in certain contexts.
+
+## Pointer Types
+
+There are three types that represent memory addresses: references, boxes, and unsafe pointers.
+
+- **References (`&T`)** are non-owning pointers that allow you to borrow a value from its owner. References are immutable by default, but you can use `&mut T` to create a mutable reference. References have a limited lifetime, which means that they can only be used as long as the value they refer to is still in scope. Using a reference after its lifetime has ended is undefined behavior and can lead to bugs or crashes.
+
+- **Boxes (`Box<T>`)** are pointers that store a value on the heap. Boxes facilitate transferring ownership across scopes and enabling values to exist beyond their original scope. Boxes allow storing data of sizes known only at runtime, enabling flexible data structures. Boxes enable creating recursive data structures that reference themselves indirectly via `Box<T>`. You can use the `Box::new` function to create a new box.
+
+- **Unsafe pointers (`*const T` or `*mut T`)** are raw pointers that do not have the safety guarantees of references or boxes. Unsafe pointers do not have a lifetime or enforce any rules about how they are used, so you can use them to perform arbitrary operations on memory. They are often used for low-level system programming tasks or when interacting with foreign code. However, using unsafe pointers can lead to undefined behavior if you do not use them correctly, so they should be used with caution.
