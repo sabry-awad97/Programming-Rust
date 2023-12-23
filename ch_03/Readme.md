@@ -1281,3 +1281,121 @@ fn main() {
 ```
 
 In this example, we pass the reference to `s` to the `print_string` function. The function can use the reference to read the value of `s`, but it cannot modify it or take ownership of it.
+
+### Boxes
+
+**Boxes** are a way to store a value on the heap, which is a separate area of memory from the stack. They are represented by the `Box` type, which is a smart pointer to a value on the heap. Boxes are often used when you want to store a value with a larger size than the stack can accommodate, or when you want to transfer ownership of a value to another part of your program.
+
+Here's an example of using a `Box`:
+
+```rust
+fn main() {
+    let b = Box::new(5);
+
+    println!("{}", b);
+}
+```
+
+In this example, we create a `Box` called `b` that stores the value `5`. Because `b` is a `Box`, the value is stored on the heap rather than on the stack.
+
+Boxes have a few important properties:
+
+- They store a value on the heap. This means that the value is stored in a separate area of memory from the stack and has a different lifetime than stack-allocated values.
+- They transfer ownership of a value. When you assign a `Box` to another variable, the ownership of the value is transferred to the new variable. This means that the original `Box` is no longer valid and cannot be used.
+- They are deallocated when they go out of scope. When a `Box` goes out of scope, the value it points to is deallocated, or freed, from the heap. This helps prevent memory leaks in Rust programs.
+
+Here's an example of transferring ownership of a value with a `Box`:
+
+```rust
+fn main() {
+    let b = Box::new(5);
+
+    // `b` is moved into `b2`
+    let b2 = b;
+
+    // `b` is no longer valid
+    // println!("{}", b); // error: use of moved value
+
+    println!("{}", b2);
+}
+```
+
+In this example, we create a `Box` called `b` that stores the value `5`. We then create a new `Box` called `b2` and assign `b` to it. This transfers the ownership of the value from `b` to `b2`, so `b` is no longer valid and cannot be used.
+
+Here are five common use cases where `Box<T>` is beneficial in Rust:
+
+_**Recursive Data Structures**_
+
+```rs
+enum List {
+    Cons(i32, Box<List>), // Recursive data structure using Box
+    Nil,
+}
+```
+
+- `Box<T>` enables creating recursive data structures like linked lists, trees, or graphs where a type refers to itself indirectly, preventing infinite size and enabling flexible memory allocation.
+
+_**Trait Objects and Dynamic Dispatch**_
+
+```rs
+trait Shape {
+    fn draw(&self);
+}
+
+struct Circle {
+    radius: f64,
+}
+
+impl Shape for Circle {
+    fn draw(&self) {
+        // Draw circle implementation
+    }
+}
+
+fn draw_shape(shape: Box<dyn Shape>) {
+    shape.draw();
+}
+```
+
+- Using `Box<dyn Trait>` allows creating trait objects for dynamic dispatch, enabling runtime polymorphism and handling different concrete types that implement the same trait.
+
+_**Reducing Stack Overflow Risk**_
+
+```rs
+fn factorial(n: u32) -> u32 {
+    if n <= 1 {
+        1
+    } else {
+        n * factorial(n - 1) // Recursive function using the stack
+    }
+}
+
+fn main() {
+    let result = factorial(1000); // May cause stack overflow
+
+    println!("Factorial: {}", result);
+}
+```
+
+- Employing `Box` for heap allocation mitigates the risk of stack overflow when dealing with deep or recursive function calls, as heap memory can handle larger sizes compared to the stack.
+
+_**Resizing and Dynamically Sized Types**_
+
+```rs
+fn create_dynamic_vec() -> Box<[i32]> {
+    vec![1, 2, 3].into_boxed_slice()
+}
+```
+
+- `Box<[T]>` allows converting dynamically sized types like `Vec` into fixed-size slices (`[T]`), useful when returning collections with an unknown size at compile time.
+
+_**Breaking Cycles and Ownership Dependencies**_
+
+```rs
+struct Node {
+    next: Option<Box<Node>>,
+    // other fields
+}
+```
+
+- Breaking ownership cycles by using `Option<Box<T>>` allows creating self-referential structures without causing memory leaks or issues related to ownership and lifetime constraints.

@@ -1,11 +1,11 @@
-fn print_string(s: &String) {
-    println!("{}", s);
-}
-
 fn main() {
-    let s = String::from("hello");
+    let b = Box::new(5);
 
-    print_string(&s);
+    // `b` is moved into `b2`
+    let b2 = b;
 
-    println!("{}", s);
+    // `b` is no longer valid
+    // println!("{}", b); // error: use of moved value
+
+    println!("{}", b2);
 }
