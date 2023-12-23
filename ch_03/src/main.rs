@@ -1,16 +1,23 @@
-use std::mem;
-
 fn main() {
-    let mut t = (1, 2, 3);
+    let t1 = (1, 2, 3);
+    let t2 = (4, 5, 6);
 
-    let size = mem::size_of_val(&t);
-    assert_eq!(size, 3 * mem::size_of::<i32>());
+    assert!(t1 != t2);
+    assert!(t1 < t2);
+    assert!(t1 <= t2);
+    assert!(t2 > t1);
+    assert!(t2 >= t1);
 
-    let align = mem::align_of_val(&t);
-    assert_eq!(align, mem::align_of::<i32>());
+    let t3 = (1, 2, 3);
 
-    let mut u = (4, 5, 6);
-    mem::swap(&mut t, &mut u);
-    assert_eq!(t, (4, 5, 6));
-    assert_eq!(u, (1, 2, 3));
+    assert!(t1 == t3);
+    assert!(t1 <= t3);
+    assert!(t1 >= t3);
+
+    let t4 = (1, 2, 4);
+
+    assert!(t1 < t4);
+    assert!(t1 <= t4);
+    assert!(t4 > t1);
+    assert!(t4 >= t1);
 }

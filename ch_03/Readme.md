@@ -1046,3 +1046,74 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(u, (1, 2, 3));
    }
    ```
+
+1. The `std::convert` module provides a number of functions and traits for converting between tuples and other types, including `From`, `Into`, and `TryFrom`:
+
+   ```rs
+   use std::convert::*;
+
+   #[derive(Debug, PartialEq)]
+   struct Complex {
+       real: f64,
+       imag: f64,
+   }
+
+   impl TryFrom<(f64, f64)> for Complex {
+       type Error = &'static str;
+
+       fn try_from(t: (f64, f64)) -> Result<Self, Self::Error> {
+           if t.0.is_nan() || t.1.is_nan() {
+               Err("invalid value")
+           } else {
+               Ok(Complex {
+                   real: t.0,
+                   imag: t.1,
+               })
+           }
+       }
+   }
+
+   fn main() {
+       let t = (1.0, 2.0);
+       let c = Complex::try_from(t);
+       assert_eq!(
+           c,
+           Ok(Complex {
+               real: 1.0,
+               imag: 2.0
+           })
+       );
+
+       let t = (f64::NAN, f64::NAN);
+       let c = Complex::try_from(t);
+       assert_eq!(c, Err("invalid value"));
+   }
+   ```
+
+1. The `std::cmp` module provides a number of trait implementations for tuples, including `PartialEq`, `Eq`, `PartialOrd`, and `Ord`:
+
+   ```rust
+   fn main() {
+       let t1 = (1, 2, 3);
+       let t2 = (4, 5, 6);
+
+       assert!(t1 != t2);
+       assert!(t1 < t2);
+       assert!(t1 <= t2);
+       assert!(t2 > t1);
+       assert!(t2 >= t1);
+
+       let t3 = (1, 2, 3);
+
+       assert!(t1 == t3);
+       assert!(t1 <= t3);
+       assert!(t1 >= t3);
+
+       let t4 = (1, 2, 4);
+
+       assert!(t1 < t4);
+       assert!(t1 <= t4);
+       assert!(t4 > t1);
+       assert!(t4 >= t1);
+   }
+   ```
