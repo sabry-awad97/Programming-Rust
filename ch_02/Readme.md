@@ -946,3 +946,41 @@ fn main() {
 ```
 
 You can then test the find and replace functionality by running the code with the `target` and `replacement` arguments and verifying that the `output` file contains the modified text.
+
+### Find and Replace using Regex
+
+```rust
+use regex::Regex;
+fn replace(target: &str, replacement: &str, text: &str) -> Result<String, regex::Error> {
+    let regex = Regex::new(target)?;
+    Ok(regex.replace_all(text, replacement).to_string())
+}
+```
+
+This is a function that takes three strings as arguments: `target`, `replacement`, and `text`. The `target` argument is a regular expression that specifies the pattern to search for in `text`. The `replacement` argument is a string that will be used to replace the occurrences of the pattern found in `text`.
+
+The function first creates a new `Regex` object from the `target` string using the `Regex::new` function. The `?` operator is used to propagate any error that might occur during the creation of the `Regex` object. If the `Regex` object is created successfully, the function calls the `replace_all` method on it, passing `text` and `replacement` as arguments. The `replace_all` method returns a new string with the replacements applied, and this string is returned by the function as the result.
+
+If an error occurs during the creation of the `Regex` object, the function returns the error using the `Err` variant of the `Result` type. Otherwise, it returns the modified string using the `Ok` variant of the `Result` type.
+
+This function can be used to replace all occurrences of a specific pattern in a string with a given replacement string. For example:
+
+```rust
+let target = "\\d+";
+let replacement = "NUMBER";
+let text = "This is a test with 123 numbers and 456 more numbers.";
+let result = replace(target, replacement, text).unwrap();
+assert_eq!(result, "This is a test with NUMBER numbers and NUMBER more numbers.");
+```
+
+- To use it inside QuickReplace:
+
+```rs
+let replaced_data = match replace(&args.target, &args.replacement, &data) {
+    Ok(v) => v,
+    Err(e) => {
+        eprintln!("{} failed to replace text: {:?}", "Error:".red().bold(), e);
+        std::process::exit(1);
+    }
+};
+```

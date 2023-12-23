@@ -1,6 +1,7 @@
 use std::{env, fs};
 
 use colored::*;
+use regex::Regex;
 
 #[derive(Debug)]
 struct Arguments {
@@ -37,10 +38,13 @@ fn print_usage() {
     eprintln!("Usage: quickreplace <target> <replacement> <INPUT> <OUTPUT>");
 }
 
+fn replace(target: &str, replacement: &str, text: &str) -> Result<String, regex::Error> {
+    let regex = Regex::new(target)?;
+    Ok(regex.replace_all(text, replacement).to_string())
+}
+
 fn main() {
     let args = parse_args();
-    let find = &args.target;
-    let replace = &args.replacement;
     let data = match fs::read_to_string(&args.filename) {
         Ok(v) => v,
         Err(e) => {
@@ -53,8 +57,14 @@ fn main() {
             std::process::exit(1);
         }
     };
-    let data = data.replace(find, replace);
-    match fs::write(&args.output, data) {
+    let replaced_data = match replace(&args.target, &args.replacement, &data) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("{} failed to replace text: {:?}", "Error:".red().bold(), e);
+            std::process::exit(1);
+        }
+    };
+    match fs::write(&args.output, replaced_data) {
         Ok(_) => {}
         Err(e) => {
             eprintln!(
