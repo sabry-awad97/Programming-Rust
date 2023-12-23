@@ -689,3 +689,14 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        println!("Size of 'a': {} bytes", std::mem::size_of_val(&c));
    }
    ```
+
+1. `char` values can be created using single quotes, like `'a'` or `'😄'`.
+
+   ```rs
+   fn main() {
+       let c: char = 'a';
+       let d: char = '😄';
+       println!("{}", c);
+       println!("{}", d);
+   }
+   ```
