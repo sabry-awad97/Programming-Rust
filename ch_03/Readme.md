@@ -718,3 +718,14 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        let d: char = "😄".parse().unwrap();
    }
    ```
+
+1. You can convert a `char` value to and from its corresponding integer value using the `ascii` and `from_u32` methods, respectively.
+
+   ```rs
+   fn main() {
+       let c: char = 'a';
+       let i: u32 = c as u32;
+       let d: char = char::from_u32(i).unwrap();
+       assert_eq!(c, d);
+   }
+   ```
