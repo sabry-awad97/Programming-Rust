@@ -946,3 +946,19 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(m.get(&(3, 4)), Some(&"bar"));
    }
    ```
+
+1. Tuples can be used as the keys of a `BTreeMap`, allowing you to create an ordered mapping from ordered groups of values to other values:
+
+   ```rs
+   use std::collections::BTreeMap;
+
+   fn main() {
+       let mut m = BTreeMap::new();
+       m.insert((1, 2), "foo");
+       m.insert((3, 4), "bar");
+
+       for (k, v) in m.iter() {
+           println!("{:?}: {}", k, v);
+       }
+   }
+   ```

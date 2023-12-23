@@ -1,10 +1,11 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 fn main() {
-    let mut m = HashMap::new();
+    let mut m = BTreeMap::new();
     m.insert((1, 2), "foo");
     m.insert((3, 4), "bar");
 
-    assert_eq!(m.get(&(1, 2)), Some(&"foo"));
-    assert_eq!(m.get(&(3, 4)), Some(&"bar"));
+    for (k, v) in m.iter() {
+        println!("{:?}: {}", k, v);
+    }
 }
