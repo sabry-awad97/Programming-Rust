@@ -1,6 +1,9 @@
 fn main() {
-    let x: u32 = 42;
-    let y: i32 = x as i32;
+    let a: u8 = 255; // Maximum value for u8
+    let b: u8 = 1;
 
-    println!("x = {} (u32), y = {} (i32)", x, y);
+    // Overflow occurs when adding 'a' and 'b' as their sum exceeds the maximum value for u8
+    let result = a.wrapping_add(b); // Using wrapping_add to demonstrate overflow behavior
+
+    println!("Overflow Example: {}", result);
 }

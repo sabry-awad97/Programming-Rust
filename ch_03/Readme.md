@@ -224,3 +224,68 @@ println!("x = {} (u32), y = {} (i32)", x, y);
 ```
 
 This will also print `x = 42 (u32), y = 42 (i32)`.
+
+### Checked, Wrapping, Saturating, and Overflowing Arithmetic
+
+In computer arithmetic, an "overflow" condition occurs when the result of an arithmetic operation exceeds the maximum value that can be represented by the type being used. For example, in Rust, the maximum value that can be represented by an `u8` type is `255`. If you try to perform an arithmetic operation that would produce a result greater than 255, an overflow condition occurs.
+
+An "underflow" condition is the opposite of an overflow condition: it occurs when the result of an arithmetic operation is less than the minimum value that can be represented by the type being used. For example, in Rust, the minimum value that can be represented by an i8 type is -128. If you try to perform an arithmetic operation that would produce a result less than -128, an underflow condition occurs.
+
+In Rust, you can perform arithmetic operations on integers using the standard arithmetic operators (e.g., `+`, `-`, `*`, `/`, `%`). By default, these operators will perform "unchecked" arithmetic, which means that they will not check for overflow or underflow conditions. This can be useful when you want to maximize performance, but it can also be dangerous if you are not careful, as it can lead to undefined behavior if an overflow or underflow occurs.
+
+```rust
+// Overflow example
+let x: u8 = 255;
+let y: u8 = 1;
+
+let result = x + y;
+
+// The result of this operation is 256, which is greater than the maximum value that can be represented by an u8 (255).
+// Therefore, an overflow condition occurs, and the result of the operation is undefined.
+
+// Underflow example
+let a: u8 = 0; // Minimum value for u8
+let b: u8 = 1;
+
+let result = a - b;
+
+// The result of this operation is -1, which is lower than the minimum value that can be represented by an u8 (0).
+// Therefore, an underflow condition occurs, and the result of the operation is undefined.
+```
+
+Arithmetic operations on numeric types can handle overflow in various ways, offering different behaviors to suit specific needs. Here are the methods Rust provides to handle arithmetic overflow:
+
+1. **Checked Arithmetic (checked\_\* methods)**:
+
+   - Rust's checked arithmetic methods return an Option type. They perform operations and return Some(result) if the operation succeeds within the numeric bounds. If an overflow occurs, they return None.
+
+   ```rs
+   let result = a.checked_add(b); // Returns Some(result) if addition doesn't overflow
+   ```
+
+2. **Wrapping Arithmetic (wrapping\_\* methods)**:
+
+   - Wrapping arithmetic in Rust doesn't panic on overflow. Instead, it performs the operation and wraps around the value within the size constraints of the data type.
+   - For example, if the result exceeds the maximum value for an integer type, it wraps around to the minimum value (or vice versa).
+
+   ```rs
+   let result = a.wrapping_add(b); // Performs addition with wrapping behavior on overflow
+   ```
+
+3. **Saturating Arithmetic (saturating\_\* methods)**:
+
+   - Saturating arithmetic prevents overflow by saturating the result at the maximum or minimum value of the type.
+   - When an operation exceeds the numeric bounds, it clamps the result to the maximum or minimum representable value instead of wrapping or panicking.
+
+   ```rs
+   let result = a.saturating_add(b); // Performs addition with saturation, clamping the result
+   ```
+
+4. **Overflowing Arithmetic (overflowing\_\* methods)**:
+
+   - Rust's overflowing arithmetic returns a tuple containing the result and a boolean indicating whether an overflow occurred.
+   - It performs the arithmetic operation and flags whether the result exceeds the type's bounds.
+
+   ```rs
+   let (result, overflowed) = a.overflowing_add(b); // Returns a tuple with the result and an overflow flag
+   ```
