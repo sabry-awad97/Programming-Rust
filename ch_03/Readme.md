@@ -84,3 +84,33 @@ In addition to these primitive types, Rust also has a number of compound types, 
 - Result&lt;T, E&gt;, which is a type that represents the result of an operation that may fail, with a success value of type `T` or an error value of type `E`.
 - Trait objects, which are references to any value that implements a given set of methods.
 - Functions, which are pointers to a block of code that can be called.
+
+## Types categories
+
+In Rust, there are several types, which can be broadly classified into the following categories:
+
+1. Scalar types: These are the most basic types in Rust and represent a single value. They include integers (e.g. `i32`, `u64`), floating-point numbers (e.g. `f32`, `f64`), Booleans (`bool`), and characters (`char`).
+
+1. Compound types: These types are composed of multiple values and can be either owned or borrowed. They include arrays (e.g. `[i32; 5]`), tuples (e.g. `(i32, f32)`), and structs (e.g. `struct Point { x: i32, y: i32 }`).
+
+1. Reference types: These types represent a reference to a value, either owned or borrowed. They include `&T`, `&mut T`, and `Box<T>`.
+
+1. Pointer types: These types represent a pointer to a value, either owned or borrowed. They include `*const T` and `*mut T`.
+
+1. Closure types: These types represent anonymous functions that can be stored, passed around, and called like regular values. They include `Fn`, `FnMut`, and `FnOnce`.
+
+1. Trait types: These types represent a set of behaviors that a type can implement. They are used to define traits, which are like interfaces in other languages.
+
+1. Unsafe types: These types are used to represent low-level concepts that are not safe to use in Rust. They include `*const T` and `*mut T`, as well as the `unsafe` keyword.
+
+Here is a summary of the categories
+
+| Type      | Description                         | Example                                                     |
+| --------- | ----------------------------------- | ----------------------------------------------------------- |
+| Scalar    | Single values                       | `i32`, `f64`, `bool`, `char`                                |
+| Compound  | Multiple values                     | `[i32; 5]`, `(f32, i64)`, `struct Point { x: i32, y: i32 }` |
+| Reference | References to values                | `&T`, `&mut T`, `Box<T>`                                    |
+| Pointer   | Pointers to values                  | `*const T`, `*mut T`                                        |
+| Closure   | Anonymous functions                 | `Fn`, `FnMut`, `FnOnce`                                     |
+| Trait     | Behaviors that a type can implement | `Copy`, `Debug`, `IntoIterator`                             |
+| Unsafe    | Low-level concepts                  | `*const T`, `*mut T`, `unsafe`                              |
