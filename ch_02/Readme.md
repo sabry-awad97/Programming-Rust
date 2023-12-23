@@ -601,3 +601,75 @@ fn main() {
 ```
 
 In this example, the `args` function is used to iterate over the command line arguments, and the `var` function is used to get the value of the `PATH` environment variable. If the `var` function returns an error, it is printed to the standard error stream and the program exits with a non-zero exit code.
+
+## Concurrency
+
+- In Rust, the relationship between a mutex and the data it protects is enforced by the borrow checker. When you want to access data that is protected by a mutex, you must first acquire the lock on the mutex. This is done using the `lock` method on the `Mutex` type. The `lock` method returns a `MutexGuard`, which is an RAII (Resource Acquisition Is Initialization) type that represents the locked state of the mutex. When the `MutexGuard` goes out of scope, it will automatically release the lock on the mutex.
+
+Here's an example of using a mutex to protect a shared data structure in Rust:
+
+```rust
+use std::sync::Mutex;
+
+// Declare a mutex to protect a shared data structure
+let data = Mutex::new(0);
+
+// Spawn a new thread to make a change to the data
+let handle = std::thread::spawn(move || {
+    // Acquire the lock on the mutex
+    let mut data = data.lock().unwrap();
+    // Make a change to the data
+    *data += 1;
+});
+
+// The lock is automatically released when the `MutexGuard` goes out of scope
+```
+
+In this example, the spawned thread acquires the lock on the mutex using the `lock` method. It then makes a change to the data by dereferencing the `MutexGuard` and incrementing the value. When the `MutexGuard` goes out of scope, the lock on the mutex is automatically released.
+
+- In Rust, you can use the `std::sync::Arc` type to share data between threads safely. `Arc` stands for "atomic reference count," and it is a type of smart pointer that allows multiple threads to have read-only access to the data it points to.
+
+  To share data using `Arc`, you first need to wrap the data in an `Arc` object using the `Arc::new` function. You can then pass the `Arc` object to the threads that need access to the data. The `Arc` object will keep track of how many threads are using the data and ensure that the data is not destroyed until all the threads are finished with it.
+
+  Here's an example of how to use `Arc` to share data between threads in Rust:
+
+  ```rust
+  use std::sync::Arc;
+  use std::thread;
+  use std::time::Duration;
+
+  fn main() {
+      let data = Arc::new(vec![1, 2, 3]);
+
+      for i in 0..3 {
+          let data = data.clone();
+          thread::spawn(move || {
+              println!("Thread {}: {:?}", i, data);
+          });
+      }
+
+      std::thread::sleep(Duration::from_secs(1));
+  }
+  ```
+
+  In this example, the vector `[1, 2, 3]` is wrapped in an `Arc` object and then passed to three separate threads. Each thread reads the data and prints it to the console. The `clone` method is used to create additional references to the data that can be passed to the threads.
+
+  It's important to note that `Arc` only allows multiple threads to have **read-only** access to the data. If you want to modify the data from multiple threads, you will need to use a different type of synchronization mechanism, such as a mutex or a atomic data type.
+
+- In Rust, the borrowing and ownership system helps to ensure thread safety by preventing data races and other synchronization issues. When you transfer ownership of a data structure from one thread to another, Rust ensures that the sending thread no longer has access to the data and cannot modify it. This helps to prevent race conditions and other synchronization issues that can occur when multiple threads access and modify shared data.
+
+  Here is an example of transferring ownership of a data structure from one thread to another
+
+  ```rust
+  fn send_data_to_other_thread(data: Data) {
+      let other_thread = spawn(move || {
+          // other_thread now owns 'data' and can access and modify it
+          // without any restrictions
+          data.do_something();
+      });
+      // The current thread no longer has access to 'data' and cannot
+      // modify it
+  }
+  ```
+
+  In this example, the `send_data_to_other_thread` function transfers ownership of the `data` structure to the `other_thread` by using the `move` keyword in the closure that is passed to the `spawn` function. This ensures that the current thread no longer has access to the `data` structure and cannot modify it.

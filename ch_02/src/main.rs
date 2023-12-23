@@ -1,15 +1,14 @@
-use std::env;
+use std::{sync::Arc, thread, time::Duration};
 
 fn main() {
-    // Print the command line arguments
-    for arg in env::args() {
-        println!("{}", arg);
+    let data = Arc::new(vec![1, 2, 3]);
+
+    for i in 0..3 {
+        let data = data.clone();
+        thread::spawn(move || {
+            println!("Thread {}: {:?}", i, data);
+        });
     }
 
-    // Get the value of the "PATH" environment variable
-    let path = env::var("PATH").unwrap_or_else(|e| {
-        eprintln!("Error getting PATH: {}", e);
-        std::process::exit(1);
-    });
-    println!("PATH: {}", path);
+    std::thread::sleep(Duration::from_secs(1));
 }
