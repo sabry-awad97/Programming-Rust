@@ -700,3 +700,12 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        println!("{}", d);
    }
    ```
+
+1. `char` values are stored as Unicode Scalar Value (USV) in Rust, which is a unique integer value that represents a character in the Unicode standard.
+
+   ```rs
+   fn main() {
+       let c: char = 'a';
+       println!("USV of 'a': {}", c as u32);
+   }
+   ```
