@@ -39,6 +39,8 @@ fn print_usage() {
 
 fn main() {
     let args = parse_args();
+    let find = &args.target;
+    let replace = &args.replacement;
     let data = match fs::read_to_string(&args.filename) {
         Ok(v) => v,
         Err(e) => {
@@ -51,6 +53,7 @@ fn main() {
             std::process::exit(1);
         }
     };
+    let data = data.replace(find, replace);
     match fs::write(&args.output, data) {
         Ok(_) => {}
         Err(e) => {

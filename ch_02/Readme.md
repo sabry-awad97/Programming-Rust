@@ -920,3 +920,29 @@ cargo run -- input.txt output.txt
 1. Open the `output.txt` file and verify that it contains the same content as the `input.txt` file.
 
 You can also try providing invalid arguments or modifying the code to test different scenarios. For example, you could try providing a non-existent file as the `filename` argument to test the error handling code.
+
+### Find and Replace functionality
+
+To add find and replace functionality to this code, you can modify the code as follows:
+
+1. Add a new command line argument to specify the string to search for (`find`) and the string to replace it with (`replace`).
+1. Modify the code to read the `find` and `replace` arguments and store them in variables.
+1. Use the `replace` method of the `String` type to replace all occurrences of the `find` string with the `replace` string in the `data` variable. For example:
+
+```rust
+let data = data.replace(&find, &replace);
+```
+
+Here's an example of the modified code:
+
+```rust
+fn main() {
+    let args = parse_args();
+    let find = &args.target;
+    let replace = &args.replacement;
+
+    let data = data.replace(find, replace);
+}
+```
+
+You can then test the find and replace functionality by running the code with the `target` and `replacement` arguments and verifying that the `output` file contains the modified text.
