@@ -427,3 +427,83 @@ println!("Reading file {}", filename);
 The `main` function ends and the program execution is complete.
 
 - If the `args` vector does have a length of 2, the code assigns the value of the second element (the name of the file) to a variable called `filename` and prints a message indicating that it is reading the file.
+
+## GCD command line program
+
+```rust
+use std::str::FromStr;
+use std::env;
+
+fn main() {
+    // Parse command line arguments
+    let mut numbers = Vec::new();
+    for arg in env::args().skip(1) {
+        // Attempt to parse each argument as a u64
+        numbers.push(u64::from_str(&arg)
+            .expect("error parsing argument"));
+    }
+
+    // Handle empty input
+    if numbers.len() == 0 {
+        eprintln!("Usage: gcd NUMBER ...");
+        std::process::exit(1);
+    }
+
+    // Calculate the GCD
+    let mut d = numbers[0];
+    for m in &numbers[1..] {
+        d = gcd(d, *m);
+    }
+
+    // Print the result
+    println!("The greatest common divisor of {:?} is {}", numbers, d);
+}
+```
+
+Here is a breakdown of the code with explanations for each part:
+
+### Parsing command line arguments
+
+```rust
+let mut numbers = Vec::new();
+for arg in env::args().skip(1) {
+    numbers.push(u64::from_str(&arg)
+    .expect("error parsing argument"));
+}
+```
+
+This code creates a new empty vector called `numbers`, and then iterates over the command line arguments (skipping the first one, which is the name of the program itself). For each argument, it attempts to parse it as a `u64` using the `FromStr` trait's `from_str` method. If the parsing succeeds, the number is added to the `numbers` vector. If the parsing fails, the program calls the `expect` method, which will cause the program to panic and print the provided message (in this case, "error parsing argument").
+
+### Handling empty input
+
+```rust
+if numbers.len() == 0 {
+    eprintln!("Usage: gcd NUMBER ...");
+    std::process::exit(1);
+}
+```
+
+This code checks if the `numbers` vector is empty. If it is, the program prints a usage message using the `eprintln!` macro (which is similar to `println!`, but prints to the standard error stream instead of the standard output stream) and then exits the program with a non-zero exit code using the `exit` function from the `std::process` module. The exit code of 1 is a convention that indicates that the program encountered an error.
+
+### Calculating the GCD
+
+```rust
+let mut d = numbers[0];
+for m in &numbers[1..] {
+    d = gcd(d, *m);
+}
+```
+
+This code initializes a variable `d` with the first element of the `numbers` vector, and then iterates over the rest of the elements. At each iteration, it updates `d` to the GCD of `d` and the current element using the `gcd` function (which is not defined in this code snippet).
+
+In Rust, the `for m in &numbers[1..]` loop iterates over the elements in the `numbers` slice, starting at the second element (index 1) and ending at the last element. The `&` operator is used to borrow the elements in the slice, rather than copying them.
+
+The `..` syntax indicates that the loop should include all elements in the slice. If you wanted to iterate over a subset of the elements, you could use `..n` to include the elements up to (but not including) the element at index `n`, or `n..` to include the elements starting at index `n` and going to the end of the slice.
+
+### Printing the result
+
+```rust
+println!("The greatest common divisor of {:?} is {}", numbers, d);
+```
+
+This code prints the result of the GCD calculation using the `println!` macro. The `{:?}` syntax is a placeholder for the `numbers` vector, which will be printed using the `Debug` trait. The `{}` syntax is a placeholder for the value of `d`.
