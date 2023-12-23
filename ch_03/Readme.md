@@ -920,3 +920,14 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(r, 1);
    }
    ```
+
+7. Tuples can be used as the elements of an array or vector, allowing you to create a collection of ordered groups of values.
+
+   ```rs
+   fn main() {
+       let v = [(1, 2), (3, 4), (5, 6)];
+       assert_eq!(v[0], (1, 2));
+       assert_eq!(v[1], (3, 4));
+       assert_eq!(v[2], (5, 6));
+   }
+   ```
