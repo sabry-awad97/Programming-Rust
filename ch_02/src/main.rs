@@ -1,29 +1,15 @@
-use std::str::FromStr;
-
-#[derive(Debug)]
-struct Point {
-    x: i32,
-    y: i32,
-}
-
-impl FromStr for Point {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let coords: Vec<&str> = s.split(',').collect();
-        if coords.len() != 2 {
-            return Err(format!("Error parsing point: {}", s));
-        }
-        let x = coords[0].parse::<i32>().map_err(|e| e.to_string())?;
-        let y = coords[1].parse::<i32>().map_err(|e| e.to_string())?;
-        Ok(Self { x, y })
-    }
-}
+use std::env;
 
 fn main() {
-    let p: Point = "1,2".parse().unwrap();
-    println!("{:?}", p); // prints "Point { x: 1, y: 2 }"
+    // Print the command line arguments
+    for arg in env::args() {
+        println!("{}", arg);
+    }
 
-    let q: Result<Point, String> = "3,4,5".parse();
-    println!("{:?}", q); // prints "Err("Error parsing point: 3,4,5")"
+    // Get the value of the "PATH" environment variable
+    let path = env::var("PATH").unwrap_or_else(|e| {
+        eprintln!("Error getting PATH: {}", e);
+        std::process::exit(1);
+    });
+    println!("PATH: {}", path);
 }
