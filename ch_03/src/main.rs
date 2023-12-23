@@ -1,11 +1,16 @@
-use std::collections::VecDeque;
+use std::mem;
 
 fn main() {
-    let mut s = VecDeque::new();
-    s.push_back((1, 2));
-    s.push_back((3, 4));
+    let mut t = (1, 2, 3);
 
-    assert_eq!(s.pop_back(), Some((3, 4)));
-    assert_eq!(s.pop_back(), Some((1, 2)));
-    assert_eq!(s.pop_back(), None);
+    let size = mem::size_of_val(&t);
+    assert_eq!(size, 3 * mem::size_of::<i32>());
+
+    let align = mem::align_of_val(&t);
+    assert_eq!(align, mem::align_of::<i32>());
+
+    let mut u = (4, 5, 6);
+    mem::swap(&mut t, &mut u);
+    assert_eq!(t, (4, 5, 6));
+    assert_eq!(u, (1, 2, 3));
 }
