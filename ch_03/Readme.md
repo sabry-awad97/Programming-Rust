@@ -613,3 +613,41 @@ fn main() {
 ```
 
 In this example, we use the `&&` and `||` operators to perform logical AND and OR operations on `x` and `y`. The `&&` operator returns `true` if both operands are `true`, and `false` otherwise. The `||` operator returns `true` if either operand is `true`, and `false` otherwise.
+
+**Using the `bool` type in conditional statements**:
+
+```rust
+fn main() {
+    let x = true;
+    let y = false;
+
+    if x {
+        println!("x is true");
+    } else {
+        println!("x is false");
+    }
+
+    if y {
+        println!("y is true");
+    } else {
+        println!("y is false");
+    }
+}
+```
+
+In this example, we use the `if` statement to control the flow of the program based on the value of `x` and `y`. The `if` statement will execute the block of code following the `if` keyword if the condition is `true`, and the block of code following the `else` keyword if the condition is `false`. In this case, the first `if` statement will execute the block following the `if` keyword because `x` is `true`, and the second `if` statement will execute the block following the `else` keyword because `y` is `false`.
+
+**Using the `bool` type in a `match` statement**:
+
+```rust
+fn main() {
+    let x = true;
+
+    match x {
+        true => println!("x is true"),
+        false => println!("x is false"),
+    }
+}
+```
+
+In this example, we use a `match` statement to match the value of `x` against a set of patterns. The `match` statement will execute the code block associated with the first pattern that matches the value of `x`. In this case, the code block following the `true` pattern will be executed because `x` is `true`.
