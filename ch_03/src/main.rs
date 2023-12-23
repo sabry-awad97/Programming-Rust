@@ -1,16 +1,9 @@
-fn tuple_length<T: std::fmt::Debug + Sized>(tuple: &T) -> usize {
-    let s = format!("{:#?}", tuple);
-    println!("{:#?}", s);
-    match s.contains(',') {
-        true => {
-            let parts = s.matches(',').collect::<Vec<&str>>();
-            parts.len()
-        }
-        _ => 1,
-    }
+fn divmod(x: i32, y: i32) -> (i32, i32) {
+    (x / y, x % y)
 }
 
 fn main() {
-    let t = (1, "hello", std::f64::consts::PI);
-    println!("Number of tuple elements: {}", tuple_length(&t));
+    let (q, r) = divmod(10, 3);
+    assert_eq!(q, 3);
+    assert_eq!(r, 1);
 }

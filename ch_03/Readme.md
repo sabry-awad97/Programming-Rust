@@ -906,3 +906,17 @@ Here is a summary of the main points about the tuple type in Rust:
        println!("Number of tuple elements: {}", tuple_length(&t));
    }
    ```
+
+6. Tuples can be used as the return type of a function to allow the function to return multiple values.
+
+   ```rs
+   fn divmod(x: i32, y: i32) -> (i32, i32) {
+       (x / y, x % y)
+   }
+
+   fn main() {
+       let (q, r) = divmod(10, 3);
+       assert_eq!(q, 3);
+       assert_eq!(r, 1);
+   }
+   ```
