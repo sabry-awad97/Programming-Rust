@@ -665,3 +665,14 @@ fn main() {
     let x_u8 = x as u8; // x_u8 is 1
 }
 ```
+
+Here is a summary of the main features of the bool type in Rust:
+| Feature | Description |
+| --- | --- |
+| Values | The `bool` type has two possible values: `true` and `false`. |
+| Operators | The `bool` type supports the following operators: `!` (negation), `==` (equality), `!=` (inequality), `&&` (logical AND), `|
+| Conversion | The`bool`type can be converted to an integer type using the`as`operator.`true`is converted to`1`and`false`is converted to`0`. |
+| Use in conditional statements | The `bool`type can be used in conditional statements such as`if`and`match`to control the flow of the program based on a boolean value. |
+| Use in functions | The`bool`type can be used as the return type for functions that return a boolean value. |
+| Printing | The`bool`type can be printed using the`{}`format specifier in the`println!`macro.`println!("{}", true)`|
+| Parsing | The`bool`type can be parsed from a string using the`parse`method.`"true".parse::<bool>().unwrap()` |
