@@ -676,3 +676,16 @@ Here is a summary of the main features of the bool type in Rust:
 | Use in functions | The`bool`type can be used as the return type for functions that return a boolean value. |
 | Printing | The`bool`type can be printed using the`{}`format specifier in the`println!`macro.`println!("{}", true)`|
 | Parsing | The`bool`type can be parsed from a string using the`parse`method.`"true".parse::<bool>().unwrap()` |
+
+## Characters
+
+The `char` type represents a Unicode scalar value, which is a unique integer value that represents a character. Some key points about the `char` type in Rust are:
+
+1. `char` values are 4 bytes in size, which means they can represent any Unicode scalar value.
+
+   ```rs
+   fn main() {
+       let c: char = 'a';
+       println!("Size of 'a': {} bytes", std::mem::size_of_val(&c));
+   }
+   ```
