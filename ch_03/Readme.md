@@ -1131,3 +1131,22 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(t, (4, 5, 6));
    }
    ```
+
+1. The `std::cmp` module's `Ord::cmp` function can be used to compare tuples element-by-element. This allows you to specify a custom ordering for tuples that takes into account more than just the first element.
+
+   ```rs
+   use std::cmp::*;
+
+   fn main() {
+       let t1 = (1, 2, 3);
+       let t2 = (4, 5, 6);
+
+       let ord = t1.cmp(&t2);
+       assert_eq!(ord, Ordering::Less);
+
+       let t3 = (1, 2, 4);
+
+       let ord = t1.cmp(&t3);
+       assert_eq!(ord, Ordering::Equal);
+   }
+   ```

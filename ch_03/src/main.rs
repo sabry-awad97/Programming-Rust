@@ -1,9 +1,14 @@
-use std::mem;
+use std::cmp::*;
 
 fn main() {
-    let mut t = (1, 2, 3);
+    let t1 = (1, 2, 3);
+    let t2 = (4, 5, 6);
 
-    let old = mem::replace(&mut t, (4, 5, 6));
-    assert_eq!(old, (1, 2, 3));
-    assert_eq!(t, (4, 5, 6));
+    let ord = t1.cmp(&t2);
+    assert_eq!(ord, Ordering::Less);
+
+    let t3 = (1, 2, 4);
+
+    let ord = t1.cmp(&t3);
+    assert_eq!(ord, Ordering::Equal);
 }
