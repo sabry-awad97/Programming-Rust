@@ -651,3 +651,17 @@ fn main() {
 ```
 
 In this example, we use a `match` statement to match the value of `x` against a set of patterns. The `match` statement will execute the code block associated with the first pattern that matches the value of `x`. In this case, the code block following the `true` pattern will be executed because `x` is `true`.
+
+**Using the `as` operator to convert a bool value to an integer type**:
+
+```rust
+fn main() {
+    let x = true;
+
+    // Convert x to an i32
+    let x_i32 = x as i32; // x_i32 is 1
+
+    // Convert x to a u8
+    let x_u8 = x as u8; // x_u8 is 1
+}
+```
