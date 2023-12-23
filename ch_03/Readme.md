@@ -740,3 +740,13 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        assert!(a != b);
    }
    ```
+
+1. You can iterate over the characters in a string using the `chars` method of the `str` type, which returns an iterator of `char` values.
+
+   ```rs
+   fn main() {
+       for c in "hello".chars() {
+           println!("{}", c);
+       }
+   }
+   ```

@@ -1,6 +1,5 @@
 fn main() {
-    let a: char = 'a';
-    let b: char = 'b';
-    assert!(a < b);
-    assert!(a != b);
+    for c in "hello".chars() {
+        println!("{}", c);
+    }
 }
