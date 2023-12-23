@@ -289,3 +289,97 @@ Arithmetic operations on numeric types can handle overflow in various ways, offe
    ```rs
    let (result, overflowed) = a.overflowing_add(b); // Returns a tuple with the result and an overflow flag
    ```
+
+Here is a summary of the operation names that follow the `checked_`, `wrapping_`, `saturating_`, or `overflowing_` prefix:
+
+| Operation      | Prefix            | Description                                                                                                          |
+| -------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Addition       | `checked_add`     | Performs checked addition, returning `None` if an overflow or underflow occurs.                                      |
+|                | `wrapping_add`    | Performs wrapping addition, wrapping around on overflow or underflow.                                                |
+|                | `saturating_add`  | Performs saturating addition, returning the maximum or minimum value if an overflow or underflow occurs.             |
+|                | `overflowing_add` | Performs overflowing addition, returning a boolean value indicating whether an overflow or underflow occurred.       |
+| Subtraction    | `checked_sub`     | Performs checked subtraction, returning `None` if an overflow or underflow occurs.                                   |
+|                | `wrapping_sub`    | Performs wrapping subtraction, wrapping around on overflow or underflow.                                             |
+|                | `saturating_sub`  | Performs saturating subtraction, returning the maximum or minimum value if an overflow or underflow occurs.          |
+|                | `overflowing_sub` | Performs overflowing subtraction, returning a boolean value indicating whether an overflow or underflow occurred.    |
+| Multiplication | `checked_mul`     | Performs checked multiplication, returning `None` if an overflow or underflow occurs.                                |
+|                | `wrapping_mul`    | Performs wrapping multiplication, wrapping around on overflow or underflow.                                          |
+|                | `saturating_mul`  | Performs saturating multiplication, returning the maximum or minimum value if an overflow or underflow occurs.       |
+|                | `overflowing_mul` | Performs overflowing multiplication, returning a boolean value indicating whether an overflow or underflow occurred. |
+| Division       | `checked_div`     | Performs checked division, returning `None` if an overflow or underflow occurs or if the divisor is zero.            |
+|                | `wrapping_div`    | Performs wrapping division, wrapping around on overflow or underflow or if the divisor is zero.                      |
+| Remainder      | `checked_rem`     | Performs checked remainder, returning `None` if an overflow or underflow occurs or if the divisor is zero.           |
+|                | `wrapping_rem`    | Performs wrapping remainder, wrapping around on overflow or underflow or if the divisor is zero.                     |
+| Left shift     | `checked_shl`     | Performs checked left shift, returning `None` if an overflow or underflow occurs.                                    |
+|                | `wrapping_shl`    | Performs wrapping left shift, wrapping around on overflow or underflow.                                              |
+|                | `overflowing_shl` | Performs overflowing left shift, returning a boolean value indicating whether an overflow or underflow occurred.     |
+| Right shift    | `checked_shr`     | Performs checked right shift, returning `None` if an overflow or underflow occurs.                                   |
+|                | `wrapping_shr`    | Performs wrapping right shift, wrapping around on overflow or underflow.                                             |
+|                | `overflowing_shr` | Performs overflowing right shift, returning a boolean value indicating whether an overflow or underflow occurred.    |
+
+```rs
+fn main() {
+    // Addition
+    let x = 1u8;
+    let y = 2u8;
+
+    let checked_result = x.checked_add(y);
+    let wrapping_result = x.wrapping_add(y);
+    let saturating_result = x.saturating_add(y);
+    let (overflowing_result, overflowed) = x.overflowing_add(y);
+
+    // Subtraction
+    let x = 1u8;
+    let y = 2u8;
+
+    let checked_result = x.checked_sub(y);
+    let wrapping_result = x.wrapping_sub(y);
+    let saturating_result = x.saturating_sub(y);
+    let (overflowing_result, overflowed) = x.overflowing_sub(y);
+
+    // Multiplication
+    let x = 2u8;
+    let y = 3u8;
+
+    let checked_result = x.checked_mul(y);
+    let wrapping_result = x.wrapping_mul(y);
+    let saturating_result = x.saturating_mul(y);
+    let (overflowing_result, overflowed) = x.overflowing_mul(y);
+
+    assert_eq!(checked_result, Some(6));
+    assert_eq!(wrapping_result, 6);
+    assert_eq!(saturating_result, 6);
+    assert_eq!(overflowing_result, 6);
+    assert!(!overflowed);
+
+    // Division
+    let x = 10u8;
+    let y = 3u8;
+
+    let checked_result = x.checked_div(y);
+    let wrapping_result = x.wrapping_div(y);
+
+    // Remainder
+    let x = 10u8;
+    let y = 3u8;
+
+    let checked_result = x.checked_rem(y);
+    let wrapping_result = x.wrapping_rem(y);
+
+    // Left shift
+    let x = 1u8;
+    let y = 2u8;
+
+    let checked_result = x.checked_shl(y as u32);
+    let wrapping_result = x.wrapping_shl(y as u32);
+    let (overflowing_result, overflowed) = x.overflowing_shl(y as u32);
+
+    // Right shift
+    let x = 1u8;
+    let y = 2u8;
+
+    let checked_result = x.checked_shr(y as u32);
+    let wrapping_result = x.wrapping_shr(y as u32);
+    let (overflowing_result, overflowed) = x.overflowing_shr(y as u32);
+}
+```
