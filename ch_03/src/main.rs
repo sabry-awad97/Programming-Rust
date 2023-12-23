@@ -1,9 +1,11 @@
-use std::mem;
+fn print_string(s: &String) {
+    println!("{}", s);
+}
 
 fn main() {
-    let size = mem::size_of_val(&());
-    assert_eq!(size, 0);
+    let s = String::from("hello");
 
-    let size = mem::size_of_val(&(1, 2, 3));
-    assert_eq!(size, 3 * mem::size_of::<i32>());
+    print_string(&s);
+
+    println!("{}", s);
 }
