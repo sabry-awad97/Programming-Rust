@@ -528,3 +528,37 @@ Keep in mind that floating-point numbers can be imprecise due to the fixed numbe
   Now, the value of `y` will be `2`, as expected.
 
   It's always a good idea to use parentheses to clarify the order of operations in your code, especially when using multiple operators or method calls. This can help prevent confusion and reduce the chance of errors.
+
+## The bool Type
+
+The `bool` type is used to represent a binary choice or a logical value in Rust.
+
+### Characteristics
+
+1. **Two Possible Values**:
+
+   - `true`: Represents the logical truth.
+   - `false`: Represents the logical falsehood.
+
+1. **Memory Representation**:
+
+   - Typically occupies 1 byte in memory.
+   - The `bool` type is stored as `1` for `true` and `0` for `false`.
+
+1. **Logical Operations**:
+
+   - Supports logical operations like `&&` (AND), `||` (OR), and `!` (NOT) for Boolean logic.
+
+**Example Usage**:
+
+```rs
+fn main() {
+    let is_rust_fun: bool = true; // Declaring a bool variable
+
+    if is_rust_fun {
+        println!("Rust is fun!"); // Executes if the value is true
+    } else {
+        println!("Rust is not fun!"); // Executes if the value is false
+    }
+}
+```

@@ -1,6 +1,9 @@
 fn main() {
-    let x = 2_f32;
-    let y = -x.abs();
+    let is_rust_fun: bool = true; // Declaring a bool variable
 
-    println!("{}", y);
+    if is_rust_fun {
+        println!("Rust is fun!"); // Executes if the value is true
+    } else {
+        println!("Rust is not fun!"); // Executes if the value is false
+    }
 }
