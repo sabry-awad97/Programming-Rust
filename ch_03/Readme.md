@@ -751,19 +751,29 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
    }
    ```
 
-1. The `char` type has a number of methods that you can use to manipulate and inspect its value, such as `is_alphabetic`, `is_alphanumeric`, `is_uppercase`, `to_digit`, `to_lowercase`, and `to_uppercase`.
+1. The `char` type has an associated constant called `MAX`, which represents the largest possible `char` value:
 
-```rs
-fn main() {
-    let c: char = 'A';
-    assert!(c.is_alphabetic());
-    assert!(c.is_uppercase());
+   ```rs
+   fn main() {
+       let c: char = char::MAX;
+       println!("Largest possible char: {}", c);
+   }
+   ```
 
-    let d: char = '😄';
-    assert!(!d.is_alphabetic());
+1. The `char` type has a number of methods for checking its properties, such as `is_alphabetic`, `is_alphanumeric`, `is_numeric`, `is_uppercase`, `is_lowercase`, `is_whitespace`, and `is_control`. These methods can be useful for validating input or for filtering or sorting strings.
 
-    let e: char = 'a';
-    let f: char = e.to_uppercase().next().unwrap();
-    assert_eq!(f, 'A');
-}
-```
+   ```rs
+   fn main() {
+       let c: char = 'a';
+       assert!(c.is_alphabetic());
+
+       let d: char = '1';
+       assert!(d.is_numeric());
+
+       let e: char = ' ';
+       assert!(e.is_whitespace());
+
+       let f: char = '\u{0000}';
+       assert!(f.is_control());
+   }
+   ```
