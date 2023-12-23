@@ -835,3 +835,74 @@ fn main() {
        assert_eq!(c, d);
    }
    ```
+
+## Tuple Type
+
+A tuple is a compound data type that can contain a fixed number of values of different types. Tuples can be created using parentheses and a comma-separated list of values.
+
+Here is a summary of the main points about the tuple type in Rust:
+
+1. Tuples can be created using the `(a, b, c, ...)` syntax, where `a`, `b`, `c`, etc. are the values in the tuple.
+
+   ```rs
+   fn main() {
+       let t = (1, "hello", std::f64::consts::PI);
+   }
+   ```
+
+2. A tuple is an ordered collection of values with potentially different types.
+
+   ```rs
+   fn main() {
+       let t = (1, "hello", std::f64::consts::PI);
+   }
+   ```
+
+3. Tuples can be destructured using pattern matching, allowing you to extract the values from a tuple and bind them to variables.
+
+   ```rs
+   fn main() {
+       let t = (1, "hello", std::f64::consts::PI);
+       let (x, y, z) = t;
+       assert_eq!(x, 1);
+       assert_eq!(y, "hello");
+       assert_eq!(z, std::f64::consts::PI);
+   }
+   ```
+
+4. Tuples can be accessed using indexing, allowing you to retrieve the value at a specific position in the tuple.
+
+   ```rs
+   fn main() {
+       let t = (1, "hello", std::f64::consts::PI);
+       let x = t.0;
+       assert_eq!(x, 1);
+
+       let y = t.1;
+       assert_eq!(y, "hello");
+
+       let z = t.2;
+       assert_eq!(z, std::f64::consts::PI);
+   }
+   ```
+
+5. Tuples have a fixed size, determined by the number of values they contain.
+
+   ```rs
+   fn tuple_length<T: std::fmt::Debug + Sized>(tuple: &T) -> usize {
+       let s = format!("{:#?}", tuple);
+       println!("{:#?}", s);
+       match s.contains(',') {
+           true => {
+               let parts = s.matches(',').collect::<Vec<&str>>();
+               parts.len()
+           }
+           _ => 1,
+       }
+   }
+
+   fn main() {
+       let t = (1, "hello", std::f64::consts::PI);
+       println!("Number of tuple elements: {}", tuple_length(&t));
+   }
+   ```
