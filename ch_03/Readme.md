@@ -750,3 +750,20 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        }
    }
    ```
+
+1. The `char` type has a number of methods that you can use to manipulate and inspect its value, such as `is_alphabetic`, `is_alphanumeric`, `is_uppercase`, `to_digit`, `to_lowercase`, and `to_uppercase`.
+
+```rs
+fn main() {
+    let c: char = 'A';
+    assert!(c.is_alphabetic());
+    assert!(c.is_uppercase());
+
+    let d: char = '😄';
+    assert!(!d.is_alphabetic());
+
+    let e: char = 'a';
+    let f: char = e.to_uppercase().next().unwrap();
+    assert_eq!(f, 'A');
+}
+```
