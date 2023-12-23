@@ -1,9 +1,10 @@
 fn main() {
-    let is_rust_fun: bool = true; // Declaring a bool variable
+    let x = true;
+    let y = false;
 
-    if is_rust_fun {
-        println!("Rust is fun!"); // Executes if the value is true
-    } else {
-        println!("Rust is not fun!"); // Executes if the value is false
-    }
+    // Negate the value of x
+    let x_not = !x; // x_not is false
+
+    // Negate the value of y
+    let y_not = !y; // y_not is true
 }
