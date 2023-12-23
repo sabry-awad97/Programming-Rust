@@ -1117,3 +1117,17 @@ Here is a summary of the main points about the tuple type in Rust:
        assert!(t4 >= t1);
    }
    ```
+
+1. The `std::mem` module's `replace` can be used to atomically replace the contents of a tuple with new values. This can be useful for implementing concurrent data structures or for implementing lock-free algorithms.
+
+   ```rust
+   use std::mem;
+
+   fn main() {
+       let mut t = (1, 2, 3);
+
+       let old = mem::replace(&mut t, (4, 5, 6));
+       assert_eq!(old, (1, 2, 3));
+       assert_eq!(t, (4, 5, 6));
+   }
+   ```
