@@ -709,3 +709,12 @@ The `char` type represents a Unicode scalar value, which is a unique integer val
        println!("USV of 'a': {}", c as u32);
    }
    ```
+
+1. The `char` type implements the `FromStr` trait, which means that you can parse a `char` value from a string using the `str::parse` method.
+
+   ```rs
+   fn main() {
+       let c: char = "a".parse().unwrap();
+       let d: char = "😄".parse().unwrap();
+   }
+   ```

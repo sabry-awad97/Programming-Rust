@@ -1,4 +1,4 @@
 fn main() {
-    let c: char = 'a';
-    println!("USV of 'a': {}", c as u32); // prints "USV of 'a': 97"
+    let c: char = "a".parse().unwrap();
+    let d: char = "😄".parse().unwrap();
 }
