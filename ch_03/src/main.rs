@@ -1,14 +1,9 @@
-use std::cmp::*;
+use std::mem;
 
 fn main() {
-    let t1 = (1, 2, 3);
-    let t2 = (4, 5, 6);
+    let size = mem::size_of_val(&());
+    assert_eq!(size, 0);
 
-    let ord = t1.cmp(&t2);
-    assert_eq!(ord, Ordering::Less);
-
-    let t3 = (1, 2, 4);
-
-    let ord = t1.cmp(&t3);
-    assert_eq!(ord, Ordering::Equal);
+    let size = mem::size_of_val(&(1, 2, 3));
+    assert_eq!(size, 3 * mem::size_of::<i32>());
 }

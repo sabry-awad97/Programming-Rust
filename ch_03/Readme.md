@@ -1150,3 +1150,47 @@ Here is a summary of the main points about the tuple type in Rust:
        assert_eq!(ord, Ordering::Equal);
    }
    ```
+
+1. Tuples can contain a single value.
+
+   ```rust
+   fn main() {
+       let t = (1,);
+       let x = t.0;
+       assert_eq!(x, 1);
+   }
+   ```
+
+_**Zero Tuple**_
+
+- The zero-tuple is a special type of tuple that has no elements.
+
+- It is written as `()` and is used to represent the absence of a value.
+
+  ```rust
+  let t: () = ();
+  ```
+
+- The zero-tuple is often used as the return type of functions that do not need to return a value.
+
+  ```rs
+  fn foo() -> () {
+      // do something
+  }
+  ```
+
+- The `std::mem` module's `size_of_val` function returns `0` for the zero-tuple, whereas it returns the size of the tuple's elements for other tuples.
+
+  ```rs
+  use std::mem;
+
+  fn main() {
+      let size = mem::size_of_val(&());
+      assert_eq!(size, 0);
+
+      let size = mem::size_of_val(&(1, 2, 3));
+      assert_eq!(size, 3 * mem::size_of::<i32>());
+  }
+  ```
+
+- The zero-tuple is a special case of the tuple type in Rust and is treated differently in certain contexts.
