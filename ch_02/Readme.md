@@ -355,3 +355,75 @@ fn test_function() {
 ```
 
 Attributes are a powerful feature in Rust and are used extensively in the Rust ecosystem.
+
+## Handling Command-Line Arguments
+
+To handle command-line arguments in Rust, you can use the `std::env::args` function, which returns an iterator over the arguments passed to the program.
+
+```rust
+use std::env;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        println!("Usage: cargo run <filename>");
+        return;
+    }
+
+    let filename = &args[1];
+    println!("Reading file {}", filename);
+}
+```
+
+Here is a summary of the code, with each step explained in more detail:
+
+### Step 1: Bring the env module into scope
+
+```rust
+use std::env;
+```
+
+- This line brings the `env` module from the Rust standard library into scope. This module provides functions for interacting with the environment in which the program is running, including the ability to access command line arguments.
+
+### Step 2: Define the main function
+
+```rust
+fn main() {
+    // code goes here
+}
+```
+
+- The `main` function is the entry point of every Rust program. It is executed when the program is run.
+
+### Step 3: Initialize a vector of command line arguments
+
+```rust
+let args: Vec<String> = env::args().collect();
+```
+
+- This code initializes a variable called `args` to a vector of strings that contains the command line arguments passed to the program. It does this by calling the `args` function from the `env` module, which returns an iterator over the arguments, and then calling the `collect` method on the iterator to turn it into a vector.
+
+### Step 4: Check the number of command line arguments
+
+```rust
+if args.len() != 2 {
+    println!("Usage: cargo run <filename>");
+    return;
+}
+```
+
+- The code checks the length of the `args` vector. If it is not equal to 2, the program prints a usage message and returns, because it expects to receive exactly one command line argument (the name of the file).
+
+### Step 5: Read the specified file
+
+```rust
+let filename = &args[1];
+println!("Reading file {}", filename);
+```
+
+### Step 6: End the program
+
+The `main` function ends and the program execution is complete.
+
+- If the `args` vector does have a length of 2, the code assigns the value of the second element (the name of the file) to a variable called `filename` and prints a message indicating that it is reading the file.
