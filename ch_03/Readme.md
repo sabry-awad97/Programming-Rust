@@ -2326,7 +2326,7 @@ Here are some examples of using slices in Rust:
   let s = s.trim_end(); // "Hello, world!"
   ```
 
-## Splitting and Joining
+### Splitting and Joining
 
 - You can split a string into multiple substrings using the `split` method. This method takes a separator and returns an iterator of substrings. You can use the `collect` method to collect the substrings into a vector.
 
@@ -2389,4 +2389,43 @@ Here are some examples of using slices in Rust:
   ```rust
   let v = ["apple", "banana", "cherry"];
   let s: String = v.join(", "); // "apple, banana, cherry"
+  ```
+
+### Comparison and Inspection
+
+- You can check if a string is empty using the `is_empty` method.
+
+  ```rust
+  let s = "".to_string();
+  if s.is_empty() { // true
+      println!("The string is empty");
+  }
+  ```
+
+- You can check if a string starts with a given prefix using the `starts_with` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  if s.starts_with("Hello") { // true
+      println!("The string starts with 'Hello'");
+  }
+  ```
+
+- You can check if a string ends with a given suffix using the `ends_with` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  if s.ends_with('!') { // true
+      println!("The string ends with '!'");
+  }
+  ```
+
+- You can check if a string is a substring of another string using the `contains` method.
+
+  ```rust
+  let s1 = "Hello, world!".to_string();
+  let s2 = "world".to_string();
+  if s1.contains(&s2) { // true
+      println!("'{}' is a substring of '{}'", s2, s1);
+  }
   ```
