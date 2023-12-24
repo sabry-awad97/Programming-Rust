@@ -2325,3 +2325,68 @@ Here are some examples of using slices in Rust:
   let s = s.trim_start(); // "Hello, world!"
   let s = s.trim_end(); // "Hello, world!"
   ```
+
+## Splitting and Joining
+
+- You can split a string into multiple substrings using the `split` method. This method takes a separator and returns an iterator of substrings. You can use the `collect` method to collect the substrings into a vector.
+
+  ```rust
+  let s = "apple,banana,cherry";
+  let v: Vec<&str> = s.split(',').collect(); // ["apple", "banana", "cherry"]
+  ```
+
+- You can split a string into multiple substrings using the `split_whitespace` method. This method returns an iterator of substrings, where each substring is a sequence of contiguous non-whitespace characters.
+
+  ```rust
+  let s = "apple   banana   cherry";
+  let v: Vec<&str> = s.split_whitespace().collect(); // ["apple", "banana", "cherry"]
+  ```
+
+- You can split a string into multiple substrings using the `split_terminator` method. This method takes a separator and returns an iterator of substrings, where the separator is not included in the substrings.
+
+  ```rust
+  let s = "apple,,banana,,cherry";
+  let v: Vec<&str> = s.split_terminator(",,").collect(); // ["apple", "banana", "cherry"]
+  ```
+
+- You can split a string into multiple substrings using the `rsplit` method. This method is similar to `split`, but it starts from the end of the string and works backwards.
+
+  ```rust
+  let s = "apple,banana,cherry";
+  let v: Vec<&str> = s.rsplit(',').collect(); // ["cherry", "banana", "apple"]
+  ```
+
+- You can split a string into multiple substrings using the `rsplit_terminator` method. This method is similar to `split_terminator`, but it starts from the end of the string and works backwards.
+
+  ```rust
+  let s = "apple,,banana,,cherry";
+  let v: Vec<&str> = s.rsplit_terminator(",,").collect(); // ["cherry", "banana", "apple"]
+  ```
+
+- You can split a string into multiple substrings using the `split_ascii_whitespace` method. This method is similar to `split_whitespace`, but it only considers ASCII whitespace characters.
+
+  ```rust
+  let s = "apple   banana   cherry";
+  let v: Vec<&str> = s.split_ascii_whitespace().collect(); // ["apple", "banana", "cherry"]
+  ```
+
+- You can split a string into multiple substrings using the `splitn` method. This method is similar to `split`, but it only splits the string at a certain number of occurrences of the separator.
+
+  ```rust
+  let s = "apple,banana,cherry,date";
+  let v: Vec<&str> = s.splitn(2, ',').collect(); // ["apple", "banana,cherry,date"]
+  ```
+
+- You can split a string into multiple substrings using the `rsplitn` method. This method is similar to `rsplit`, but it only splits the string at a certain number of occurrences of the separator.
+
+  ```rust
+  let s = "apple,banana,cherry,date";
+  let v: Vec<&str> = s.rsplitn(2, ',').collect(); // ["date", "cherry,banana,apple"]
+  ```
+
+- You can join multiple strings into a single string using the `join` method. This method takes an iterator of strings and a separator, and returns a new string with the strings joined together using the separator.
+
+  ```rust
+  let v = ["apple", "banana", "cherry"];
+  let s: String = v.join(", "); // "apple, banana, cherry"
+  ```
