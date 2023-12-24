@@ -2429,3 +2429,47 @@ Here are some examples of using slices in Rust:
       println!("'{}' is a substring of '{}'", s2, s1);
   }
   ```
+
+### Miscellaneous
+
+- You can convert a string to uppercase or lowercase using the `to_uppercase` or `to_lowercase` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  let s = s.to_uppercase(); // "HELLO, WORLD!"
+  let s = s.to_lowercase(); // "hello, world!"
+  ```
+
+- You can iterate over the characters or bytes of a string in reverse order using the `rev` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  for c in s.chars().rev() {
+      println!("{}", c);
+  }
+  ```
+
+- You can get the character and its byte index in a string using the `char_indices` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  for (i, c) in s.char_indices() {
+      println!("Character {} is at index {}", c, i);
+  }
+  ```
+
+- You can get a subslice of a string using the `get` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  if let Some(subslice) = s.get(7..12) {
+      println!("Subslice from index 7 to 12 is {}", subslice);
+  }
+  ```
+
+- You can get the character at a given index in a string using the `chars` method and indexing.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  let c = s.chars().nth(7); // Some('w')
+  ```
