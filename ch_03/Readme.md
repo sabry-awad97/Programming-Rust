@@ -2205,3 +2205,33 @@ Here are some examples of using slices in Rust:
         println!("Combined String: {}", combined_string);
     }
     ```
+
+## Operations on Strings
+
+### Conversion
+
+- You can convert a `String` to a `&str` using the `as_str` method.
+
+  ```rust
+  let s = "Hello, world!".to_string(); // String
+  let s: &str = s.as_str(); // &str
+  ```
+
+- You can convert a `&str` to a `String` using the `to_string` method.
+
+  ```rust
+  let s = "Hello, world!".to_string(); // String
+  ```
+
+- You can create a `String` from a string literal using the `to_owned` method or `String::from` function.
+
+  ```rust
+  let s = "Hello, world!".to_owned(); // String
+  let s = String::from("Hello, world!"); // String
+  ```
+
+- You can create a `String` from a byte slice using the `String::from_utf8` function.
+
+  ```rust
+  let s = String::from_utf8(vec![72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33]).unwrap(); // String
+  ```
