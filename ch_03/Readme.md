@@ -2002,3 +2002,69 @@ Here are some examples of using vectors in Rust:
        xs.dedup_by(|&mut a, &mut b| a % 2 == b % 2); // xs is now [1, 2, 3, 4]
    }
    ```
+
+## Slices
+
+In Rust, slices are a way to reference a contiguous sequence of elements in a collection, allowing you to work with a portion of the collection without copying or modifying the original data. Slices provide a flexible and efficient means of accessing a range of elements in arrays, vectors, strings, and other collection types.
+
+### Characteristics of Slices
+
+1. **Syntax:**
+
+   - Slices are represented using a range expression: `&[start..end]`.
+   - The range is inclusive of the start index but exclusive of the end index.
+
+2. **Borrowing:**
+
+   - Slices borrow data from the original collection, ensuring no ownership transfer.
+
+3. **Immutable by Default:**
+
+   - Slices are immutable by default, preventing modifications to the referenced data.
+
+4. **Mutable Slices (`&mut [start..end]`):**
+
+   - Mutable slices allow modifications to the underlying data.
+
+5. **Dynamic Sizing:**
+
+   - Slices support dynamic sizing, enabling references to variable-sized portions of a collection.
+
+```rs
+fn main() {
+    let mut numbers = [1, 2, 3, 4, 5];
+
+    // Creating a slice of the first three elements
+    let slice1 = &numbers[0..3];
+    println!("Slice 1: {:?}", slice1);
+
+    // Creating a slice of the last two elements
+    let slice2 = &numbers[3..];
+    println!("Slice 2: {:?}", slice2);
+
+    // Creating a mutable slice to modify elements
+    let mutable_slice = &mut numbers[1..4];
+    for num in mutable_slice.iter_mut() {
+        *num *= 2;
+    }
+    println!("Modified Slice: {:?}", mutable_slice);
+}
+```
+
+### Use Cases of slices
+
+1. **Array Operations:**
+
+   - Slices are commonly used to work with specific ranges or portions of arrays.
+
+2. **Substring Extraction:**
+
+   - In strings, slices are handy for extracting substrings without copying.
+
+3. **Collection Manipulation:**
+
+   - Slices enable efficient manipulation of vectors, slices, and other collection types.
+
+4. **Dynamic Data Processing:**
+
+   - Slices are crucial in scenarios where the size of the data to be processed is not known at compile time.
