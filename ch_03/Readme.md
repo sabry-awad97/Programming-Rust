@@ -2068,3 +2068,101 @@ fn main() {
 4. **Dynamic Data Processing:**
 
    - Slices are crucial in scenarios where the size of the data to be processed is not known at compile time.
+
+Here are some examples of using slices in Rust:
+
+1. Creating a slice from an array:
+
+   ```rust
+   fn main() {
+       let xs: [i32; 5] = [1, 2, 3, 4, 5];
+       let ys: &[i32] = &xs;
+   }
+   ```
+
+1. Creating a slice from a vector:
+
+   ```rust
+   fn main() {
+       let xs = vec![1, 2, 3, 4, 5];
+       let ys: &[i32] = &xs;
+   }
+   ```
+
+1. Creating a slice from a string:
+
+   ```rust
+   fn main() {
+       let xs = "hello";
+       let ys: &str = &xs;
+   }
+   ```
+
+1. Indexing a slice:
+
+   ```rust
+   fn main() {
+       let xs = &[1, 2, 3, 4, 5];
+       let x = xs[0]; // x is 1
+   }
+   ```
+
+1. Iterating over a slice:
+
+   ```rust
+   fn main() {
+       let xs = &[1, 2, 3, 4, 5];
+       for x in xs {
+           println!("{}", x);
+       }
+   }
+   ```
+
+1. Slicing a slice:
+
+   ```rust
+   fn main() {
+       let xs = &[1, 2, 3, 4, 5];
+       let ys = &xs[1..4]; // ys is [2, 3, 4]
+   }
+   ```
+
+1. Getting the length of a slice:
+
+   ```rust
+   fn main() {
+       let xs = &[1, 2, 3, 4, 5];
+       let length = xs.len(); // length is 5
+   }
+   ```
+
+1. Comparing two slices:
+
+   ```rust
+   fn main() {
+       let xs = &[1, 2, 3, 4, 5];
+       let ys = &[1, 2, 3, 4, 5];
+       let zs = &[5, 4, 3, 2, 1];
+       assert_eq!(xs, ys); // xs and ys are equal
+       assert_ne!(xs, zs); // xs and zs are not equal
+   }
+   ```
+
+1. Sorting a slice:
+
+   ```rust
+   fn main() {
+       let mut xs = &[3, 1, 4, 5, 2];
+       xs.sort(); // xs is now [1, 2, 3, 4, 5]
+   }
+   ```
+
+1. Using a slice with a generic type parameter:
+
+   ```rust
+   fn main() {
+       let xs: &[i32] = &[1, 2, 3, 4, 5];
+       let ys: &[f64] = &[1.0, 2.0, 3.0, 4.0, 5.0];
+       let zs: &[String] = &["a", "b", "c"].iter().map(|s| s.to_string()).collect::<Vec<_>>();
+   }
+   ```
