@@ -1518,3 +1518,22 @@ Here is a comparison of shared (`&T`) and mutable (`&mut T`) references:
 | Overhead                    | Low                                       | Low                               |
 | Use cases                   | Reading values, multiple readers          | Modifying values, single writer   |
 | Borrow rules                | Cannot be borrowed while borrowed mutably | Cannot be borrowed while borrowed |
+
+## Arrays, Vectors, and Slices
+
+Arrays are fixed-size collections of items that are stored in contiguous memory. They have a low overhead but cannot be resized. They are suitable for use cases where the size of the collection is known in advance and does not need to change.
+
+Vectors are dynamically-sized collections of items that are stored in contiguous memory. They have a moderate amount of overhead but can be resized as needed. They are suitable for use cases where the size of the collection needs to change frequently.
+
+Slices are views into contiguous collections of items, such as arrays or vectors. They do not own the data they refer to and do not have any overhead. They are useful for borrowing a portion of data from an array or vector and are suitable for use cases where you need to pass a subset of data to a function or iterate over a portion of a collection.
+
+Here is a comparison of arrays, vectors, and slices:
+
+|                        | Arrays (`[T; N]`)         | Vectors (`Vec<T>`)  | Slices (`&[T]`)            |
+| ---------------------- | ------------------------- | ------------------- | -------------------------- |
+| Contiguous memory?     | Yes                       | Yes                 | Yes                        |
+| Fixed size?            | Yes                       | No                  | No                         |
+| Dynamically resizable? | No                        | Yes                 | No                         |
+| Own data?              | Yes                       | Yes                 | No                         |
+| Overhead               | Low                       | Moderate            | None                       |
+| Use cases              | Large, static collections | Dynamic collections | Borrowing portions of data |
