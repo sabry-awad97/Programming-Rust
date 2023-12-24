@@ -2235,3 +2235,93 @@ Here are some examples of using slices in Rust:
   ```rust
   let s = String::from_utf8(vec![72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33]).unwrap(); // String
   ```
+
+### Access and Modification
+
+- You can get a byte slice from a `String` using the `as_bytes` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  let bs = s.as_bytes(); // [72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33]
+  ```
+
+- You can get a `char` iterator from a `String` using the `chars` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  for c in s.chars() { // H, e, l, l, o, ,, w, o, r, l, d, !
+      println!("{}", c);
+  }
+  ```
+
+- You can get a `&str` iterator from a `String` using the `lines` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  for line in s.lines() { // Hello, world!
+      println!("{}", line);
+  }
+  ```
+
+- You can concatenate two strings using the `+` operator or the `format!` macro.
+
+  ```rust
+  let s1 = "Hello, ".to_string();
+  let s2 = "world!".to_string();
+  let s = s1.clone() + &s2; // "Hello, world!"
+  let s = format!("{}{}", s1, s2); // "Hello, world!"
+  ```
+
+- You can get the length of a string in characters using the `len` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  println!("{}", s.len()); // 12
+  ```
+
+- You can get the length of a string in bytes using the `as_bytes`.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  println!("{}", s.as_bytes().len()); // 13
+  ```
+
+- You can slice a string using the `[a..b]` syntax.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  println!("{}", &s[0..5]); // "Hello"
+  ```
+
+- You can iterate over the characters or bytes of a string using a loop.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  for c in s.chars() {
+      println!("{}", c);
+  }
+  ```
+
+- You can search for a string or a character in a string using the `contains` method.
+
+  ```rust
+  let s = "Hello, world!";
+  println!("{}", s.contains("world"));
+  ```
+
+- You can replace a substring in a string using the `replace` or `replacen` method.
+
+  ```rust
+  let s = "Hello, world!".to_string();
+  let s = s.replace("world", "Rust"); // "Hello, Rust!"
+  let s = s.replacen('l', "L", 2); // "HeLLo, Rust!"
+  ```
+
+- You can trim leading or trailing whitespace or characters from a string using the `trim`, `trim_start`, or `trim_end` method.
+
+  ```rust
+  let s = "   Hello, world!   ".to_string();
+  let s = s.trim(); // "Hello, world!"
+  let s = s.trim_start(); // "Hello, world!"
+  let s = s.trim_end(); // "Hello, world!"
+  ```
