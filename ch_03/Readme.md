@@ -2166,3 +2166,42 @@ Here are some examples of using slices in Rust:
        let zs: &[String] = &["a", "b", "c"].iter().map(|s| s.to_string()).collect::<Vec<_>>();
    }
    ```
+
+## String
+
+- In Rust, strings are sequences of Unicode characters.
+- Rust has two primary string types: `&str` and `String`.
+
+  - `&str` is immutable and cannot be modified once created. It represents a read-only view into a string's content. It does not own the data; it's a borrowed reference to the underlying string.
+
+    ```rs
+    fn main() {
+        let greeting = "Hello, Rust!"; // string literal
+
+        // Creating a string slice from the string literal
+        let slice = &greeting[0..5]; // Extracting a slice of the first 5 characters
+
+        println!("Original String: {}", greeting);
+        println!("String Slice: {}", slice);
+    }
+    ```
+
+  - `String` is an owned, growable string. It is stored on the heap and can be mutated.
+
+    ```rs
+    fn main() {
+        // Creating a new empty string
+        let mut my_string = String::new();
+
+        // Appending text to the string
+        my_string.push_str("Hello, ");
+        my_string.push('R'); // Pushing a single character
+        my_string.push_str("ust!");
+
+        // Concatenating strings
+        let another_string = String::from("Welcome, ");
+        let combined_string = another_string + &my_string;
+
+        println!("Combined String: {}", combined_string);
+    }
+    ```
