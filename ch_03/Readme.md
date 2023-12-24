@@ -1472,3 +1472,49 @@ fn main() {
   - Unsafe code should be thoroughly tested, and its correctness verified to avoid unintended consequences.
 
 It's important to use caution when working with unsafe pointers, as they can easily lead to undefined behavior and can be difficult to use correctly. In general, it is recommended to use references or boxes whenever possible, and to only use unsafe pointers when absolutely necessary.
+
+## Shared References vs Mutable References
+
+Shared references (`&T`) and mutable references (`&mut T`) are distinct forms of borrowing used to access data, with differences in mutability and the ability to modify the referenced data.
+
+### Shared References (`&T`)
+
+- **Immutable Borrowing:** Allows multiple reads (`&T`) to the same data concurrently.
+- **Read-Only Access:** Permits reading data but doesn't allow modification.
+- **Ensures Safety:** Enforced by Rust's borrow checker, preventing concurrent modifications while allowing multiple readers.
+- **No Data Races:** Guarantees no simultaneous mutation when using shared references.
+
+### Mutable References (`&mut T`)
+
+- **Mutable Borrowing:** Permits a single mutable borrow (`&mut T`) to modify the referenced data.
+- **Exclusive Access:** Allows changing the data but restricts other borrows during the mutable borrow's lifetime.
+- **Enforced Mutability:** Rust's borrow checker ensures exclusive access, preventing concurrent mutable or immutable borrows.
+- **Prevents Aliasing:** Guarantees exclusive mutable access to avoid data races or conflicts.
+
+```rs
+fn main() {
+    let mut data = 42;
+
+    let shared_ref = &data; // Shared reference
+    println!("Shared Reference: {}", shared_ref);
+
+    let mutable_ref = &mut data; // Mutable reference - Error: Can't borrow 'data' as mutable if already borrowed as immutable
+    *mutable_ref = 10;
+}
+```
+
+- **Concurrency and Safety:** Shared references allow simultaneous read access but disallow mutation, ensuring safety in concurrent environments.
+- **Exclusive Mutation:** Mutable references allow changing data but restrict other borrows, preventing concurrent mutation for safety.
+
+Here is a comparison of shared (`&T`) and mutable (`&mut T`) references:
+
+|                             | Shared references                         | Mutable references                |
+| --------------------------- | ----------------------------------------- | --------------------------------- |
+| Syntax                      | `&T`                                      | `&mut T`                          |
+| Mutability                  | Immutable                                 | Mutable                           |
+| Allow modifying value?      | No                                        | Yes                               |
+| Allow multiple references?  | Yes                                       | No                                |
+| Suitable for FFI or C code? | No                                        | No                                |
+| Overhead                    | Low                                       | Low                               |
+| Use cases                   | Reading values, multiple readers          | Modifying values, single writer   |
+| Borrow rules                | Cannot be borrowed while borrowed mutably | Cannot be borrowed while borrowed |
