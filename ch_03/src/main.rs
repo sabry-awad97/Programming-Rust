@@ -1,14 +1,10 @@
-use difflib::differ::Differ;
+use unicode_segmentation::UnicodeSegmentation;
 
 fn main() {
-    let original = "Hello, world!".split(' ').collect::<Vec<_>>();
-    let modified = "Hi, world!".split(' ').collect::<Vec<_>>();
+    let text = "a̐éö̲\u{305}"; // A string with various Unicode characters
 
-    let differ = Differ::new();
-    let diff = differ.compare(&original, &modified);
+    // Break the string into grapheme clusters
+    let clusters: Vec<&str> = text.graphemes(true).collect();
 
-    // Print the generated diff
-    for line in diff {
-        println!("{}", line);
-    }
+    println!("Grapheme Clusters: {:?}", clusters);
 }
