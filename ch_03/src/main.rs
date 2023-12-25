@@ -1,10 +1,12 @@
-use unicode_normalization::UnicodeNormalization;
+use memchr::memchr;
 
 fn main() {
-    let input_text = "cœur"; // String with non-normalized characters
+    let haystack = b"Hello, Rust!"; // Byte slice to search within
 
-    // Normalize the string into NFC form
-    let normalized_text = input_text.nfc().collect::<String>();
-
-    println!("Normalized Text: {}", normalized_text);
+    // Find the position of the byte `,` within the byte slice
+    if let Some(position) = memchr(b',', haystack) {
+        println!("Found at position: {}", position);
+    } else {
+        println!("Byte not found");
+    }
 }

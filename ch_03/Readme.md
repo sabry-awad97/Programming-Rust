@@ -2868,3 +2868,46 @@ fn main() {
 - **Shell Command Interpolation:** Allows using environment variables within strings representing shell commands.
 
 - **Cross-Platform Path Handling:** Facilitates consistent handling of paths that might contain environment variables across different platforms.
+
+### `memchr`
+
+The `memchr` crate in Rust provides functions for searching byte slices or buffers for specific byte values efficiently. It's especially useful for finding the position of a byte within a larger byte sequence or buffer.
+
+#### Features of `memchr`
+
+1. **Efficient Byte Searching:**
+
+   - Offers highly optimized functions to search for specific byte values within byte slices or buffers.
+
+2. **Multiple Search Functions:**
+
+   - Provides various search functions like `memchr`, `memrchr`, and `memchr2`, allowing searching for single or multiple byte values efficiently.
+
+3. **Flexible Searching:**
+
+   - Supports searching for byte values within a range or specific portion of a byte slice.
+
+Here's an example demonstrating the usage of `memchr` to find the position of a byte within a byte slice:
+
+```rs
+use memchr::memchr;
+
+fn main() {
+    let haystack = b"Hello, Rust!"; // Byte slice to search within
+
+    // Find the position of the byte `,` within the byte slice
+    if let Some(position) = memchr(b',', haystack) {
+        println!("Found at position: {}", position);
+    } else {
+        println!("Byte not found");
+    }
+}
+```
+
+#### Use Cases of `memchr`
+
+- **Text Processing:** Useful for tasks involving byte-level manipulation and searching within byte sequences, especially in text processing or parsing applications.
+
+- **File and Buffer Handling:** Facilitates efficient searching within buffers or files when dealing with raw byte data.
+
+- **Performance Optimization:** Provides a performant way to locate specific byte values within large byte sequences or buffers.
