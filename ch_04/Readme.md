@@ -153,3 +153,64 @@ Some of the ways that Rust extends the concept of ownership include:
 - **Copy types**: Some simple types in Rust, such as integers, floating-point numbers, and characters, are marked as `Copy`. This means that when a value of one of these types is moved, the original value is not dropped and is still usable. This allows you to make copies of these types without having to worry about ownership issues.
 - **Reference-counted pointers**: The `std::rc::Rc` and `std::sync::Arc` types in the standard library allow values to have multiple owners by keeping track of the number of references to the value. This can be useful in certain situations, but it comes with some restrictions to ensure that the ownership rules are not violated.
 - **References**: In Rust, you can create a reference to a value, which is a non-owning pointer to the value with a limited lifetime. References allow you to access a value without taking ownership of it, and they are often used to pass values to functions or to work with data structures that do not have a single owner.
+
+## Moves
+
+In Rust, a move is the act of transferring ownership of a value from one owner to another. When a value is moved, the original value is no longer valid and cannot be used.
+
+- Moves are often used to pass values to functions or to rearrange the ownership tree
+
+  ```rust
+  fn main() {
+      let x = vec![1, 2, 3];
+      let y = x;
+
+      println!("{:?}", x);
+  }
+  ```
+
+- Moves are also used when returning values from functions
+
+  ```rust
+  fn create_vec() -> Vec<i32> {
+      let x = vec![1, 2, 3];
+      x
+  }
+
+  fn main() {
+      let y = create_vec();
+      println!("{:?}", y);
+  }
+  ```
+
+In Rust, most types are moved rather than copied when they are assigned to a new variable, passed to a function, or returned from a function. This means that the source relinquishes ownership of the value to the destination, and the value's lifetime is now controlled by the destination
+
+Yes, it is true that the use of moves in Rust may be surprising to some people, as assignment is a fundamental operation in programming languages that is typically well-defined. However, different programming languages handle assignment in different ways, and Rust's decision to use moves is a result of its design goals and the safety guarantees it aims to provide.
+
+In many languages, assignment simply copies the value from the source to the destination, leaving the original value unchanged. This is known as "copy semantics." However, Rust uses "move semantics," which means that assignment transfers ownership of the value from the source to the destination, rendering the original value invalid.
+
+One reason for this is that Rust's design goals include memory safety and the prevention of common memory safety issues such as dangling pointers and use of uninitialized memory. Using move semantics helps ensure that values are not used after they are no longer needed and that memory is properly managed.
+
+Additionally, Rust's move semantics can make it easier to reason about the lifetime of values in your code. Since a value can only have one owner, it is clear when a value will be dropped and when its memory will be freed. This can make it easier to understand and predict the behavior of your code.
+
+Here are some key points about moves in Rust:
+
+- Ownership is a system that prevents data races and segmentation faults by ensuring that each piece of data is owned by exactly one variable at a time.
+- Ownership is implemented through the use of "moves."
+- When a value is moved, the original value is no longer available for use.
+- When a value is moved, the value is transferred to a new owner without making a copy.
+- When a value is moved, any references to the original value become invalid.
+- When a value is moved, the ownership of the value is transferred to the new owner.
+- When a value is moved, the value is moved "by value," meaning that the value itself is transferred, not just a reference to it.
+
+Here is an example of a move:
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1; // s1 is moved to s2
+    println!("{}, world!", s1); // error: s1 has been moved
+}
+```
+
+In this example, the value of `s1` is moved to `s2`, and the original value of `s1` is no longer available for use. Any attempt to use `s1` after the move will result in a compile-time error.
