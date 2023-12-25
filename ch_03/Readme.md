@@ -2920,16 +2920,19 @@ The `pest` crate in Rust is a powerful and ergonomic parser generator that allow
 
 1. **Grammar Definition:**
 
-    - Offers a concise and easy-to-use syntax for defining grammars using the Pest Domain-Specific Language (DSL).
+   - Offers a concise and easy-to-use syntax for defining grammars using the Pest Domain-Specific Language (DSL).
+
 2. **Parser Generation:**
 
-    - Generates parsers based on the defined grammars, producing efficient and optimized code for parsing.
+   - Generates parsers based on the defined grammars, producing efficient and optimized code for parsing.
+
 3. **Parsing Execution:**
 
-    - Executes parsers on input data according to the defined grammars, producing parse trees or structured data.
+   - Executes parsers on input data according to the defined grammars, producing parse trees or structured data.
+
 4. **Error Handling:**
 
-    - Provides comprehensive error handling and reporting mechanisms, aiding in understanding and debugging parsing issues.
+   - Provides comprehensive error handling and reporting mechanisms, aiding in understanding and debugging parsing issues.
 
 Here's an example illustrating how to define a simple grammar and use `pest` to parse input data according to that grammar:
 
@@ -2986,3 +2989,15 @@ fn main() {
 - **Data Format Parsing:** Useful for parsing structured data formats like JSON, XML, or CSV.
 
 - **Text Extraction:** Helps in extracting specific patterns or structures from textual data, such as log files or reports.
+
+#### Span (Segment)
+
+A "span" usually represents a portion of the input data that is being analyzed or processed. It provides information about the location or position of specific elements within the input text or data.
+
+For example, in the context of parsing, a "span" might denote:
+
+- **Start and End Positions**: It might represent the character indices or positions within a string where a particular token or element starts and ends.
+
+- **Range of Characters**: It can indicate a range of characters or bytes within a string or buffer that corresponds to a specific part of the parsed content.
+
+Understanding the "span" helps in pinpointing the location or segment of data being processed or analyzed, aiding in error reporting, debugging, or extracting specific portions of the input data during parsing or text manipulation operations.
