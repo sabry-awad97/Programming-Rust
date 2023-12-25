@@ -510,3 +510,20 @@ fn main() {
 ```
 
 In this example, the value of `i` is moved to `j` on each iteration of the loop, and the original value of `i` is no longer available for use.
+
+## Moves and Indexed Content
+
+let's consider some examples of how moves can affect indexed content.
+
+### Vectors
+
+If you assign a value from a vector to a new variable, the value will be moved.
+
+```rust
+fn main() {
+    let v = vec!["1".to_string(), "2".to_string(), "3".to_string()];
+    let x = v[0]; // cannot move out of index of Vec
+}
+```
+
+You cannot move elements out of a vector using indexing because vectors store their elements on the heap, and moving elements out of the vector would invalidate the vector's ownership of the elements.
