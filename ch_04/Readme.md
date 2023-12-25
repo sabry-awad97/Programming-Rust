@@ -214,3 +214,159 @@ fn main() {
 ```
 
 In this example, the value of `s1` is moved to `s2`, and the original value of `s1` is no longer available for use. Any attempt to use `s1` after the move will result in a compile-time error.
+
+## Stack and Heap
+
+Consider the following example:
+
+```rs
+fn main() {
+    let s = vec!["udon".to_string(), "ramen".to_string(), "soba".to_string()];
+    let t = s;
+    let u = s;
+}
+```
+
+The first line creates a new vector `s` on the heap, containing three strings. Each of these strings is also allocated on the heap and contains the text "udon", "ramen", and "soba" respectively.
+
+In the second line, the value of `s` is moved to `t`. This means that the value of `s` is no longer valid, and attempting to use it will result in a compile-time error. The vector `t` now owns the values that were previously owned by s.
+
+In the third line, the value of s is used agin. This would result in a compile-time error because the value of s is no longer valid after it has been moved.
+
+After these three lines are executed, the ownership tree in the heap looks like this:
+
+```rust
+t  ->  ["udon", "ramen", "soba"]
+```
+
+The vector t owns the strings "udon", "ramen", and "soba".
+
+In the stack, the variables s and t are all valid and contain references to the vectors on the heap. However, the value of s has been moved to t, so attempting to use s after this point would result in a compile-time error.
+
+Before the move, the stack and heap would be as follows:
+
+```rust
+s: +------------+
+    |  Pointer   |  ---->  [Heap]
+    +------------+
+    |  Length    |
+    +------------+
+    |  Capacity  |
+    +------------+
+
+t: +------------+
+    |  Pointer   |
+    +------------+
+    |  Length    |
+    +------------+
+    |  Capacity  |
+    +------------+
+
+Heap:
++-------------------+
+|  "udon"           |
++-------------------+
+|  "ramen"          |
++-------------------+
+|  "soba"           |
++-------------------+
+```
+
+The variable `s` contains a pointer to the heap-allocated array that contains the elements of the vector, as well as the length and capacity of the array. The variable `t` is uninitialized and does not contain a valid pointer. The heap-allocated array contains the elements of the vector, each element being a string slice containing the text of the element.
+
+After the move, the stack and heap would be as follows:
+
+```rust
+s: +------------+
+    |  Pointer   |
+    +------------+
+    |  Length    |
+    +------------+
+    |  Capacity  |
+    +------------+
+
+t: +------------+
+    |  Pointer   |  ---->  [Heap]
+    +------------+
+    |  Length    |
+    +------------+
+    |  Capacity  |
+    +------------+
+
+Heap:
++-------------------+
+|  "udon"           |
++-------------------+
+|  "ramen"          |
++-------------------+
+|  "soba"           |
++-------------------+
+```
+
+The value of `s` has been moved to `t`, so the variable `s` is now uninitialized and does not contain a valid pointer. The variable `t` now contains a pointer to the heap-allocated array that was previously owned by `s`, as well as the length and capacity of the array. The values in the heap are unchanged, as the elements themselves are not moved. Only the ownership of the heap-allocated array is transferred from `s` to `t`.
+
+To make `u` vector you must ask for a copy
+
+```rust
+let s = vec!["udon".to_string(), "ramen".to_string(), "soba".to_string()];
+let t = s.clone();
+let u = s.clone();
+```
+
+In this version, `s` is an immutable variable and its value is cloned into `t` and u using the clone method. This creates new values on the heap that are copies of the original value in `s`.
+
+The ownership tree in the heap after these three lines are executed would look like this:
+
+```rust
+u  ->  ["udon", "ramen", "soba"]
+s  ->  ["udon", "ramen", "soba"]
+t  ->  ["udon", "ramen", "soba"]
+```
+
+In this version of the code, `s`, `t`, and `u` all own separate values on the heap, and the original value of `s` is still valid and can be used after the clones are created.
+
+```rust
+struct Person {
+    name: String,
+    birth: i32,
+}
+let mut composers = Vec::new();
+composers.push(Person {
+    name: "Palestrina".to_string(),
+    birth: 1525,
+});
+```
+
+```rust
+               |  Value
+---------------+------------------------------------------------
+composers      |  +------------+
+               |  |  Pointer   |  ---->  [Heap]
+               |  +------------+
+               |  |  Length    |
+               |  +------------+
+               |  |  Capacity  |
+               |  +------------+
+
+               |  +------------+
+[Heap] ---->   |  |  Person 1  |  +------------+
+               |  |            |  |  Pointer   |  ---->  [Heap]
+               |  |            |  +------------+
+               |  |            |  |  Length    |
+               |  |            |  +------------+
+               |  |            |  |  Capacity  |
+               |  +------------+  +------------+
+
+               |  +------------+  +------------+
+[Heap] ---->   |  |"Palestrina"|  +------------+
+               |  |            |  |  Pointer   |  ---->  [Heap]
+               |  |            |  +------------+
+               |  |            |  |  Length    |
+               |  |            |  +------------+
+               |  |            |  |  Capacity  |
+               |  +------------+  +------------+
+
+[Heap] ---->   |  |"Palestrina"|  +------------+
+```
+
+The variable `composers` is a vector that owns a heap-allocated array containing one element, which is a struct `Person`. The struct `Person` owns a heap-allocated string slice containing the text of its `name` field.
