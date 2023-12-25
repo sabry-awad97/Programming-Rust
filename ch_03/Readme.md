@@ -2911,3 +2911,78 @@ fn main() {
 - **File and Buffer Handling:** Facilitates efficient searching within buffers or files when dealing with raw byte data.
 
 - **Performance Optimization:** Provides a performant way to locate specific byte values within large byte sequences or buffers.
+
+### `pest`
+
+The `pest` crate in Rust is a powerful and ergonomic parser generator that allows developers to define grammars and create parsers for various languages or data formats efficiently. It enables building parsers based on user-defined grammatical rules and executing them to parse input data according to those rules.
+
+#### Features of `pest`
+
+1. **Grammar Definition:**
+
+    - Offers a concise and easy-to-use syntax for defining grammars using the Pest Domain-Specific Language (DSL).
+2. **Parser Generation:**
+
+    - Generates parsers based on the defined grammars, producing efficient and optimized code for parsing.
+3. **Parsing Execution:**
+
+    - Executes parsers on input data according to the defined grammars, producing parse trees or structured data.
+4. **Error Handling:**
+
+    - Provides comprehensive error handling and reporting mechanisms, aiding in understanding and debugging parsing issues.
+
+Here's an example illustrating how to define a simple grammar and use `pest` to parse input data according to that grammar:
+
+```rs
+// The grammar definition in a .pest file
+// Example: arithmetic.pest
+// --------------------------
+// arithmetic = { number ~ optional_space ~ operator ~ optional_space ~ number }
+// number = { digit+ }
+// optional_space = { " "* }
+// digit = { '0'..'9' }
+// operator = { "+" | "-" | "*" | "/" }
+// --------------------------
+
+use pest::Parser;
+use pest_derive::Parser;
+
+#[derive(Parser)]
+#[grammar = "arithmetic.pest"]
+struct ArithmeticParser;
+
+fn main() {
+    let input = "123 + 456"; // Input data to parse
+
+    // Parse the input using the defined grammar
+    let pairs =
+        ArithmeticParser::parse(Rule::arithmetic, input).unwrap_or_else(|e| panic!("{}", e));
+
+    // Process parsed data or traverse the parse tree
+    for pair in pairs {
+        // A pair is a combination of the rule which matched and a span of input
+        println!("Rule:    {:?}", pair.as_rule());
+        println!("Span:    {:?}", pair.as_span());
+        println!("Text:    {}", pair.as_str());
+
+        // A pair can be converted to an iterator of the tokens which make it up:
+        for inner_pair in pair.into_inner() {
+            match inner_pair.as_rule() {
+                Rule::number => println!("Number:  {}", inner_pair.as_str()),
+                Rule::optional_space => println!("Optional Space:  {}", inner_pair.as_str()),
+                Rule::digit => println!("Digit:   {}", inner_pair.as_str()),
+                Rule::operator => println!("Operator:   {}", inner_pair.as_str()),
+                Rule::arithmetic => unreachable!(),
+            };
+        }
+    }
+}
+```
+
+#### Use Cases of `pest`
+
+- **Language Processing:** Ideal for creating parsers for programming languages, configuration files, or domain-specific languages (DSLs).
+
+- **Data Format Parsing:** Useful for parsing structured data formats like JSON, XML, or CSV.
+
+- **Text Extraction:** Helps in extracting specific patterns or structures from textual data, such as log files or reports.
