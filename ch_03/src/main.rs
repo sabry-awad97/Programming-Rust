@@ -1,17 +1,16 @@
+use std::ffi::{CString, CStr};
+use std::os::raw::c_char;
+
 fn main() {
-    let greeting = "Hello";
-    let number = 42;
-    let width = 10;
+    // Create a CString from a string literal
+    let s = CString::new("Hello, world!").unwrap();
+    // Get a raw pointer to the CString's data
+    let p: *const c_char = s.as_ptr();
+    // Create a CStr from the raw pointer
+    let c_str = unsafe { CStr::from_ptr(p) };
+    // Convert the CStr to a Rust string slice
+    let rust_str = c_str.to_str().unwrap();
 
-    // Using variables within padding format
-    let aligned_greeting = format!("{:<width$}World", greeting, width = width);
-    let aligned_number = format!("{:>width$}", number, width = width);
-    let centered_text = format!("{:^width$}", "Rust", width = width);
-    let padded_number = format!("{:*>width$}", number, width = width);
-
-    // Printing formatted output
-    println!("Left Aligned: {}", aligned_greeting);
-    println!("Right Aligned: {}", aligned_number);
-    println!("Center Aligned: {}", centered_text);
-    println!("Padded with *: {}", padded_number);
+    println!("{}", rust_str);
+    // rust_str is now "Hello, world!"
 }
