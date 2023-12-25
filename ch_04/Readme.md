@@ -623,3 +623,71 @@ fn main() {
 ```
 
 In this example, the `take` method moves the `name` field out of the `Person` struct and sets the field to `None`. The original value of the `name` field is returned as an `Option<String>`, which can be `Some` if the field was previously set, or `None` if the field was already `None`.
+
+## Copy Types: The Exception to Moves
+
+In Rust, values of certain types are "copyable", meaning that they can be assigned or passed by value without moving the original value. These types are called "copy types".
+
+Copy types are implemented using the `Copy` trait, which is automatically implemented for certain types, such as integers, floating-point numbers, booleans, and character types.
+
+Here's an example of using a copy type:
+
+```rust
+fn main() {
+    let x = 5; // x is an i32
+    let y = x; // y is also an i32
+    println!("x = {}, y = {}", x, y);
+}
+```
+
+In this example, the value of `x` is copied into `y` when `y` is assigned, and the original value of `x` is not moved. Both variables are independent copies of the same value.
+
+It's worth noting that copy types are not moved when they are passed as function arguments or returned as function results. Instead, the values are copied.
+
+Here is a list of some common copy types in Rust:
+
+1. Integers: `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
+1. Floating-point numbers: `f32`, `f64`
+1. Booleans: `bool`
+1. Character types: `char`
+1. Tuples containing only copy types
+
+It's worth noting that arrays and slices of copy types are also copy types, as long as the array or slice is not mutable.
+
+```rust
+fn main() {
+    let a = [1, 2, 3]; // a is an array of i32
+    let b = a; // b is also an array of i32
+    println!("a = {:?}, b = {:?}", a, b);
+}
+```
+
+The value of `a` is copied into `b` when `b` is assigned, and the original value of `a` is not moved. Both variables are independent copies of the same array.
+
+If a struct contains fields that are copy types, then the entire struct can be stored on the stack. For example:
+
+```rust
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+let p = Point { x: 1, y: 2 };
+```
+
+In this example, the `Point` struct contains two `i32` fields, which are copy types. The entire `Point` struct can be stored on the stack.
+
+If a struct contains fields that are non-copy types, then the struct may need to store a pointer to the heap-allocated data on the stack. For example:
+
+```rust
+struct Person {
+    name: String,
+    age: i32,
+}
+
+let p = Person { name: "Alice".to_string(), age: 30 };
+```
+
+In this example, the `Person` struct contains a `String` field and an `i32` field. The `String` field is a non-copy type, so the `Person` struct stores a pointer to the `String` on the heap on the stack. The `i32` field is a copy type, so it is stored directly on the stack.
+
+Structs can also contain fields that are pointers to values on the heap, such as `Box<T>` or `Rc<T>`. In these cases, the struct will store the pointer on the stack, and the pointed-to value will be stored on the heap.
