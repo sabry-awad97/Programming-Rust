@@ -1,11 +1,14 @@
-use strsim::levenshtein;
+use difflib::differ::Differ;
 
 fn main() {
-    let string1 = "kitten";
-    let string2 = "sitting";
+    let original = "Hello, world!".split(' ').collect::<Vec<_>>();
+    let modified = "Hi, world!".split(' ').collect::<Vec<_>>();
 
-    // Calculate Levenshtein distance between the strings
-    let distance = levenshtein(string1, string2);
+    let differ = Differ::new();
+    let diff = differ.compare(&original, &modified);
 
-    println!("Levenshtein distance: {}", distance);
+    // Print the generated diff
+    for line in diff {
+        println!("{}", line);
+    }
 }
