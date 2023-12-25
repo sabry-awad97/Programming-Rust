@@ -1,10 +1,10 @@
-use unicode_segmentation::UnicodeSegmentation;
+use shellexpand::tilde;
 
 fn main() {
-    let text = "a̐éö̲\u{305}"; // A string with various Unicode characters
+    let path_with_var = "~/Documents/{$USER}/file.txt"; // Represents a string with environment variables
 
-    // Break the string into grapheme clusters
-    let clusters: Vec<&str> = text.graphemes(true).collect();
+    // Expand and resolve environment variables in the string
+    let expanded_path = tilde(&path_with_var).into_owned();
 
-    println!("Grapheme Clusters: {:?}", clusters);
+    println!("Expanded Path: {}", expanded_path);
 }

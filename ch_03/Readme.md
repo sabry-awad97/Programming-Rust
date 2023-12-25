@@ -2730,16 +2730,19 @@ The `unicode-segmentation` crate in Rust provides tools for working with Unicode
 
 1. **Unicode-Aware Segmentation:**
 
-    - Offers accurate segmentation of strings into grapheme clusters, words, and sentences based on Unicode specifications.
+   - Offers accurate segmentation of strings into grapheme clusters, words, and sentences based on Unicode specifications.
+
 2. **Grapheme Clusters:**
 
-    - Provides methods to break strings into grapheme clusters, which are the smallest visual units in a text.
+   - Provides methods to break strings into grapheme clusters, which are the smallest visual units in a text.
+
 3. **Word and Sentence Segmentation:**
 
-    - Supports breaking text into words and sentences, considering various languages' specific rules.
+   - Supports breaking text into words and sentences, considering various languages' specific rules.
+
 4. **Custom Segmenters:**
 
-    - Allows implementing custom segmenters to define segmentation rules based on specific requirements.
+   - Allows implementing custom segmenters to define segmentation rules based on specific requirements.
 
 Here's an example illustrating how to use `unicode-segmentation` to break a string into grapheme clusters:
 
@@ -2765,3 +2768,44 @@ fn main() {
 - **Language Processing:** Facilitates language processing tasks that require accurate word or sentence segmentation, aiding in natural language processing.
 
 - **Text Analysis:** Helpful for analyzing text data, especially in multilingual contexts where segmentation based on characters might be insufficient.
+
+### `shellexpand`
+
+The `shellexpand` crate in Rust provides a convenient way to expand and resolve shell-like environment variables in strings. It offers functionalities to interpolate variables within strings, similar to how shell commands interpret environment variables.
+
+#### Features of `shellexpand`
+
+1. **Environment Variable Expansion:**
+
+   - Allows expanding environment variables within strings, replacing them with their respective values.
+
+2. **Shell-Like Syntax:**
+
+   - Supports using syntax similar to shell commands to represent environment variables within strings.
+
+3. **Cross-Platform Compatibility:**
+
+   - Works across different platforms, enabling consistent handling of environment variables.
+
+Here's an example demonstrating how to expand environment variables within a string using the `shellexpand` crate:
+
+```rs
+use shellexpand::tilde;
+
+fn main() {
+    let path_with_var = "~/Documents/{$USER}/file.txt"; // Represents a string with environment variables
+
+    // Expand and resolve environment variables in the string
+    let expanded_path = tilde(&path_with_var).into_owned();
+
+    println!("Expanded Path: {}", expanded_path);
+}
+```
+
+#### Use Cases of `shellexpand`
+
+- **Configuration File Handling:** Useful for handling paths or configurations where environment variables are used.
+
+- **Shell Command Interpolation:** Allows using environment variables within strings representing shell commands.
+
+- **Cross-Platform Path Handling:** Facilitates consistent handling of paths that might contain environment variables across different platforms.
