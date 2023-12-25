@@ -2758,6 +2758,12 @@ fn main() {
     let clusters: Vec<&str> = UnicodeSegmentation::graphemes(text, true).collect();
 
     println!("Grapheme Clusters: {:?}", clusters);
+
+    let s = "Hello, world! 😀";
+    
+    for (i, grapheme) in s.grapheme_indices(true) {
+        println!("Grapheme cluster at index {}: {}", i, grapheme);
+    }
 }
 ```
 

@@ -1,10 +1,8 @@
-use shellexpand::tilde;
+use unicode_segmentation::UnicodeSegmentation;
 
 fn main() {
-    let path_with_var = "~/Documents/{$USER}/file.txt"; // Represents a string with environment variables
-
-    // Expand and resolve environment variables in the string
-    let expanded_path = tilde(&path_with_var).into_owned();
-
-    println!("Expanded Path: {}", expanded_path);
+    let s = "Hello, world! 😀";
+    for (i, grapheme) in s.grapheme_indices(true) {
+        println!("Grapheme cluster at index {}: {}", i, grapheme);
+    }
 }
