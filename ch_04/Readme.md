@@ -527,3 +527,20 @@ fn main() {
 ```
 
 You cannot move elements out of a vector using indexing because vectors store their elements on the heap, and moving elements out of the vector would invalidate the vector's ownership of the elements.
+
+```rs
+fn main() {
+    let v = vec![
+        "liberté".to_string(),
+        "égalité".to_string(),
+        "fraternité".to_string(),
+    ];
+    for mut s in v {
+        s.push('!');
+        println!("{}", s);
+    }
+    println!("{:?}", v); // error: borrow of moved value: `v`
+}
+```
+
+The for loop's internal machinery takes ownership of the vector and dissects it into its elements. At each iteration, the loop moves another element to the variable s. Since s now owns the string, we’re able to modify it in the loop body before printing it.
