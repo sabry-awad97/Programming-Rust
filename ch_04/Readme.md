@@ -427,3 +427,86 @@ fn main() {
     // No actual data movement occurs, the string content "Rust" remains in place
 }
 ```
+
+## Moves and Control Flow
+
+let's consider some examples of how moves can affect control flow.
+
+### `if` Statements
+
+If you assign a value to a new variable inside an `if` statement, the value will be moved if the `if` condition is true.
+
+```rust
+let x = vec![10, 20, 30];
+if c {
+    f(x); // ... ok to move from x here
+} else {
+    g(x); // ... and ok to also move from x here
+}
+h(x); // bad: x is uninitialized here if either path uses it
+```
+
+In this code, the variable `x` is a vector containing the values `10`, `20`, and `30`. The condition `c` is used to determine which of two functions, `f` and `g`, to call.
+
+If the condition `c` is true, then the function `f` is called and the value of `x` is moved into the function as an argument. If the condition `c` is false, then the func‐ tion `g` is called and the value of `x` is also moved into the function as an argument.
+
+After either function is called, the value of `x` is considered uninitialized because it has been moved away and has not definitely been given a new value since. Therefore, it is not allowed to use `x` in the call to `h`.
+
+### `while` Loops
+
+If you assign a value to a new variable inside a `while` loop, the value will be moved on each iteration of the loop.
+
+```rust
+let x = vec![10, 20, 30];
+while f() {
+    g(x); // bad: x would be moved in first iteration,
+            // uninitialized in second
+}
+```
+
+In this code, the variable `x` is a vector containing the values `10`, `20`, and `30`. The `while` loop will execute as long as the function `f` returns true.
+
+If the function `f` returns true, then the function `g` is called and the value of `x` is moved into the function as an argument. However, after the first iteration of the loop, the value of `x` is considered uninitialized because it has been moved away and has not definitely been given a new value since. Therefore, it is not allowed to use `x` in subsequent iterations of the loop.
+
+To avoid this error:
+
+- You can use the clone method, which creates a deep copy of the value:
+
+  ```rust
+  fn main() {
+      let x = vec![10, 20, 30];
+
+      while f() {
+          g(x.clone());
+      }
+  }
+  ```
+
+- Alternatively, you can declare x as a mutable variable and reassign it a new value before each iteration of the loop:
+
+  ```rust
+  fn main() {
+      let mut x = vec![10, 20, 30];
+
+      while f() {
+          g(x); // move from x
+          x = h(); // give x a fresh value
+      }
+  }
+  ```
+
+### `for` Loops
+
+If you assign a value to a new variable inside a `for` loop, the value will be moved on each iteration of the loop.
+
+```rust
+fn main() {
+    let v = vec!["A".to_string(), "B".to_string()];
+    for i in v {
+        let j = i; // i is moved to j on each iteration
+        println!("{}", i); // error: i has been moved
+    }
+}
+```
+
+In this example, the value of `i` is moved to `j` on each iteration of the loop, and the original value of `i` is no longer available for use.
