@@ -2760,7 +2760,7 @@ fn main() {
     println!("Grapheme Clusters: {:?}", clusters);
 
     let s = "Hello, world! 😀";
-    
+
     for (i, grapheme) in s.grapheme_indices(true) {
         println!("Grapheme cluster at index {}: {}", i, grapheme);
     }
@@ -2774,6 +2774,59 @@ fn main() {
 - **Language Processing:** Facilitates language processing tasks that require accurate word or sentence segmentation, aiding in natural language processing.
 
 - **Text Analysis:** Helpful for analyzing text data, especially in multilingual contexts where segmentation based on characters might be insufficient.
+
+### `unicode-normalization`
+
+The `unicode-normalization` crate in Rust provides functions to normalize Unicode strings, allowing for consistent and canonical representation of text by transforming various Unicode characters into their standardized forms. Unicode normalization is crucial for tasks involving text processing, comparison, and searching across different languages and scripts.
+
+#### Features of `unicode-normalization`
+
+1. **Unicode Normalization Forms:**
+
+   - Supports various Unicode normalization forms, such as NFD (Canonical Decomposition), NFC (Canonical Decomposition followed by Canonical Composition), NFKD (Compatibility Decomposition), and NFKC (Compatibility Decomposition followed by Canonical Composition).
+
+2. **Normalization Functions:**
+
+   - Provides functions to normalize strings into different Unicode normalization forms, ensuring consistent representations.
+
+3. **Character Equivalence:**
+
+   - Allows comparing and processing text based on equivalent character representations, supporting text handling across different platforms and systems.
+
+Here's an example demonstrating how to normalize a string into NFC (Canonical Decomposition followed by Canonical Composition) using the `unicode-normalization` crate:
+
+```rs
+use unicode_normalization::UnicodeNormalization;
+
+fn main() {
+    let input_text = "cœur"; // String with non-normalized characters
+
+    // Normalize the string into NFC form
+    let normalized_text = input_text.nfc().collect::<String>();
+
+    println!("Normalized Text: {}", normalized_text);
+}
+```
+
+#### Use Cases of `unicode-normalization`
+
+- **Text Processing and Comparison:** Useful for normalizing text before performing string comparisons, ensuring consistent comparison results.
+
+- **Database and Indexing:** Facilitates text normalization before storing data in databases or creating search indices for accurate text search and retrieval.
+
+- **Cross-Platform Text Handling:** Ensures text interoperability across different systems, platforms, and applications by normalizing Unicode characters into standardized forms.
+
+The `unicode-normalization` crate in Rust enables developers to normalize Unicode text into various standard forms, ensuring uniform and consistent representations of text data, which is crucial for accurate text processing and comparisons across different languages and systems.
+
+#### Non-normalized characters
+
+Non-normalized characters refer to characters within a Unicode string that haven't been transformed into their standardized or canonical forms following the Unicode Normalization Forms.
+
+Unicode defines various normalization forms (NFC, NFD, NFKC, NFKD) to standardize the representation of text, especially in cases where different sequences of characters might visually or semantically represent the same text. Non-normalized characters are those that have not undergone this standardization process.
+
+For example, consider accented characters. In some cases, an accented character might be represented as a single code point (composed form), while in other cases, it might be represented as a combination of a base character and a diacritic mark (decomposed form). If a string contains a mix of these representations, it's considered non-normalized.
+
+Normalizing text involves converting these non-standardized character representations into a standardized form according to one of the Unicode normalization forms. This normalization process ensures consistent text handling, comparison, and processing, allowing for accurate and reliable operations on text data across different platforms, systems, and applications.
 
 ### `shellexpand`
 
