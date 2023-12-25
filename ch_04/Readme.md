@@ -370,3 +370,60 @@ composers      |  +------------+
 ```
 
 The variable `composers` is a vector that owns a heap-allocated array containing one element, which is a struct `Person`. The struct `Person` owns a heap-allocated string slice containing the text of its `name` field.
+
+## More Operations That Move
+
+Here are some scenarios where moves occur:
+
+- 1. **Initialization and Assignment**:
+     When a value is assigned to a variable, the prior value of that variable gets dropped.
+- 2. **Transfer of Ownership**:
+     Assigning a value to a variable that's already initialized moves the new value in, dropping the prior value.
+- 3. **Function Arguments**:
+     Passing values to functions transfers ownership of those values to the function's parameters.
+- 4. **Returning from Functions**:
+     Returning a value from a function moves ownership of the value to the caller.
+- 5. **Building Data Structures**:
+     Constructing complex data structures like tuples or structs involves moving ownership of their components.
+
+For instance, in Rust code like:
+
+```rs
+fn main() {
+    let mut s = "Govinda".to_string();
+    let t = s;
+    s = "Siddhartha".to_string(); // Here, nothing is dropped; 't' owns the original string
+}
+```
+
+- When `t` takes ownership of the original string from `s`, `s` becomes uninitialized, and no drop occurs when assigning a new value to `s`.
+
+When values are moved in Rust, it might seem inefficient at first glance, but two essential points mitigate this concern.
+
+First, the moves in Rust apply to the value itself, typically a small metadata structure (like a three-word header) rather than the potentially larger data stored in the heap. For vectors and strings, this means the actual data (like arrays or text buffers) remains in place on the heap while ownership is transferred via the value's metadata.
+
+```rs
+fn main() {
+let s1 = String::from("Hello"); // s1 owns the heap-allocated string "Hello"
+
+let s2 = s1; // Ownership of the value proper (metadata) moves to s2
+
+// s1 is no longer valid here because ownership was moved to s2
+// println!("{}", s1); // This line won't compile
+
+// s2 still owns the same heap-allocated string "Hello"
+println!("{}", s2); // This works fine
+}
+```
+
+Second, Rust's compiler optimizes moves to avoid unnecessary data movement. It understands ownership semantics and often optimizes code generation to handle values in-place, reducing unnecessary copying or relocation.
+
+```rs
+fn main() {
+    let s1 = String::from("Rust"); // s1 owns the string "Rust"
+
+    let s2 = s1; // Ownership of the metadata is moved to s2
+
+    // No actual data movement occurs, the string content "Rust" remains in place
+}
+```
