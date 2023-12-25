@@ -738,3 +738,126 @@ Here is a summarization of Copy trait:
 - This means that basic operations like assignment, passing parameters, and returning values from functions are more predictable in Rust, as the costs of these operations are more explicit and apparent to the programmer.
 - In C++, assigning one variable to another can require arbitrary amounts of memory and processor time.
 - Rust's approach makes basic operations simple and potentially expensive operations explicit, like calls to `clone` that make deep copies of vectors and their contents.
+
+## Rc and Arc: Shared Ownership
+
+`Rc` (short for "reference counted") and `Arc` (short for "atomic reference counted") are types that provide shared ownership of a value. This means that multiple `Rc` or `Arc` values can point to the same value, and the value will be dropped only when the last `Rc` or `Arc` value pointing to it is dropped.
+
+### `Rc` (Reference Counting)
+
+- **Usage in Single-threaded Contexts:**
+
+  - Suitable for scenarios where shared ownership is required within a single thread.
+  - Allows multiple immutable references to the same data.
+  - Increases a reference count each time a new reference is created.
+  - Decreases the count when a reference goes out of scope within the same thread.
+
+  ```rs
+  use std::rc::Rc;
+
+  fn main() {
+      let s1 = Rc::new("Hello".to_string());
+      let s2 = s1.clone();
+      let s3 = s1.clone();
+
+      println!("{} {} {}", s1, s2, s3);
+
+      // Get the current reference count
+      let count = Rc::strong_count(&s1);
+      println!("Reference count of s1: {}", count);
+  }
+  ```
+
+### `Arc` (Atomic Reference Counting)
+
+- **Usage in Multi-threaded Contexts:**
+
+  - Used in scenarios where shared ownership is needed across multiple threads safely.
+  - Similar to `Rc` but implements atomic operations for thread safety.
+  - Allows multiple threads to share and access data concurrently.
+  - Ensures synchronized access to shared data by using atomic reference counting.
+
+  ```rs
+  use std::sync::Arc;
+
+  fn main() {
+      let s1 = Arc::new("Hello".to_string());
+      let s2 = s1.clone();
+      let s3 = s1.clone();
+
+      println!("{} {} {}", s1, s2, s3);
+
+      // Get the current reference count
+      let count = Arc::strong_count(&s1);
+      println!("Reference count of s1: {}", count);
+  }
+  ```
+
+### `Drop` Trait and Ownership
+
+- **`Drop` Trait Implementation:**
+  - They track the reference count and deallocate the shared data when the count reaches zero, indicating no active references exist.
+
+### Synchronization Mechanisms
+
+- **Usage of Mutexes**
+
+  - To ensure safe concurrent access to shared data when using `Arc`, synchronization mechanisms like mutexes should be employed.
+  - Mutexes help in controlling access to shared data by allowing only one thread to access the data at a time.
+
+  - Rust provides the `std::sync::Mutex` type, which allows safe mutable access to shared data across threads by acquiring and releasing locks.
+
+  ```rs
+  use std::sync::{Arc, Mutex};
+
+  fn main() {
+      // Creating shared data wrapped in an Arc and a Mutex
+      let shared_data = Arc::new(Mutex::new(0));
+
+      // Cloning Arc to create multiple references for different threads
+      let shared_data_clone1 = Arc::clone(&shared_data);
+      let shared_data_clone2 = Arc::clone(&shared_data);
+
+      // Spawn threads to concurrently modify the shared data
+      let thread1 = std::thread::spawn(move || {
+          let mut data = shared_data_clone1.lock().unwrap();
+          *data += 1; // Modifying the shared data
+      });
+
+      let thread2 = std::thread::spawn(move || {
+          let mut data = shared_data_clone2.lock().unwrap();
+          *data += 2; // Modifying the shared data
+      });
+
+      // Waiting for threads to complete execution
+      thread1.join().unwrap();
+      thread2.join().unwrap();
+
+      // Accessing the modified shared data
+      let final_data = shared_data.lock().unwrap();
+      println!("Final value: {}", *final_data);
+
+      // Get the current reference count
+      let count = Arc::strong_count(&shared_data);
+      println!("Reference count of shared_data: {}", count);
+  }
+  ```
+
+Here is a summary of the main points of interest:
+
+|                              | `Rc`                      | `Arc`                                                |
+| ---------------------------- | ------------------------- | ---------------------------------------------------- |
+| Meaning                      | Reference counted         | Atomic reference counted                             |
+| Use cases                    | Single-threaded           | Multi-threaded                                       |
+| Implements `Deref` trait     | Yes                       | Yes                                                  |
+| Overhead                     | Reference count           | Reference count + atomic operations                  |
+| Concurrent access protection | None                      | Yes                                                  |
+| Common use cases             | Tree-like data structures | Tree-like data structures in concurrent environments |
+
+### Reference Cycle
+
+Reference cycles occur when two or more values have references to each other, creating a circular reference. Because each value holds a reference to the other, the reference count for each value will never reach zero, and the values will never be deallocated from memory. This can lead to a memory leak, where the values continue to occupy memory even though they are no longer needed.
+
+The `Rc` pointers in Rust are immutable, which means creating a direct cyclic reference between two `Rc` pointers isn't possible because it requires mutability of the reference, and `Rc` doesn't allow this.
+
+When dealing with potential cyclic references using Rc pointers, you can break those cycles by using `std::rc::Weak` pointers for some of the links. This strategy involves using Weak pointers to prevent strong ownership and thus breaking the cycle, allowing memory to be properly deallocated.
