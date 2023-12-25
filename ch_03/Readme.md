@@ -3031,3 +3031,95 @@ Here is a comparison of `String` and `Vec<T>` in Rust:
 | Sorting methods      | \- `sort`: Sorts the characters in the string in-place.                                              | \- `sort`: Sorts the elements in the vector in-place.                                              |
 |                      | \- `sort_by`: Sorts the characters in the string in-place using a given comparison function.         | \- `sort_by`: Sorts the elements in the vector in-place using a given comparison function.         |
 |                      | \- `sort_by_key`: Sorts the characters in the string in-place using a given key extraction function. | \- `sort_by_key`: Sorts the elements in the vector in-place using a given key extraction function. |
+
+## Type Alias
+
+Here is a summary of the main points about type aliases in Rust:
+
+1. Type aliases are created using the `type` keyword.
+
+1. Type aliases allow you to create a new name for an existing type.
+
+   ```rust
+   type Kilometers = i32;
+   ```
+
+1. Type aliases can be used to make code easier to read and understand by giving more meaningful names to types.
+
+   ```rust
+   type Kilometers = i32;
+
+   fn main() {
+       let distance: Kilometers = 100;
+       println!("The distance is {} kilometers", distance);
+   }
+   ```
+
+1. Type aliases can be used to reduce duplication of type names in long or complex types.
+
+   ```rust
+   type Kilometers = i32;
+
+   struct Point {
+       x: i32,
+       y: i32,
+       z: i32,
+   }
+
+   struct Line {
+       start: Point,
+       end: Point,
+       length: Kilometers,
+   }
+   ```
+
+1. Type aliases can be used to allow you to use types that have the same underlying representation but different names in different contexts.
+
+   ```rust
+   type Kilometers = i32;
+
+   fn distance_in_miles(distance: Kilometers) -> f32 {
+       distance as f32 * 0.62137
+   }
+
+   fn main() {
+       let distance: Kilometers = 100;
+       println!("The distance is {} miles", distance_in_miles(distance));
+   }
+   ```
+
+1. Type aliases can be used with any type, including primitive types, structs, enums, and other type aliases.
+
+   ```rust
+   type Kilometers = i32;
+
+   struct Point {
+       x: i32,
+       y: i32,
+   }
+
+   type Point2D = Point;
+
+   fn main() {
+       let point: Point2D = Point { x: 0, y: 0 };
+       println!("Point: ({}, {})", point.x, point.y);
+   }
+   ```
+
+1. Type aliases can be generic, allowing you to create type aliases that can be used with different types depending on the context in which they are used.
+
+   ```rust
+   type Result<T> = std::result::Result<T, String>;
+
+   fn read_file(file_name: &str) -> Result<String> {
+       let contents = std::fs::read_to_string(file_name).map_err(|e| e.to_string())?;
+       Ok(contents)
+   }
+
+   fn main() {
+       let contents = read_file("file.txt").unwrap();
+       println!("File contents: {}", contents);
+   }
+   ```
+
+   In this example, we create a generic type alias called `Result` that is equivalent to the `std::result::Result` type, with a `String` error type. We then use the `Result` type alias in the return type of the `read_file` function, which reads the contents of a file into a `String`. If the file cannot be read, an error `String` is returned.
