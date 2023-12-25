@@ -1,11 +1,24 @@
+struct Person {
+    name: String,
+    birth: i32,
+}
+
 fn main() {
-    let original = String::from("Hello"); // String allocated on the heap
-    let new_var = original; // Ownership of the String moves to 'new_var'
-
-    // Trying to access 'original' here would result in a compile-time error
-    // because the ownership has been moved to 'new_var'
-    // println!("{}", original); // This line won't compile
-
-    // 'new_var' still owns the String data and can be used
-    println!("{}", new_var); // This works fine
+    let mut composers = Vec::new();
+    composers.push(Person {
+        name: "Palestrina".to_string(),
+        birth: 1525,
+    });
+    composers.push(Person {
+        name: "Dowland".to_string(),
+        birth: 1563,
+    });
+    composers.push(Person {
+        name: "Lully".to_string(),
+        birth: 1632,
+    });
+    
+    for composer in &composers {
+        println!("{}, born {}", composer.name, composer.birth);
+    }
 }
