@@ -1,12 +1,13 @@
+struct Person {
+    name: Option<String>,
+    birth: i32,
+}
+
 fn main() {
-    let v = vec![
-        "liberté".to_string(),
-        "égalité".to_string(),
-        "fraternité".to_string(),
-    ];
-    for mut s in v {
-        s.push('!');
-        println!("{}", s);
-    }
-    println!("{:?}", v); // error: borrow of moved value: `v`
+    let mut composers = vec![Person {
+        name: Some("Palestrina".to_string()),
+        birth: 1525,
+    }];
+    let first_name = composers[0].name.take(); // first_name is a Option<String>
+    println!("{:?}", composers[0].name); // composers[0].name is None
 }

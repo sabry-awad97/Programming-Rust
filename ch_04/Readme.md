@@ -544,3 +544,82 @@ fn main() {
 ```
 
 The for loop's internal machinery takes ownership of the vector and dissects it into its elements. At each iteration, the loop moves another element to the variable s. Since s now owns the string, we’re able to modify it in the loop body before printing it.
+
+### structs
+
+```rs
+struct Person {
+    name: Option<String>,
+    birth: i32,
+}
+
+fn main() {
+    let mut composers = Vec::new();
+    composers.push(Person {
+        name: Some("Palestrina".to_string()),
+        birth: 1525,
+    });
+    let first_name = composers[0].name;
+}
+```
+
+You cannot move the `name` field out of the `Person` struct using indexing, because the `Person` struct is stored on the heap, and moving the field would invalidate the struct's ownership of the field.
+
+To access the `name` field of the `Person` struct, you have a few options:
+
+#### 1\. Borrow the field
+
+You can borrow the `name` field of the `Person` struct using an immutable reference:
+
+```rust
+let first_name = &composers[0].name; // first_name is a &Option<String>
+```
+
+In this example, the `first_name` variable is a reference to the `name` field of the `Person` struct, and the original field is not moved.
+
+#### 2\. Clone the field
+
+You can clone the `name` field of the `Person` struct using the `clone` method:
+
+```rust
+let first_name = composers[0].name.clone(); // first_name is a Option<String>
+```
+
+In this example, the `first_name` variable is a copy of the `name` field of the `Person` struct, and the original field is not moved.
+
+#### 3\. Use a reference and take ownership
+
+You can use the `as_ref` method:
+
+```rust
+let first_name = composers[0].name.as_ref(); // first_name is a Option<&String>
+```
+
+#### 4\. Use `std::mem::replace`
+
+Yes, you can use the `std::mem::replace` function to move the `name` field out of the `Person` struct and set the field to a new value.
+
+```rust
+let first_name = std::mem::replace(&mut composers[0].name, None); // first_name is a Option<String>
+println!("{:?}", composers[0].name); // composers[0].name is None
+```
+
+In this example, the `std::mem::replace` function moves the `name` field out of the `Person` struct and sets the field to a new value of `None`. The original value of the `name` field is returned as an `Option<String>`, which can be `Some` if the field was previously set, or `None` if the field was already `None`.
+
+#### 4\. Use `take()` method
+
+Yes, you can use the `take` method to move the `name` field out of the `Person` struct and set the field to `None`.
+
+Here's an example of how to use the `take` method:
+
+```rust
+fn main() {
+    let mut composers = Vec::new();
+    composers.push(Person { name: Some("Palestrina".to_string()),
+    birth: 1525 });
+    let first_name = composers[0].name.take(); // first_name is a Option<String>
+    println!("{:?}", composers[0].name); // composers[0].name is None
+}
+```
+
+In this example, the `take` method moves the `name` field out of the `Person` struct and sets the field to `None`. The original value of the `name` field is returned as an `Option<String>`, which can be `Some` if the field was previously set, or `None` if the field was already `None`.
