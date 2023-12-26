@@ -1,13 +1,9 @@
-fn find_first_even(numbers: &[i32]) -> Option<&i32> {
-    numbers.iter().find(|&number| number % 2 == 0)
+fn factorial(n: usize) -> usize {
+    (1..n + 1).product()
 }
 
 fn main() {
-    let numbers = [1, 3, 5, 7, 9];
-    let result = find_first_even(&numbers);
-
-    match result {
-        Some(n) => println!("The first even number is {}", n),
-        None => println!("There are no even numbers in the list"),
-    }
+    let r = &factorial(6);
+    // Arithmetic operators can see through one level of references.
+    assert_eq!(r + 1009, 1729);
 }
