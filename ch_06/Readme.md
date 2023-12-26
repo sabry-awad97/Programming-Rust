@@ -177,3 +177,80 @@ A declaration is used to introduce a new binding, which is a name associated wit
   // macro code
   }
   ```
+
+## if and match
+
+### `if`
+
+`if` expressions are used to conditionally execute code based on a boolean expression. The basic syntax for an `if` expression is:
+
+```rust
+if condition {
+    // code to execute if condition is true
+}
+```
+
+Where `condition` is a boolean expression that evaluates to either `true` or `false`.
+
+`if` expressions can also include an `else` branch, which is executed if the condition is `false`. The syntax for an `if` expression with an `else` branch is:
+
+```rust
+if condition {
+    // code to execute if condition is true
+} else {
+    // code to execute if condition is false
+}
+```
+
+It's also possible to chain multiple `if` and `else if` branches together to check multiple conditions. The syntax for chaining `if` and `else if` branches is:
+
+```rust
+if condition1 {
+    // code to execute if condition1 is true
+} else if condition2 {
+    // code to execute if condition1 is false and condition2 is true
+} else if condition3 {
+    // code to execute if condition1 and condition2 are false and condition3 is true
+} else {
+    // code to execute if all conditions are false
+}
+```
+
+It's important to note that the conditions in an `if` expression must be a boolean expression, if the condition is not a boolean expression the code will not compile. Also, the `if` expression is an expression, it can be used to return a value or assign it to a variable.
+
+### `match`
+
+`match` expressions are used to compare a value against a pattern and execute code based on the first match. The basic syntax for a `match` expression is:
+
+```rust
+match value {
+    pattern1 => code_to_execute1,
+    pattern2 => code_to_execute2,
+    ...
+}
+```
+
+Where `value` is the value that is being matched against, and `pattern1`, `pattern2`, ... are patterns that are matched against the value. The code block to the right of the pattern is executed if the pattern matches the value.
+
+Each pattern in a `match` expression can also include a guard, which is an additional boolean expression that must be true for the pattern to match. The syntax for a pattern with a guard is:
+
+```rust
+pattern if guard => code_to_execute,
+```
+
+It's also possible to include a catch-all pattern `_` which matches any value and is executed if no other patterns match. This is useful when we want to handle all possible cases but don't know what they are.
+
+```rust
+match value {
+    pattern1 => code_to_execute1,
+    pattern2 => code_to_execute2,
+    ...
+    _ => code_to_execute_default
+}
+```
+
+`match` expressions are often used with enums, as they allow to match on the variant of the enum. It's also commonly used with structs and other types that have a well-defined set of possibilities.
+
+It's important to note that the `match` expression is also an expression, it can be used to return a value or assign it to a variable.
+
+One of the key features of the match expression is that it must be exhaustive, meaning that it must cover all possible values of the type being matched. If the match expression does not cover all possible values, the Rust compiler will raise an error.
