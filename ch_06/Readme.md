@@ -393,3 +393,21 @@ fn largest(a: i32, b: i32) -> i32 {
     b
 }
 ```
+
+## Flow-sensitive analysis
+
+- Flow-sensitive analyses are designed to ensure the correct and safe behavior of your code.
+
+- The analyses perform checks on the flow of control through the program to make sure that every path through a function returns a value of the expected return type, that local variables are never used uninitialized, and that there is no unreachable code.
+
+- These checks help you avoid unexpected results and crashes by catching errors before they occur.
+
+- The compiler also uses these flow-sensitive analyses to optimize your code by removing unreachable code.
+
+- Flow-sensitive analyses are a key part of the Rust programming model, helping you write safe, reliable, and efficient code.
+
+The type system is affected by control flow, which means that the way code is executed affects its type. This is why the if expression must have branches with the same type. However, expressions that don't finish normally, such as break or return expressions, infinite loops, or calls to `panic!` or `std::process::exit`, are assigned the special type `!` and are exempt from the rules about types having to match. The `!` type indicates that the function or expression never returns.
+
+The loop expression in Rust is offered as a solution to the issue of normal type matching by offering a way to express the intended flow of control. Writing divergent functions, such as those that never return, is a natural part of the Rust programming model, and can be achieved by using the `!` type in function signatures.
+
+It is considered an error if a function with the `!` type can return normally, as this would be contradictory to its intended behavior.
