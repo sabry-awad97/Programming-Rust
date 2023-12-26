@@ -240,3 +240,14 @@ assert!(r1 != r2); // r1 and r2 point to different values
 ```
 
 When you compare references, Rust compares the values that the references point to, rather than the references themselves. This means that two references are equal if and only if they point to the same value.
+
+It is important to note that you can only compare references of the same type. For example, you cannot compare a shared reference to an integer with a mutable reference to a string:
+
+```rust
+let x = 10;
+let mut y = "hello";
+let r1 = &x;
+let r2 = &mut y;
+
+assert!(r1 != r2); // cannot compare references of different types
+```
