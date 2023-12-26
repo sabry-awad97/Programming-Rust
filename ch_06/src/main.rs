@@ -1,3 +1,6 @@
 fn main() {
-    println!("Hello, world!");
+    let x = {
+        let y = 1;
+        y + 1
+    }; // This is a valid statement
 }
