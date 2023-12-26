@@ -251,3 +251,26 @@ let r2 = &mut y;
 
 assert!(r1 != r2); // cannot compare references of different types
 ```
+
+If you want to compare the memory addresses of two references, you can use the `std::ptr::eq` function. This function takes two references as arguments and returns `true` if they point to the same memory address, and `false` otherwise.
+
+Here is an example:
+
+```rust
+use std::ptr;
+
+fn compare_memory_addresses(x: &i32, y: &i32) -> bool {
+    ptr::eq(x, y)
+}
+
+fn main() {
+    let x = 10;
+    let y = 20;
+    let r = &x;
+
+    assert!(!compare_memory_addresses(&x, &y)); // x and y are stored at different memory addresses
+    assert!(compare_memory_addresses(r, &x)); // r and &x point to the same memory address
+}
+```
+
+It is important to note that the `std::ptr::eq` function is not intended for general use, and should only be used in cases where you need to compare the memory addresses of references. In most cases, you should use the `==` operator to compare the values that the references point to, rather than the references themselves.
