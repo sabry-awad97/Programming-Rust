@@ -103,15 +103,35 @@ The borrow checker in Rust enforces rules around the use of references to ensure
 
 5. **No Dangling References**:
 
-```rs
-fn dangle() -> &i32 {
-    let data = 42;
-    &data // Returning a reference to 'data'
-          // 'data' goes out of scope here
-}
+   ```rs
+   fn dangle() -> &i32 {
+       let data = 42;
+       &data // Returning a reference to 'data'
+           // 'data' goes out of scope here
+   }
 
+   fn main() {
+       let reference_to_nothing = dangle(); // Uncommenting this line would cause a compile-time error
+       // Attempting to create a reference to 'data' that no longer exists
+   }
+   ```
+
+Here is a list of terms that are commonly used when discussing references in Rust:
+
+- **Reference**: A non-owning pointer type that allows you to borrow data from a source without taking ownership of it. Denoted with the `&` symbol.
+- **Mutable reference**: A reference that allows you to modify the data it refers to. Denoted with the `&mut` symbol.
+- **Referent**: The data that is being referred to by a reference.
+- **Borrow**: The act of using a reference to borrow data from a source without taking ownership of it.
+- **Borrow checker**: A system in Rust that enforces rules around the use of references in order to ensure the safety and correctness of code.
+- **Dangling reference**: A reference to data that no longer has a clear owner. This can cause undefined behavior.
+
+```rust
 fn main() {
-    let reference_to_nothing = dangle(); // Uncommenting this line would cause a compile-time error
-    // Attempting to create a reference to 'data' that no longer exists
+    let s = String::from("hello"); // s is a referent
+    let r = &s; // Borrow s with a reference
+    let t = &r; // t is also a reference to s
+    println!("{}", t);
 }
 ```
+
+In this example, we borrow the data in `s` with a reference `r`, and then create another reference `t` to `r`. Both `r` and `t` are references to the same referent, `s`.
