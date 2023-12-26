@@ -473,6 +473,7 @@ Components of a Fat Pointer
 
   - Points to the actual data in memory.
   - Represents the memory address where the data is stored.
+
 - **Extra Metadata:**
 
   - Additional information such as the length or size of the pointed data.
@@ -500,3 +501,11 @@ fn main() {
 ```
 
 In this example, `data` is a slice of integers (`&[i32]`). When creating `fat_pointer`, it holds both the memory address of the slice's data and additional metadata about the length of the slice. However, direct access to the metadata from the fat pointer itself isn't possible in Rust; operations involving the metadata usually require the original type or access through the Rust standard library methods.
+
+## Reference Safety
+
+Reference safety refers to the assurance and enforcement of certain rules and practices that prevent common issues related to memory safety, such as dangling pointers, data races, and undefined behavior.
+
+### Borrowing a Local Variable
+
+Borrowing a local variable involves creating a reference to an existing variable within a certain scope. This reference allows temporary access to the variable's data without transferring ownership.

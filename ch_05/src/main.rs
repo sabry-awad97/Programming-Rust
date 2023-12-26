@@ -1,12 +1,12 @@
 fn main() {
-    let data: &[i32] = &[1, 2, 3, 4, 5]; // Slice of integers
+    let mut value = 5; // Creating a mutable variable 'value'
 
-    let fat_pointer: *const [i32] = data as *const [i32]; // Creating a fat pointer
+    {
+        let reference = &value; // Creating an immutable reference to 'value'
+        println!("Immutable reference: {}", reference);
+    } // The immutable reference 'reference' goes out of scope here
 
-    // Not possible: let metadata = fat_pointer.len(); // Fat pointers don't have direct access to metadata
-
-    // Using associated methods to access metadata
-    let len = data.len(); // Accessing the length of the slice
-
-    println!("Length: {}", len);
+    let another_reference = &mut value; // Creating a mutable reference to 'value'
+    *another_reference += 10; // Modifying the value through the mutable reference
+    println!("Modified value: {}", value);
 }
