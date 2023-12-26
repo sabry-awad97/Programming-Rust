@@ -1,9 +1,15 @@
-fn main() {}
+static mut STASH: &i32 = &10;
 
-fn foo(x: &i32) {
-    // x is a reference to an i32 with an unknown lifetime
+fn foo(x: &'static i32) {
+    unsafe {
+        STASH = x;
+    }
 }
 
-fn bar<'a>(x: &'a i32) {
-    // x is a reference to an i32 with the lifetime 'a
+static WORTH_POINTING_AT: i32 = 1000;
+
+fn main() {
+    let y = 5;
+    foo(&y); // error: y has a shorter lifetime than STASH
+    foo(&WORTH_POINTING_AT); // okay, WORTH_POINTING_AT is a static
 }

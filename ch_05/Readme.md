@@ -649,3 +649,70 @@ Here are some of the key points:
        // x is a reference to an i32 with the lifetime 'a
    }
    ```
+
+1. If the function stores the reference in a global variable (static), the lifetime of the reference must be at least as long as the lifetime of the global variable.
+
+   ```rust
+   static mut STASH: &i32 = &10;
+
+   fn foo(x: &i32) {
+       unsafe {
+           STASH = x;
+       }
+   }
+
+   fn main() {
+       let y = 5;
+       foo(&y); // error: y has a shorter lifetime than STASH
+   }
+   ```
+
+1. The lifetime of a global variable is 'static, which means it lasts for the entire duration of the program.
+
+   ```rust
+   static STASH: i32 = 10;
+
+   fn main() {
+       let x = &STASH;
+       println!("{}", x); // okay, x has the lifetime 'static
+   }
+   ```
+
+1. The signature of the function must be changed to `fn f(p: &'static i32)` to indicate that it only accepts references with the 'static lifetime.
+
+   ```rust
+   static mut STASH: &i32 = &10;
+
+   fn foo(x: &'static i32) {
+       unsafe {
+           STASH = x;
+       }
+   }
+
+   fn main() {
+       let y = 5;
+       foo(&y); // error: y has a shorter lifetime than STASH
+       let z = 10;
+       foo(&z); // okay, z is a static
+   }
+   ```
+
+1. After the signature of the function is changed, you can only apply the function to references to other statics, because the lifetime of a static is 'static.
+
+   ```rust
+   static mut STASH: &i32 = &10;
+
+   fn foo(x: &'static i32) {
+       unsafe {
+           STASH = x;
+       }
+   }
+
+   static WORTH_POINTING_AT: i32 = 1000;
+
+   fn main() {
+       let y = 5;
+       foo(&y); // error: y has a shorter lifetime than STASH
+       foo(&WORTH_POINTING_AT); // okay, WORTH_POINTING_AT is a static
+   }
+   ```
