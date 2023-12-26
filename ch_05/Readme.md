@@ -135,3 +135,21 @@ fn main() {
 ```
 
 In this example, we borrow the data in `s` with a reference `r`, and then create another reference `t` to `r`. Both `r` and `t` are references to the same referent, `s`.
+
+To emphasize the idea that a reference is borrowing data from a source, Rust refers to creating a reference as borrowing the value. This helps to emphasize the fact that the reference does not own the data, and that the data must eventually be returned to its owner.
+
+In Rust, references must never outlive their referents. This means that the lifetime of a reference must be strictly shorter than the lifetime of the data it refers to. This means that a reference cannot be used after the data it refers to has been deallocated or goes out of scope.
+
+Here is an example of a situation where a reference could potentially outlive its referent:
+
+```rust
+fn main() {
+    let s = String::from("hello");
+    let r = &s; // Borrow s with a reference
+    let t = r; // t is also a reference to s
+    drop(s); // s goes out of scope and is deallocated
+    println!("{}", t); // Error: t is a dangling reference
+}
+```
+
+In this example, we create a `String` called `s` and borrow it with a reference `r`. We then create another reference `t` to `r`. However, when we call `drop` on `s`, it goes out of scope and is deallocated. This means that `t` becomes a dangling reference, because it is still pointing to data that no longer exists. If we tried to use `t` after `s` has been deallocated, it would cause undefined behavior.
