@@ -326,3 +326,49 @@ There are several types of loops that can be used to repeat a block of code mult
   ```
 
 It's important to note that the `break` and `continue` statements can be used to control the execution of loops. The `break` statement is used to exit a loop, and the `continue` statement is used to skip to the next iteration of a loop.
+
+### Real-world applications and use cases
+
+1. Iterating over a Collection
+
+   ```rs
+   let numbers = [1, 2, 3, 4, 5];
+   for number in numbers.iter() {
+       println!("The value of the number is: {}", number);
+   }
+   ```
+
+1. Processing User Input
+
+   ```rs
+   use std::io;
+
+   let mut input = String::new();
+
+   loop {
+       println!("Enter a number:");
+
+       input.clear();
+       io::stdin().read_line(&mut input).unwrap();
+
+       match input.trim().parse::<i32>() {
+           Ok(num) => {
+               println!("You entered the number: {}", num);
+               break;
+           }
+           Err(_) => {
+               println!("Invalid input, please try again.");
+               continue;
+           }
+       }
+   }
+   ```
+
+   ```rs
+    let mut password = String::new();
+    while password != "secret" {
+        println!("Enter the password:");
+        std::io::stdin().read_line(&mut password).unwrap();
+        password = password.trim().to_string();
+    }
+   ```
