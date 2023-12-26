@@ -1,35 +1,12 @@
-trait Shape {
-    fn area(&self) -> f64;
-}
-
-struct Circle {
-    radius: f64,
-}
-
-impl Shape for Circle {
-    fn area(&self) -> f64 {
-        std::f64::consts::PI * self.radius * self.radius
-    }
-}
-
-struct Square {
-    side_length: f64,
-}
-
-impl Shape for Square {
-    fn area(&self) -> f64 {
-        self.side_length * self.side_length
-    }
-}
-
-fn print_area(shape: &dyn Shape) {
-    println!("Area: {}", shape.area());
-}
-
 fn main() {
-    let circle = Circle { radius: 5.0 };
-    let square = Square { side_length: 4.0 };
+    let data: &[i32] = &[1, 2, 3, 4, 5]; // Slice of integers
 
-    print_area(&circle as &dyn Shape); // Using Circle as a Shape trait object
-    print_area(&square as &dyn Shape); // Using Square as a Shape trait object
+    let fat_pointer: *const [i32] = data as *const [i32]; // Creating a fat pointer
+
+    // Not possible: let metadata = fat_pointer.len(); // Fat pointers don't have direct access to metadata
+
+    // Using associated methods to access metadata
+    let len = data.len(); // Accessing the length of the slice
+
+    println!("Length: {}", len);
 }

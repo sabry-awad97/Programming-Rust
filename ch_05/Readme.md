@@ -462,3 +462,41 @@ impl Printable for Message {
 ```
 
 In this example, the `Printable` trait defines a `print()` method. The `Message` struct implements the `Printable` trait by providing an implementation for the `print()` method. This implementation fulfills the contract specified by the `Printable` trait, allowing instances of `Message` to be treated as `Printable` and use the `print()` method.
+
+### Fat Pointers
+
+A "fat pointer" refers to a special kind of pointer that includes both a data pointer and extra metadata about the data it points to.
+
+Components of a Fat Pointer
+
+- **Data Pointer:**
+
+  - Points to the actual data in memory.
+  - Represents the memory address where the data is stored.
+- **Extra Metadata:**
+
+  - Additional information such as the length or size of the pointed data.
+  - Used for dynamically-sized types (DSTs) like slices (`[T]`) or trait objects (`dyn Trait`), which don't have a fixed size at compile time.
+
+Usage of Fat Pointers:
+
+- **Dynamically Sized Types (DSTs):**
+  - Fat pointers are commonly used with types whose size isn't known at compile time, like slices or trait objects.
+  - They carry information about the length or traits associated with the type.
+
+```rs
+fn main() {
+    let data: &[i32] = &[1, 2, 3, 4, 5]; // Slice of integers
+
+    let fat_pointer: *const [i32] = data as *const [i32]; // Creating a fat pointer
+
+    // Not possible: let metadata = fat_pointer.len(); // Fat pointers don't have direct access to metadata
+
+    // Using associated methods to access metadata
+    let len = data.len(); // Accessing the length of the slice
+
+    println!("Length: {}", len);
+}
+```
+
+In this example, `data` is a slice of integers (`&[i32]`). When creating `fat_pointer`, it holds both the memory address of the slice's data and additional metadata about the length of the slice. However, direct access to the metadata from the fat pointer itself isn't possible in Rust; operations involving the metadata usually require the original type or access through the Rust standard library methods.
