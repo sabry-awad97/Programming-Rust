@@ -153,3 +153,25 @@ fn main() {
 ```
 
 In this example, we create a `String` called `s` and borrow it with a reference `r`. We then create another reference `t` to `r`. However, when we call `drop` on `s`, it goes out of scope and is deallocated. This means that `t` becomes a dangling reference, because it is still pointing to data that no longer exists. If we tried to use `t` after `s` has been deallocated, it would cause undefined behavior.
+
+The distinction between shared and mutable references is a way to enforce a multiple readers or single writer rule at compile time.
+
+A multiple readers or single writer rule is a way to control concurrent access to a shared resource. It specifies that either multiple readers can access the resource concurrently, or a single writer can access the resource exclusively.
+
+It is important to carefully consider whether to pass a value by value or by reference, depending on whether you want the function to take ownership of the value or just access it.
+
+Rust references cannot be null, which means that they always refer to a valid value.
+
+In Rust, the `.` operator can also implicitly borrow a reference to its left operand if needed for a method call. For example, you can call the `sort` method on a vector like this:
+
+```rust
+let mut v = vec![1973, 1968];
+v.sort(); // implicitly borrows a mutable reference to v
+```
+
+This is equivalent to calling `sort` with a more explicit, verbose syntax:
+
+```rust
+let mut v = vec![1973, 1968];
+(&mut v).sort(); // equivalent, but more verbose
+```
