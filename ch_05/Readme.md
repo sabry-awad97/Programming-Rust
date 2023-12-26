@@ -522,3 +522,54 @@ fn main() {
 ```
 
 This code works just fine: the variable `x` is in scope for the entire body of the outer block, and `r` is a reference to `x`, so everything is in order.
+
+When you create a reference to a local variable, Rust checks that the reference will be valid for the entire duration that the reference will be used.
+This is called the reference's lifetime.
+
+- If the lifetime of the reference is shorter than the lifetime of the variable, Rust reports an error.
+
+For example, consider the following code:
+
+```rust
+fn main() {
+    let x = 10;
+    let r = &x; // r has lifetime 'a
+    drop(x); // x has lifetime 'b
+    //
+}
+```
+
+In this code, the variable `x` has a lifetime of `'b` and the reference `r` has a lifetime of `'a`. Since the lifetime of `r` is longer than the lifetime of `x`, Rust will report an error because it is not safe to use `r` after `x` has been dropped.
+
+To fix this error, we need to ensure that the lifetime of `r` is shorter than the lifetime of `x`. We can do this by creating the reference before we declare `x`:
+
+```rust
+fn main() {
+    let r; // r has lifetime 'a
+    {
+        let x = 10;
+        r = &x; // r's lifetime is now tied to x's lifetime
+    } // x goes out of scope, so r is no longer valid
+}
+```
+
+In this code, the lifetime of `r` is now tied to the lifetime of `x`, so it is safe to use `r` within the curly braces where `x` is defined. Once `x` goes out of scope at the end of the curly braces, `r` is no longer valid.
+
+You can't borrow a reference to a local variable and take it out of the variable’s scope:
+
+```rust
+fn main() {
+    let r;
+    {
+        let x = 1;
+        r = &x;
+    }
+    assert_eq!(*r, 1); // bad: reads memory `x` used to occupy
+}
+```
+
+This code tries to create a reference to the local variable `x` and then store it in the variable `r`.
+
+But when `x` goes out of scope, Rust invalidates all references to it, so the final line of the code tries to access memory that has already been deallocated.
+
+This protection is a key feature of Rust. It prevents you from creating a reference to something that’s not supposed to be accessed anymore.

@@ -1,8 +1,8 @@
 fn main() {
-    let x = 10;
+    let r;
     {
-        let r = &x;
-        assert_eq!(*r, 10);
+        let x = 1;
+        r = &x;
     }
-    assert_eq!(x, 10);
+    assert_eq!(*r, 1); // bad: reads memory `x` used to occupy
 }
