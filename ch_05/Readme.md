@@ -633,3 +633,19 @@ fn main() {
 In this code, the reference `r1` has the same lifetime as the variable `x`, and the reference `r2` has the same lifetime as the variable `y`. However, the lifetime of `y` is only within the inner block of code, and so the reference `r2` is only valid within that block.
 
 If we try to use the reference `r2` outside of that block, the Rust compiler will give us an error because the value `y` has already gone out of scope and the reference `r2` is no longer valid.
+
+## Receiving References as Function Arguments
+
+Here are some of the key points:
+
+1. In Rust, when you pass a reference to a function as an argument, the function signature must specify the lifetime of the reference.
+
+   ```rust
+   fn foo(x: &i32) {
+       // x is a reference to an i32 with an unknown lifetime
+   }
+
+   fn bar<'a>(x: &'a i32) {
+       // x is a reference to an i32 with the lifetime 'a
+   }
+   ```
