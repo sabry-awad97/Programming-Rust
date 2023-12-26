@@ -202,3 +202,26 @@ if (true) { r = y; } // stores y in x, r still points to x
 ```
 
 In this C++ code, the reference `r` is initialized to point to `x`. If `b` is true, the value of `y` is stored in `x`, but `r` still points to `x`. There is no way to make `r` point to `y`.
+
+## References to References
+
+It is possible to create references to references in Rust, which are known as "double references" or "reference of reference" types. These types can be useful in certain scenarios, such as when working with raw pointers or when writing generic code that needs to accept a variety of different reference types.
+
+Here is an example of creating a double reference in Rust:
+
+```rust
+let x = 10;
+let r1 = &x; // r1 is a shared reference to x
+let r2 = &r1; // r2 is a shared reference to r1, which is a reference to x
+```
+
+You can dereference a double reference with the `**` operator:
+
+```rust
+let x = 10;
+let r1 = &x;
+let r2 = &r1;
+let y = **r2; // y is now 10
+```
+
+It is important to note that creating double references can be dangerous, because it can be easy to lose track of how many levels of indirection are involved. This can lead to bugs, especially when working with raw pointers, where the type system does not provide any safety guarantees.
