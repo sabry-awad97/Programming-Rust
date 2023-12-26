@@ -881,3 +881,65 @@ struct S<'a, 'b> {
 ```
 
 The struct `S` has two lifetime parameters `'a` and `'b` which are used to indicate that the references stored in `x` and `y` fields have different lifetimes.
+
+## Lifetime elision
+
+Lifetime elision is a feature in Rust that allows the compiler to infer the lifetime of references in some cases, without the need to explicitly declare the lifetime parameters.
+
+The Rust compiler uses a set of rules, called the elision rules, to infer the lifetime of references in structs, functions, and other types. The elision rules apply when the references have the same lifetime and can be inferred from the context.
+
+### For Function Definitions and Types
+
+- **Input and Output Positions:**
+
+  - Input positions refer to formal argument types (`&T`) and correspond to the types of function parameters.
+  - Output positions pertain to the result types (return types) of the function.
+
+- **Elision Rules:**
+
+  - When elided lifetimes appear in the input positions (arguments), each elided lifetime becomes a distinct lifetime parameter.
+  - If there's only one input lifetime (elided or not), that lifetime is assigned to all elided output lifetimes.
+  - If multiple input lifetime positions exist, and one of them is `&self` or `&mut self` (for methods), the lifetime of `self` is assigned to all elided output lifetimes.
+  - Eliding output lifetimes without a single input lifetime (under specific conditions) results in a compilation error.
+
+### For Impl Headers
+
+- **Input Positions Only:**
+  - In impl headers, all types are considered input positions.
+  - Eliding lifetimes in impl headers creates lifetime parameters for those positions.
+
+### Examples
+
+- **Function Definitions:**
+
+  - `fn foo(s: &str) -> (&str, &str)` has elided one lifetime in the input position and two lifetimes in the output position.
+
+- **Impl Headers:**
+
+  - `impl Trait<&T> for Struct<&T>` has elided two lifetimes in input positions.
+  - `impl Struct<&T>` has elided one lifetime in an input position.
+
+```rust
+struct StringTable {
+    elements: Vec<String>,
+}
+
+impl StringTable {
+    fn find_by_prefix(&self, prefix: &str) -> Option<&String> {
+        for i in 0 .. self.elements.len() {
+            if self.elements[i].starts_with(prefix) {
+                return Some(&self.elements[i]);
+            }
+        }
+        None
+    }
+}
+```
+
+The `StringTable` struct has a field called `elements` which is a vector of `String`s. The `find_by_prefix` method takes a reference to a string as an argument, and it iterates over the vector of `String`s in the `elements` field. It checks if each `String` in the vector starts with the prefix passed as a parameter. If it does, it returns a reference to that `String` wrapped in a `Some` variant. If the prefix is not found in any of the `String`s in the vector, it returns `None`.
+
+It's worth noting that, the lifetime of the returned reference is the same as the lifetime of the `self` reference. This is because the returned reference is pointing to an element of the `elements` vector, which is owned by the `StringTable` struct.
+
+This method does not use lifetime elision since the return value is a reference, and the lifetime of the reference is explicitly specified by the lifetime of the self parameter.
+
+Also, as the method is not modifying the struct it is marked with `&` making it a immutable borrow. If the method needed to modify the struct it would be marked with `&mut` making it a mutable borrow.
