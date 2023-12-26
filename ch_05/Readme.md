@@ -350,3 +350,22 @@ fn main() {
 The `+` operator is able to see through one level of references, so the addition is performed on the values pointed to by `r` and `&1009`. If this assertion is true, the code will continue to execute. If it is false, the program will panic.
 
 Borrowing a reference to an expression can be useful when you want to pass the result of the expression to a function or method that expects a reference, without creating a new variable to store the result. However, it is important to keep in mind that the reference will only be valid for the lifetime of the expression, and you cannot use the reference after the expression goes out of scope.
+
+## References to Slices and Trait Objects
+
+Slices are a view into a contiguous sequence of elements in memory, and they are represented by the type `&[T]`. For example, a slice of integers is written as `&[i32]` and a slice of strings is written as `&[String]`. Slices allow you to borrow a portion of an array or vector, rather than the entire thing.
+
+```rust
+fn print_slice(slice: &[i32]) {
+    for item in slice {
+        println!("{}", item);
+    }
+}
+
+fn main() {
+    let arr = [1, 2, 3, 4, 5];
+    let slice = &arr[1..3]; // creates a slice of the array from index 1 to 3 (excluding)
+
+    print_slice(slice); // prints "2 3"
+}
+```

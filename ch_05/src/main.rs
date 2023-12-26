@@ -1,9 +1,12 @@
-fn factorial(n: usize) -> usize {
-    (1..n + 1).product()
+fn print_slice(slice: &[i32]) {
+    for item in slice {
+        println!("{}", item);
+    }
 }
 
 fn main() {
-    let r = &factorial(6);
-    // Arithmetic operators can see through one level of references.
-    assert_eq!(r + 1009, 1729);
+    let arr = [1, 2, 3, 4, 5];
+    let slice = &arr[1..3]; // creates a slice of the array from index 1 to 3 (excluding)
+
+    print_slice(slice); // prints "2 3"
 }
