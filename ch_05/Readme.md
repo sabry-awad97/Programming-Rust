@@ -573,3 +573,63 @@ This code tries to create a reference to the local variable `x` and then store i
 But when `x` goes out of scope, Rust invalidates all references to it, so the final line of the code tries to access memory that has already been deallocated.
 
 This protection is a key feature of Rust. It prevents you from creating a reference to something that’s not supposed to be accessed anymore.
+
+### Lifetimes
+
+Lifetimes are a way to specify the lifetime of a reference in Rust. A lifetime is a period of time during which a reference is valid. Every reference has a lifetime, which is the scope within which the reference is guaranteed to be valid.
+
+For example, consider the following code:
+
+```rust
+fn main() {
+    let x = 10;
+    let r = &x;
+
+    println!("The value of x is {}", x);
+    println!("The value of r is {}", r);
+}
+```
+
+In this code, the reference `r` has the same lifetime as the variable `x`. This means that the reference `r` is valid for as long as the variable `x` is in scope. In this case, `r` is a valid reference until the end of the `main` function, at which point the variable `x` goes out of scope and the reference `r` becomes invalid.
+
+Lifetimes are particularly important when working with references to references, as the lifetime of the inner reference must be a subset of the lifetime of the outer reference.
+
+For example, consider the following code:
+
+```rust
+fn main() {
+    let x = 10;
+    let r1 = &x;
+    let r2 = &r1;
+
+    println!("The value of r1 is {}", r1);
+    println!("The value of r2 is {}", r2);
+}
+```
+
+In this code, the reference `r1` has the same lifetime as the variable `x`, and the reference `r2` has the same lifetime as the reference `r1`. This means that the reference `r2` is valid for as long as the reference `r1` is valid, which in turn is valid for as long as the variable `x` is in scope.
+
+It is important to note that the lifetime of a reference cannot be longer than the lifetime of the value it refers to. This ensures that references are always valid and cannot refer to values that have already gone out of scope.
+
+Lifetimes are often inferred by the Rust compiler, but in some cases you may need to annotate your code with explicit lifetime annotations to provide additional information to the compiler.
+
+For example, consider the following code:
+
+```rust
+fn main() {
+    let x = 10;
+    let r1 = &x;
+
+    {
+        let y = 20;
+        let r2 = &y;
+
+        println!("The value of r1 is {}", r1);
+        println!("The value of r2 is {}", r2);
+    }
+}
+```
+
+In this code, the reference `r1` has the same lifetime as the variable `x`, and the reference `r2` has the same lifetime as the variable `y`. However, the lifetime of `y` is only within the inner block of code, and so the reference `r2` is only valid within that block.
+
+If we try to use the reference `r2` outside of that block, the Rust compiler will give us an error because the value `y` has already gone out of scope and the reference `r2` is no longer valid.
