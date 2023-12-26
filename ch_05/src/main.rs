@@ -1,15 +1,17 @@
-fn smallest<'a>(v: &'a [i32]) -> &'a i32 {
-    let mut s = &v[0];
-    for r in &v[1..] {
-        if *r < *s {
-            s = r;
-        }
-    }
-    s
+struct S<'a, 'b> {
+    x: &'a i32,
+    y: &'b i32
 }
 
 fn main() {
-    let parabola = [9, 4, 1, 0, 1, 4, 9];
-    let s = smallest(&parabola);
-    assert_eq!(*s, 0); // fine: parabola still alive
+    let x = 10;
+    let r;
+    {
+        let y = 20;
+        {
+            let s = S { x: &x, y: &y };
+            r = s.x;
+        }
+    }
+    println!("{}", r);
 }
