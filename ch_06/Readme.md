@@ -372,3 +372,24 @@ It's important to note that the `break` and `continue` statements can be used to
         password = password.trim().to_string();
     }
    ```
+
+## Return expressions
+
+Return expressions allow you to return values from a function.
+
+```rs
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+```
+
+Return expressions can also be used to return early from a function if certain conditions are met.
+
+```rs
+fn largest(a: i32, b: i32) -> i32 {
+    if a > b {
+        return a;
+    }
+    b
+}
+```
