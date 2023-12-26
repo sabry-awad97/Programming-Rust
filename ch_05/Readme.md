@@ -509,3 +509,16 @@ Reference safety refers to the assurance and enforcement of certain rules and pr
 ### Borrowing a Local Variable
 
 Borrowing a local variable involves creating a reference to an existing variable within a certain scope. This reference allows temporary access to the variable's data without transferring ownership.
+
+```rust
+fn main() {
+    let x = 10;
+    {
+        let r = &x;
+        assert_eq!(*r, 10);
+    }
+    assert_eq!(x, 10);
+}
+```
+
+This code works just fine: the variable `x` is in scope for the entire body of the outer block, and `r` is a reference to `x`, so everything is in order.
