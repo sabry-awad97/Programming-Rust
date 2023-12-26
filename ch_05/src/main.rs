@@ -1,8 +1,10 @@
-fn main() {
-    let mut s = String::from("hello");
-    change(&mut s);
+fn dangle() -> &i32 {
+    let data = 42;
+    &data // Returning a reference to 'data'
+          // 'data' goes out of scope here
 }
 
-fn change(some_string: &mut String) {
-    some_string.push_str(", world!");
+fn main() {
+    let reference_to_nothing = dangle(); // Uncommenting this line would cause a compile-time error
+    // Attempting to create a reference to 'data' that no longer exists
 }
