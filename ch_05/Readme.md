@@ -19,3 +19,20 @@ fn calculate_length(s: &String) -> usize {
 ```
 
 In this example, the `calculate_length` function takes a reference to a `String` as its argument. This reference is denoted with the `&` symbol. The function does not take ownership of the `String`, so it is still available to be used after the function call.
+
+In this example, the `calculate_length` function takes a reference to a `String` as its argument. This reference is denoted with the `&` symbol. The function does not take ownership of the `String`, so it is still available to be used after the function call.
+
+It is also possible to use references to mutate the data they refer to. This is done by using a mutable reference, which is denoted with the `&mut` symbol. Here is an example of using a mutable reference:
+
+```rust
+fn main() {
+    let mut s = String::from("hello");
+    change(&mut s);
+}
+
+fn change(s: &mut String) {
+    s.push_str(", world!");
+}
+```
+
+In this example, the `change` function takes a mutable reference to a `String` as its argument. This mutable reference is denoted with the `&mut` symbol. The function is able to modify the value of the `String` through the reference.
