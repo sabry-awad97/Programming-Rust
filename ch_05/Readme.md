@@ -225,3 +225,18 @@ let y = **r2; // y is now 10
 ```
 
 It is important to note that creating double references can be dangerous, because it can be easy to lose track of how many levels of indirection are involved. This can lead to bugs, especially when working with raw pointers, where the type system does not provide any safety guarantees.
+
+## Comparing References
+
+In Rust, you can compare references with the `==` and `!=` operators, just like you would with other types. For example:
+
+```rust
+let x = 10;
+let y = 20;
+let r1 = &x;
+let r2 = &y;
+
+assert!(r1 != r2); // r1 and r2 point to different values
+```
+
+When you compare references, Rust compares the values that the references point to, rather than the references themselves. This means that two references are equal if and only if they point to the same value.

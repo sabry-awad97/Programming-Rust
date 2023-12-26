@@ -1,6 +1,8 @@
 fn main() {
-    let mut x = 10;
-    let r1 = &mut x;
-    let r2 = r1;
-    *r2 = 20; // x is now 20
+    let x = 10;
+    let y = 10;
+    let r1 = &x;
+    let r2 = &y;
+    println!("{:p} {:p}", r1, r2); // different memory addresses
+    assert!(r1 == r2); // r1 and r2 point to the same value
 }
