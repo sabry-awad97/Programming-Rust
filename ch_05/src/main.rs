@@ -1,14 +1,13 @@
-use std::ptr;
-
-fn compare_memory_addresses(x: &i32, y: &i32) -> bool {
-    ptr::eq(x, y)
+fn find_first_even(numbers: &[i32]) -> Option<&i32> {
+    numbers.iter().find(|&number| number % 2 == 0)
 }
 
 fn main() {
-    let x = 10;
-    let y = 20;
+    let numbers = [1, 3, 5, 7, 9];
+    let result = find_first_even(&numbers);
 
-    assert!(!compare_memory_addresses(&x, &y)); // x and y are stored at different memory addresses
-    let r = &x;
-    assert!(compare_memory_addresses(r, &x)); // r and &x point to the same memory address
+    match result {
+        Some(n) => println!("The first even number is {}", n),
+        None => println!("There are no even numbers in the list"),
+    }
 }
