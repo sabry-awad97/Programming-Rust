@@ -1,8 +1,13 @@
-fn main() {
-    fn count(x: &str) -> usize {
-        x.len()
-    }
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let file_name = "nonexistent.txt";
+    let file = std::fs::File::open(file_name)?;
 
-    assert_eq!(Ok(2).unwrap_or_else(count), 2);
-    assert_eq!(Err("foo").unwrap_or_else(count), 3);
+    Ok(())
+}
+
+fn handle_error(err: Box<dyn std::error::Error>) {
+    println!("Error: {}", err);
+    eprintln!("Error: {}", err);
+    let error_message = format!("Error: {}", err);
+    // do something with the error message
 }

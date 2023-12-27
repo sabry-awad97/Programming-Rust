@@ -365,3 +365,23 @@ type CustomResult<T, E> = std::result::Result<T, CustomError<E>>;
 ```
 
 This defines a new type alias `CustomResult<T, E>` that is equivalent to `std::result::Result<T, CustomError<E>>`.
+
+### Printing Errors
+
+There are several ways to print errors in Rust, including using the `println!` macro, the `eprintln!` macro, or the `format!` macro.
+
+```rs
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let file_name = "nonexistent.txt";
+    let file = std::fs::File::open(file_name)?;
+
+    Ok(())
+}
+
+fn handle_error(err: Box<dyn std::error::Error>) {
+    println!("Error: {}", err);
+    eprintln!("Error: {}", err);
+    let error_message = format!("Error: {}", err);
+    // do something with the error message
+}
+```
