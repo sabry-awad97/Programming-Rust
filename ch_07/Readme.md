@@ -169,3 +169,28 @@ match result {
     }
 }
 ```
+
+### Methods provided by Rust's `Result` type
+
+1. `map`: Applies a function to the `Ok` value of the `Result`, returning a new `Result` with the transformed value. If the `Result` is `Err`, the function is not called and the `Err` is returned unchanged.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let mapped = result.map(|val| val * 2);
+   ```
+
+1. `map_err`: Applies a function to the `Err` value of the `Result`, returning a new `Result` with the transformed error. If the `Result` is `Ok`, the function is not called and the `Ok` value is returned unchanged.
+
+   ```rs
+   let result: Result<&str, i32> = Err(42);
+   let mapped_err = result.map_err(|err| err * 2);
+
+   fn open_file(path: &str) -> Result<File, std::io::Error> {
+       File::open(path).map_err(|err| {
+           println!("Failed to open file {}: {}", path, err);
+           err
+       })
+   }
+
+   let file = open_file("nonexistent.txt");
+   ```

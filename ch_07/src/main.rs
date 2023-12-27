@@ -1,25 +1,15 @@
-#[derive(Default)]
-struct MyType {
-    // fields and implementations
-}
-
-impl MyType {
-    fn new() -> Self {
-        Self {}
-    }
-}
-
-impl Drop for MyType {
-    fn drop(&mut self) {
-        // Code that could potentially panic when dropping MyType
-    }
-}
+use std::fs::File;
 
 fn main() {
-    let mut my_value = MyType::new(); // Assume there's a function to create MyType instances
+    let result: Result<&str, i32> = Err(42);
+    let mapped_err = result.map_err(|err| err * 2);
 
-    // Use std::mem::take() to replace my_value with a default value
-    let _ = std::mem::take(&mut my_value);
-    // Now my_value is reset to a default state, and dropping it won't cause a panic
-    // Further operations with my_value might require re-initialization
+    let open_file = |path| {
+        File::open(path).map_err(|err| {
+            println!("Failed to open file {}: {}", path, err);
+            err
+        })
+    };
+
+    let file = open_file("nonexistent.txt");
 }
