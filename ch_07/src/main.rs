@@ -1,22 +1,19 @@
-use std::error::Error;
+use std::fmt::{Display, Formatter, Result as FmtResult};
 
-use backtrace::Backtrace;
-fn recursive_function(n: i32) -> Result<(), Box<dyn Error>> {
-    if n == 0 {
-        Err("error message".into())
-    } else {
-        recursive_function(n - 1)
+#[derive(Debug)]
+struct CustomError {
+    message: String,
+}
+
+impl Display for CustomError {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        write!(f, "Custom Error: {}", self.message)
     }
 }
 
-fn main() {
-    let bt = Backtrace::new();
-    let result = recursive_function(10);
-    match result {
-        Ok(_) => println!("Success!"),
-        Err(e) => {
-            println!("Error: {}", e);
-            println!("Backtrace: {:?}", bt);
-        }
-    }
+fn main() -> Result<(), CustomError> {
+    let err = CustomError {
+        message: "Something went wrong".to_string(),
+    };
+    Err(err)
 }
