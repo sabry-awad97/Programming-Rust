@@ -761,3 +761,19 @@ fn main() {
     // Rest of the program
 }
 ```
+
+### Why Results?
+
+Rust’s use of Results over exceptions provides several benefits that make it well-suited for systems programming.
+
+- Firstly, it requires the programmer to make explicit decisions and handle errors at every point where they could occur. This prevents errors from being neglected or mishandled.
+
+- Secondly, the most common decision to propagate errors is made simple with the ? operator, which helps to keep error plumbing code concise and visible.
+
+- Thirdly, the return type of a function in Rust indicates whether it is fallible or not. This makes it clear which functions can fail and which can’t, and the compiler will enforce updating the function’s downstream users when it changes.
+
+- Fourthly, Rust checks that Result values are used, preventing accidental silent error handling.
+
+- Lastly, since Results are just data types like any other in Rust, it is easy to store both successful and error results in the same collection, making it simple to model partial success. This is useful when working with large data sets where some data can be successfully loaded while some may fail.
+
+While Rust’s approach to error handling may require more thinking and engineering effort, it is a worthwhile investment for systems programming due to its reliability and safety benefits.
