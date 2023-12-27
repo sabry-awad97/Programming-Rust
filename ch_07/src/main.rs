@@ -1,36 +1,40 @@
 use std::error::Error;
-use std::fmt::{Display, Formatter, Result as FmtResult};
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
+use std::num::ParseIntError;
 
-#[derive(Debug)]
-struct CustomError {
-    message: String,
-}
+type GenericError = Box<dyn Error + Send + Sync + 'static>;
+type GenericResult<T> = Result<T, GenericError>;
 
-impl Display for CustomError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        write!(f, "Custom error: {}", self.message)
+fn read_and_sum(filename: &str) -> GenericResult<i32> {
+    let file = File::open(filename)?;
+    let reader = BufReader::new(file);
+
+    let mut sum = 0;
+    for line_result in reader.lines() {
+        let line = line_result?;
+        let num = line.trim().parse::<i32>()?;
+        sum += num;
     }
+
+    Ok(sum)
 }
 
-impl Error for CustomError {}
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let result = read_and_sum("numbers.txt");
 
-fn do_something() -> Result<(), Box<dyn Error>> {
-    let result = do_something_else()?;
-    Ok(result)
-}
-
-fn do_something_else() -> Result<(), Box<dyn Error>> {
-    Err(Box::new(CustomError {
-        message: "oops".to_string(),
-    }))
-}
-
-fn main() {
-    let result = do_something();
-    if let Err(err) = result {
-        println!("Error: {}", err);
-        if let Some(custom_error) = err.downcast_ref::<CustomError>() {
-            println!("Custom error message: {}", custom_error.message);
+    match result {
+        Ok(sum) => println!("Sum of numbers in file: {}", sum),
+        Err(e) => {
+            if let Some(parse_err) = e.downcast_ref::<ParseIntError>() {
+                println!("Error: failed to parse integer: {}", parse_err);
+            } else if let Some(io_err) = e.downcast_ref::<io::Error>() {
+                println!("Error: I/O error occurred: {}", io_err);
+            } else {
+                println!("Unknown error occurred: {}", e);
+            }
         }
     }
+
+    Ok(())
 }

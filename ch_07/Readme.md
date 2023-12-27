@@ -534,3 +534,85 @@ fn print_file_contents(file_name: &str) {
 ```
 
 The `?` operator is used to propagate errors from the `File::open` and `file.read_to_string` functions.
+
+### Working with Multiple Error Types
+
+Working with multiple error types in Rust can be challenging because Rust's type system requires that the error types be known at compile-time. However, Rust provides several ways to handle multiple error types.
+
+One approach is to use a common error type that all the functions in your program return. This can be accomplished using Rust's `enum` type.
+
+```rs
+enum AppError {
+    FileOpenError(std::io::Error),
+    ParseError(ParseIntError),
+}
+
+fn open_file(filename: &str) -> Result<File, AppError> {
+    File::open(filename).map_err(|e| AppError::FileOpenError(e))
+}
+
+fn parse_file(filename: &str) -> Result<i32, AppError> {
+    let contents = fs::read_to_string(filename)?;
+    let num = contents.trim().parse::<i32>()?;
+    Ok(num)
+}
+
+fn main() {
+    match do_stuff() {
+        Ok(result) => println!("Result: {}", result),
+        Err(e) => match e {
+            AppError::FileOpenError(e) => println!("Error opening file: {}", e),
+            AppError::ParseError(e) => println!("Error parsing file: {}", e),
+        },
+    }
+}
+```
+
+Another approach to handling multiple error types is to use Rust's `Box<dyn std::error::Error>` type, which represents any type that implements the `std::error::Error` trait. This allows us to return errors of different types as long as they implement the Error trait.
+
+```rs
+use std::error::Error;
+use std::fs::File;
+use std::io::{BufRead, BufReader, self};
+use std::num::ParseIntError;
+
+type GenericError = Box<dyn Error + Send + Sync + 'static>;
+type GenericResult<T> = Result<T, GenericError>;
+
+fn read_and_sum(filename: &str) -> GenericResult<i32> {
+    let file = File::open(filename)?;
+    let reader = BufReader::new(file);
+
+    let mut sum = 0;
+    for line_result in reader.lines() {
+        let line = line_result?;
+        let num = line.trim().parse::<i32>()?;
+        sum += num;
+    }
+
+    Ok(sum)
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let result = read_and_sum("numbers.txt");
+
+    match result {
+        Ok(sum) => println!("Sum of numbers in file: {}", sum),
+        Err(e) => {
+            if let Some(parse_err) = e.downcast_ref::<ParseIntError>() {
+                println!("Error: failed to parse integer: {}", parse_err);
+            } else if let Some(io_err) = e.downcast_ref::<io::Error>() {
+                println!("Error: I/O error occurred: {}", io_err);
+            } else {
+                println!("Unknown error occurred: {}", e);
+            }
+        }
+    }
+
+    Ok(())
+}
+```
+
+In this example, we define a GenericError type alias that represents any kind of error that implements the `std::error::Error` trait and can be sent between threads and shared between them in a synchronized way. We also define a `GenericResult` type alias that is parameterized with a type `T` and represents a result that can contain a value of type `T` or an error of type `GenericError`.
+
+Note that in this implementation, we use the `?` operator to propagate errors up the call stack. This allows us to avoid nesting multiple `match` or `if let` blocks, and makes the code more concise and easier to read.
