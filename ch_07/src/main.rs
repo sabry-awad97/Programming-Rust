@@ -1,40 +1,47 @@
 use std::error::Error;
-use std::fs::File;
-use std::io::{self, BufRead, BufReader};
-use std::num::ParseIntError;
+use std::fmt;
 
-type GenericError = Box<dyn Error + Send + Sync + 'static>;
-type GenericResult<T> = Result<T, GenericError>;
-
-fn read_and_sum(filename: &str) -> GenericResult<i32> {
-    let file = File::open(filename)?;
-    let reader = BufReader::new(file);
-
-    let mut sum = 0;
-    for line_result in reader.lines() {
-        let line = line_result?;
-        let num = line.trim().parse::<i32>()?;
-        sum += num;
-    }
-
-    Ok(sum)
+#[derive(Debug, Clone)]
+pub struct JsonError {
+    pub message: String,
+    pub line: usize,
+    pub column: usize,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let result = read_and_sum("numbers.txt");
+impl fmt::Display for JsonError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "Error at line {} column {}: {}",
+            self.line, self.column, self.message
+        )
+    }
+}
 
-    match result {
-        Ok(sum) => println!("Sum of numbers in file: {}", sum),
-        Err(e) => {
-            if let Some(parse_err) = e.downcast_ref::<ParseIntError>() {
-                println!("Error: failed to parse integer: {}", parse_err);
-            } else if let Some(io_err) = e.downcast_ref::<io::Error>() {
-                println!("Error: I/O error occurred: {}", io_err);
-            } else {
-                println!("Unknown error occurred: {}", e);
-            }
+impl Error for JsonError {}
+
+impl JsonError {
+    fn new(message: String, line: usize, column: usize) -> Self {
+        Self {
+            message,
+            line,
+            column,
         }
     }
+}
 
-    Ok(())
+fn main() {
+    let input = r#"{"name": "Alice", "age": "30"}"#;
+    let parsed_result = serde_json::from_str::<serde_json::Value>(input);
+
+    if let Err(err) = parsed_result {
+        let line = err.line();
+        let column = err.column();
+        let message = err.to_string();
+        let json_err = JsonError::new(message, line, column);
+
+        eprintln!("Error: {}", json_err);
+        std::process::exit(1);
+    }
+    // Rest of the program
 }
