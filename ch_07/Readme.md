@@ -91,3 +91,52 @@ fn main() {
     println!("the program continues to run after the catch_unwind closure");
 }
 ```
+
+### Aborting
+
+Unwinding the stack can be expensive in terms of performance, especially if the program has to unwind a large number of objects. For this reason, Rust provides an alternative method for handling panics: aborting the program. Aborting the program simply terminates the process immediately without unwinding the stack. While this can be a faster method for handling panics, it also means that any resources that were allocated during the program's execution will not be properly cleaned up.
+
+You can choose to abort the program instead of unwinding the stack by setting the panic runtime configuration option to abort. This can be done in your Cargo.toml file, like this:
+
+```toml
+[profile.release]
+panic = "abort"
+```
+
+There are three circumstances in which Rust does not try to unwind the stack when a panic occurs:
+
+- When the panic is caused by a call to the `std::process::abort` function. The `std::process::abort` function immediately terminates the process without any attempt to unwind the stack.
+
+- When the program is built with the "panic=abort" configuration option. This configuration option causes the program to immediately terminate the process without any attempt to unwind the stack when a panic occurs.
+
+- If a `drop()` method itself panics, it can trigger a second panic while Rust is still trying to unwind the stack and clean up resources. This is known as a "double panic" and is considered fatal. When a double panic occurs, Rust will immediately stop unwinding and abort the whole process, which can lead to some resources not being properly cleaned up.
+
+To avoid double panics, it's important to ensure that `drop()` methods are implemented in a way that does not panic. One common approach is to use the `std::mem::take()` function to replace the value being dropped with a default value before attempting to drop it. This can prevent panics caused by trying to drop a value that has already been dropped or is in an invalid state.
+
+```rs
+#[derive(Default)]
+struct MyType {
+    // fields and implementations
+}
+
+impl MyType {
+    fn new() -> Self {
+        Self {}
+    }
+}
+
+impl Drop for MyType {
+    fn drop(&mut self) {
+        // Code that could potentially panic when dropping MyType
+    }
+}
+
+fn main() {
+    let mut my_value = MyType::new(); // Assume there's a function to create MyType instances
+
+    // Use std::mem::take() to replace my_value with a default value
+    let _ = std::mem::take(&mut my_value);
+    // Now my_value is reset to a default state, and dropping it won't cause a panic
+    // Further operations with my_value might require re-initialization
+}
+```

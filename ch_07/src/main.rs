@@ -1,15 +1,25 @@
-use std::panic;
+#[derive(Default)]
+struct MyType {
+    // fields and implementations
+}
+
+impl MyType {
+    fn new() -> Self {
+        Self {}
+    }
+}
+
+impl Drop for MyType {
+    fn drop(&mut self) {
+        // Code that could potentially panic when dropping MyType
+    }
+}
 
 fn main() {
-    let result = panic::catch_unwind(|| {
-        println!("this code is running inside a catch_unwind closure");
-        panic!("oh no, something went wrong!");
-    });
+    let mut my_value = MyType::new(); // Assume there's a function to create MyType instances
 
-    match result {
-        Ok(()) => println!("the closure ran successfully"),
-        Err(_) => println!("the closure panicked"),
-    }
-
-    println!("the program continues to run after the catch_unwind closure");
+    // Use std::mem::take() to replace my_value with a default value
+    let _ = std::mem::take(&mut my_value);
+    // Now my_value is reset to a default state, and dropping it won't cause a panic
+    // Further operations with my_value might require re-initialization
 }
