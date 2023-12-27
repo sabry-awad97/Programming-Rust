@@ -194,3 +194,10 @@ match result {
 
    let file = open_file("nonexistent.txt");
    ```
+
+1. `and`: Unwraps the `Result`, returning the `Ok` value if the `Result` is `Ok`, otherwise returning the `Err` value.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let and_result = result.and(Ok(100));
+   ```
