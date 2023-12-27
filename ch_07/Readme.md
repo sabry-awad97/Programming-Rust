@@ -228,3 +228,89 @@ match result {
        let integer = read_integer(&mut file);
    }
    ```
+
+1. `or`: Unwraps the `Result`, returning the `Ok` value if the `Result` is `Ok`, otherwise returning the provided default value.
+
+   ```rs
+   let result = Err::<i32, &str>("Error message");
+   let fallback = Ok(42);
+
+   let value = result.or(fallback);
+   println!("Result: {:?}", value);
+   ```
+
+1. `or_else`: Similar to `or`, but applies a function to the `Err` value and returns the new `Result` produced by that function. If the `Result` is `Ok`, the function is not called and the `Ok` value is returned unchanged.
+
+   ```rs
+   let result: Result<i32, &str> = Err("something went wrong");
+   let or_else_result = result.or_else(|err| Ok(100));
+   ```
+
+1. `unwrap`: Unwraps the `Ok` value of the `Result`, panicking if the `Result` is `Err`.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let unwrapped = result.unwrap();
+   ```
+
+1. `unwrap_err`: Unwraps the `Err` value of the `Result`, panicking if the `Result` is `Ok`.
+
+   ```rs
+   let result: Result<&str, i32> = Err(42);
+   let unwrapped_err = result.unwrap_err();
+   ```
+
+1. `unwrap_or`: Unwraps the `Ok` value of the `Result`, returning the provided default value if the `Result` is `Err`.
+
+   ```rs
+   let default = 2;
+   let x: Result<u32, &str> = Ok(9);
+   assert_eq!(x.unwrap_or(default), 9);
+
+   let x: Result<u32, &str> = Err("error");
+   assert_eq!(x.unwrap_or(default), default);
+
+   fn parse_number(s: &str) -> Result<i32, std::num::ParseIntError> {
+       s.parse::<i32>()
+   }
+
+   let input = "42";
+   let parsed = parse_number(input).unwrap_or(0);
+   println!("Parsed value: {}", parsed);
+   ```
+
+1. `unwrap_or_else`: Similar to `unwrap_or`, but applies a function to the `Err` value and returns the new value produced by that function.
+
+   ```rs
+   fn count(x: &str) -> usize { x.len() }
+
+   assert_eq!(Ok(2).unwrap_or_else(count), 2);
+   assert_eq!(Err("foo").unwrap_or_else(count), 3);
+   ```
+
+1. `expect`: Unwraps the `Ok` value of the `Result`, with a custom panic message if the `Result` is `Err`.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let expected = result.expect("something went wrong");
+   ```
+
+1. `is_ok`: Returns `true` if the `Result` is `Ok`, `false` otherwise.
+
+   ```rs
+   let x: Result<i32, &str> = Ok(-3);
+   assert_eq!(x.is_ok(), true);
+
+   let x: Result<i32, &str> = Err("Some error message");
+   assert_eq!(x.is_ok(), false);
+   ```
+
+1. `is_err`: Returns `true` if the `Result` is `Err`, `false` otherwise.
+
+   ```rs
+   let x: Result<i32, &str> = Ok(-3);
+   assert_eq!(x.is_err(), false);
+
+   let x: Result<i32, &str> = Err("Some error message");
+   assert_eq!(x.is_err(), true);
+   ```
