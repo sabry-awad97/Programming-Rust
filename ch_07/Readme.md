@@ -56,3 +56,38 @@ A program panics when it encounters an error that is so severe that there must b
 When these errors occur, Rust provides two options: _unwinding the stack_ or _aborting the process_. By default, Rust will unwind the stack. This means that Rust will attempt to unwind the stack and clean up any resources that were allocated before the panic occurred. This process involves calling destructors for any objects on the stack and freeing any resources that were allocated on the heap.
 
 However, in some cases, it may be more appropriate to abort the process when a panic occurs. Aborting the process is a more drastic measure, but it can be useful in situations where the program has become so unstable that it is unsafe to continue executing. To abort the process, you can set the panic runtime configuration option to abort using the `panic = "abort"` configuration in your `Cargo.toml` file.
+
+### Unwinding
+
+In Rust, when a panic occurs, the default behavior is for the program to unwind the stack. Unwinding the stack means that Rust will walk back up the stack and call the destructors of any objects that were created along the way, in the reverse order in which they were created. This process ensures that any resources allocated on the heap are properly cleaned up, and any temporary objects are destroyed.
+
+```rs
+fn main() {
+    let v = vec![1, 2, 3];
+    panic!("oh no!");
+}
+```
+
+When the `panic!` macro is executed, the program will begin unwinding the stack. This means that Rust will call the destructors of any objects that were created along the way, in the reverse order in which they were created. In this case, Rust will destroy the vector `v` before the program exits. This ensures that any memory allocated on the heap for the vector is properly cleaned up before the program terminates.
+
+There is also a way to catch stack unwinding, allowing the thread to survive and continue running. The standard library function `std::panic::catch_unwind()` does this.
+
+This function takes a closure that contains the code you want to run, and returns a `Result` indicating whether the closure panicked or not.
+
+```rs
+use std::panic;
+
+fn main() {
+    let result = panic::catch_unwind(|| {
+        println!("this code is running inside a catch_unwind closure");
+        panic!("oh no, something went wrong!");
+    });
+
+    match result {
+        Ok(()) => println!("the closure ran successfully"),
+        Err(_) => println!("the closure panicked"),
+    }
+
+    println!("the program continues to run after the catch_unwind closure");
+}
+```
