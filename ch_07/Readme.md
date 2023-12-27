@@ -645,3 +645,69 @@ fn main() {
 ```
 
 By using `unwrap_or_else()` in this way, we can handle errors that "can't happen" in a safe and predictable way, without the risk of panicking.
+
+### Handling Errors in main()
+
+One way is to propagate errors up to the caller function by returning a Result type. This can be useful when the caller function has more context about how to handle the error, or when the error should be logged before terminating the program.
+
+```rs
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::error::Error;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let file = File::open("input.txt")?;
+    let reader = BufReader::new(file);
+    let mut sum = 0;
+    for line in reader.lines() {
+        let number: i32 = line?.parse()?;
+        sum += number;
+    }
+    println!("Sum: {}", sum);
+    Ok(())
+}
+```
+
+Another way to handle errors in `main()` is to use the `unwrap_or_else()` method to provide a default value or action in case of an error. This can be useful when the error is not critical and the program can continue running with a default value.
+
+```rs
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+
+fn main() {
+    let file = File::open("input.txt").unwrap_or_else(|_| {
+        eprintln!("Error: Could not open file 'input.txt'. Using default value of 0.");
+        std::io::Cursor::new("0".to_string())
+    });
+    let reader = BufReader::new(file);
+    let mut sum = 0;
+    for line in reader.lines() {
+        let number: i32 = line.unwrap_or("0".to_string()).parse().unwrap_or(0);
+        sum += number;
+    }
+    println!("Sum: {}", sum);
+}
+```
+
+Using `if let` can be a more concise way to handle errors in `main()` when there's only one error type expected.
+
+```rs
+use std::fs::File;
+use std::io::{self, BufRead};
+
+fn main() {
+    if let Err(err) = read_file() {
+        eprintln!("Error: {}", err);
+        std::process::exit(1);
+    }
+}
+
+fn read_file() -> io::Result<()> {
+    let file = File::open("not-existing-file.txt")?;
+    let lines = io::BufReader::new(file).lines();
+    for line in lines {
+        println!("{}", line?);
+    }
+    Ok(())
+}
+```
