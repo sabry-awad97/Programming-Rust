@@ -509,3 +509,28 @@ fn main() {
 1. `fn downcast_mut<T>(&mut self) -> Option<&mut T>`: This method attempts to downcast the error to a mutable reference of a specific type.
 
 These methods allow developers to get more information about an error and provide better error messages to the user. It is also possible to implement custom error types that implement the `std::error::Error` trait and provide their own custom methods.
+
+### Propagation of Errors
+
+One of the essential features of Rust's error handling is the ability to propagate errors. This means that when a function returns a Result type, it can pass the error value back up the call stack, allowing the caller to handle the error instead of handling them at the point where they occurred. This is achieved using the `?` operator. When you use the `?` operator in a function that returns a `Result` type, the operator will return the value inside the `Ok` variant if it exists, or it will return the `Err` variant if an error occurred.
+
+```rs
+use std::fs::File;
+use std::io::Read;
+
+fn read_file_contents(file_name: &str) -> Result<String, std::io::Error> {
+    let mut file = File::open(file_name)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    Ok(contents)
+}
+
+fn print_file_contents(file_name: &str) {
+    match read_file_contents(file_name) {
+        Ok(contents) => println!("{}", contents),
+        Err(err) => eprintln!("Error reading file: {}", err),
+    }
+}
+```
+
+The `?` operator is used to propagate errors from the `File::open` and `file.read_to_string` functions.
