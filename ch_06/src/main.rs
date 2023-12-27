@@ -1,23 +1,24 @@
-use std::io;
+use std::ops::Deref;
+
+struct MyString(String);
+
+impl Deref for MyString {
+    type Target = String;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+fn print_string(s: &str) {
+    println!("{}", s);
+}
 
 fn main() {
-    let mut input = String::new();
+    let my_string = MyString("hello".to_string());
 
-    loop {
-        println!("Enter a number:");
-
-        input.clear();
-        io::stdin().read_line(&mut input).unwrap();
-
-        match input.trim().parse::<i32>() {
-            Ok(num) => {
-                println!("You entered the number: {}", num);
-                break;
-            }
-            Err(_) => {
-                println!("Invalid input, please try again.");
-                continue;
-            }
-        }
-    }
+    // The MyString type implements Deref, so we can pass a &MyString to a function
+    // that takes a &str. The compiler will automatically apply deref coercion to
+    // convert the &MyString to a &String, which can then be converted to a &str.
+    print_string(&my_string);
 }

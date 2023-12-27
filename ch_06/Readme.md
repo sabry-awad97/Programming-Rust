@@ -525,3 +525,92 @@ The range operator can also be used to produce various types of ranges, includin
 There are two reference operators: `&` and `&mut`. These operators allow you to work with the memory address of a value rather than the value itself. The `&` operator creates an immutable reference to a value, while the `&mut` operator creates a mutable reference.
 
 In addition to these reference operators, there is also a unary `*` operator. This operator is used to access the value pointed to by a reference. When you use the . operator to access a field or method of a reference, Rust automatically dereferences the reference for you. However, in some cases you may need to explicitly access the value pointed to by a reference. This is where the `*` operator comes in. By using the `*` operator, you can read or write the entire value that the reference points to.
+
+## Type Casts
+
+Explicit type casts, also known as "type conversions", are done using the `as` keyword. These allow you to convert a value from one type to another.
+
+```rs
+let x: u32 = 42;
+let y: i32 = x as i32;
+```
+
+Casting between two types is only safe if the two types have the same **size** and **alignment**.
+
+Size refers to the number of bytes that the type occupies in memory. For example, `i32` and `u32` both have a size of 4 bytes, which means they have the same number of bytes and are considered to be the same size.
+
+Alignment refers to the memory address at which a value of a particular type must be stored. For example, an `i32` value must be stored at an address that is a multiple of 4 bytes (i.e., its alignment is 4 bytes). If two types have different alignment requirements, casting between them can result in undefined behavior.
+
+When two types have the same size and alignment, Rust will ensure that the cast is safe and valid at compile time. However, if the two types have different size or alignment, the cast can result in undefined behavior or memory safety issues. In these cases, it is generally recommended to use other methods such as transmutation, conversion or conversion traits like From and Into to convert between types safely.
+
+Several kinds of casts are permitted, including:
+
+1. Numeric casts: These allow you to convert a value from one numeric type to another. For example, you might cast an `i32` to a `u32`, or a `f32` to an `f64`.
+
+   ```rs
+   let x: i32 = 42;
+   let y: u32 = x as u32;
+   ```
+
+1. Pointer casts: These allow you to convert a pointer from one type to another. For example, you might cast a raw pointer to a typed pointer, or a mutable reference to an immutable reference.
+
+   ```rs
+   let x: *mut i32 = &mut 42;
+   let y: *const i32 = x as *const i32;
+   ```
+
+1. Reference casts: These allow you to convert a reference from one type to another. For example, you might cast an `&i32` to an `&u32`.
+
+   ```rs
+   let x: &i32 = &42;
+   let y: &u32 = unsafe { &*(x as *const i32 as *const u32) };
+   ```
+
+1. Trait object casts: These allow you to convert a trait object from one type to another. For example, you might cast a `&dyn Any` trait object to a `&dyn Debug` trait object.
+
+   ```rs
+   use std::any::Any;
+
+   let x: &dyn Any = &42;
+   let y: &dyn std::fmt::Debug = &x as &dyn std::fmt::Debug;
+   ```
+
+- In Rust, some conversions involving reference types can be performed without a cast thanks to deref coercions.
+- Deref coercion applies to types that implement the Deref built-in trait.
+- Deref coercion allows smart pointer types to behave as much like the underlying value as possible.
+- Examples of automatic conversions that involve reference types implementing the Deref trait include:
+  - Converting a mutable reference to a non-mutable reference.
+  - Converting a `&String` value to a `&str` value.
+  - Converting a `&Vec<i32>` value to a `&[i32]` value.
+  - Converting a `&Box<Chessboard>` value to a `&Chessboard` value.
+- User-defined types can implement the Deref trait to enable deref coercion for their own smart pointer types.
+
+  ```rs
+  use std::ops::Deref;
+
+  struct MyString(String);
+
+  impl Deref for MyString {
+      type Target = String;
+
+      fn deref(&self) -> &Self::Target {
+          &self.0
+      }
+  }
+  ```
+
+Here's an example of how deref coercion can be used to convert a &String value to a &str value:
+
+```rs
+fn print_string(s: &str) {
+    println!("{}", s);
+}
+
+fn main() {
+    let my_string = String::from("hello");
+
+    // We can pass a &String to a function that takes a &str thanks to deref coercion.
+    // The &String value will be automatically converted to a &str.
+    print_string(&my_string);
+}
+```
