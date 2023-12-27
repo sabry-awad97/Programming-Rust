@@ -616,3 +616,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 In this example, we define a GenericError type alias that represents any kind of error that implements the `std::error::Error` trait and can be sent between threads and shared between them in a synchronized way. We also define a `GenericResult` type alias that is parameterized with a type `T` and represents a result that can contain a value of type `T` or an error of type `GenericError`.
 
 Note that in this implementation, we use the `?` operator to propagate errors up the call stack. This allows us to avoid nesting multiple `match` or `if let` blocks, and makes the code more concise and easier to read.
+
+### Dealing with Errors That "Can't Happen"
+
+In some cases, you may know that a particular error should not occur under any circumstances. For example, calling `unwrap()` on a Result that you know is `Ok` is one such situation. However, it is still possible for this to happen, and Rust will still panic in such a case.
+
+To handle such situations, Rust provides the `unwrap_or_else()` method, which allows you to provide a closure to execute in case of an error. This closure will receive the error object as an argument, which you can then use to provide a custom error message, log the error, or take any other action that you deem appropriate.
+
+```rs
+fn divide(x: f32, y: f32) -> Result<f32, &'static str> {
+    if y == 0.0 {
+        Err("division by zero")
+    } else {
+        Ok(x / y)
+    }
+}
+
+fn main() {
+    let result = divide(3.0, 2.0).unwrap();
+    let result2 = divide(3.0, 0.0).unwrap_or_else(|err| {
+        eprintln!("unexpected error: {}", err);
+        0.0
+    });
+
+    println!("result: {}", result);
+    println!("result2: {}", result2);
+}
+```
+
+By using `unwrap_or_else()` in this way, we can handle errors that "can't happen" in a safe and predictable way, without the risk of panicking.
