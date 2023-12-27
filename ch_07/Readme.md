@@ -349,3 +349,19 @@ match result {
    }
    assert_eq!(result, Ok(0));
    ```
+
+### Result Type Aliases
+
+In Rust, you can define type aliases to make your code more concise and easier to read. You can also define type aliases for the Result type to make your code more generic and reusable.
+
+```rs
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+```
+
+This defines a new type alias `Result<T>` that is equivalent to `std::result::Result<T, Box<dyn std::error::Error>>`.
+
+```rs
+type CustomResult<T, E> = std::result::Result<T, CustomError<E>>;
+```
+
+This defines a new type alias `CustomResult<T, E>` that is equivalent to `std::result::Result<T, CustomError<E>>`.
