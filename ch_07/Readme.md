@@ -140,3 +140,32 @@ fn main() {
     // Further operations with my_value might require re-initialization
 }
 ```
+
+## Result Type
+
+Rust doesn’t have exceptions.
+
+In Rust, the `Result` type is a built-in enum that represents either a successful value (`Ok`) or an error (`Err`). Its definition is as follows:
+
+```rs
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+
+`T` is the type of the value returned in case of success, and `E` is the type of the error that occurred.
+
+### Catching Errors with Match Expressions
+
+```rs
+let result = do_something_that_returns_a_result();
+match result {
+    Ok(val) => {
+        // Handle the successful case
+    }
+    Err(err) => {
+        // Handle the error case
+    }
+}
+```
