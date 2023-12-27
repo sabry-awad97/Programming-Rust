@@ -314,3 +314,38 @@ match result {
    let x: Result<i32, &str> = Err("Some error message");
    assert_eq!(x.is_err(), true);
    ```
+
+1. `unwrap_unchecked`: This method is similar to `unwrap`, but it is marked as `unsafe` because it assumes that the Result is not an `Err` variant without checking.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let value = unsafe { result.unwrap_unchecked() };
+   assert_eq!(value, 42);
+   ```
+
+1. `unwrap_or_default`: This method returns the inner value of an Ok variant if it exists, otherwise it returns the default value for that type.
+
+   ```rs
+   let result: Result<i32, &str> = Err("Oops");
+   let default = 42;
+   let value = result.unwrap_or_default(default);
+   assert_eq!(value, 42);
+   ```
+
+1. `as_ref`: This method returns a reference to the inner value of the Result, allowing you to apply methods to it without taking ownership of the value.
+
+   ```rs
+   let result: Result<i32, &str> = Ok(42);
+   let reference = result.as_ref().unwrap();
+   assert_eq!(*reference, 42);
+   ```
+
+1. `as_mut`: This method returns a mutable reference to the inner value of the Result, allowing you to modify it if it is an Ok variant.
+
+   ```rs
+   let mut result: Result<i32, &str> = Ok(42);
+   if let Ok(value) = result.as_mut() {
+       *value = 0;
+   }
+   assert_eq!(result, Ok(0));
+   ```

@@ -1,5 +1,8 @@
 fn main() {
-    let x: Result<u32, &str> = Ok(2);
-    let y: Result<u32, &str> = Err("late error");
-    assert_eq!(x.or(y), Ok(2));
+    fn count(x: &str) -> usize {
+        x.len()
+    }
+
+    assert_eq!(Ok(2).unwrap_or_else(count), 2);
+    assert_eq!(Err("foo").unwrap_or_else(count), 3);
 }
