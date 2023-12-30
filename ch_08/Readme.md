@@ -387,3 +387,11 @@ By having these items in the prelude, Rust code can directly use these fundament
 Naming a module prelude is just a convention that tells users it's meant to be imported using `*`.
 
 Developers can also create their own prelude by defining modules and traits that they frequently use across multiple parts of their codebase. This allows them to have a set of common functionalities readily available without repetitive imports.
+
+### Making use Declarations pub
+
+```rs
+pub use math::operations::add;
+```
+
+By combining `pub` to mark items as public and `use` to import them into a scope, Rust enables developers to organize code effectively and make specific functionalities accessible across various parts of the codebase.
