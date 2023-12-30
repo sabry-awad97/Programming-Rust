@@ -684,3 +684,124 @@ The test harness leverages multiple threads to concurrently execute multiple tes
 - To show output from both passing and failing tests, use `cargo test -- --no-capture`.
 
 These options enable developers to customize test execution behavior. Running specific tests or controlling the display of output can be beneficial for debugging or examining test results in detail.
+
+### Doc-Tests
+
+Doc-tests in Rust serve the dual purpose of documenting code and verifying its correctness through embedded tests within documentation comments.
+
+#### How Doc-Tests Work
+
+- **Documentation Comments**: Rust allows the use of `///` and `//!` comments to document code elements like functions, modules, and types.
+- **Embedded Examples**: Within these comments, examples of code usage can be included, demonstrating how functions or modules are intended to be used.
+- **Automatic Testing**: Rust's documentation tool, Rustdoc, extracts these examples and executes them as tests during the documentation build process.
+- **Assertions**: Doc-tests commonly employ assertions (`assert!`, `assert_eq!`, etc.) to validate expected outcomes.
+
+````rs
+/// Adds two numbers together
+///
+/// # Examples
+///
+/// ```
+/// let result = add(2, 3);
+/// assert_eq!(result, 5);
+/// ```
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+````
+
+- When running `cargo test` or `cargo doc`, Rustdoc automatically identifies and runs the embedded code examples within documentation comments.
+- It executes these examples as tests and validates their expected outcomes.
+- This process ensures that the documented code examples are correct and remain up-to-date as the codebase evolves.
+
+#### Syntax to Hide Lines
+
+- To exclude a line from being displayed in the documentation, prefix it with `#` (hash followed by a space) at the beginning of that line.
+- This hides the line from the generated documentation but ensures its inclusion for compilation purposes.
+
+````rs
+/// Function to demonstrate addition
+///
+/// # Examples
+///
+/// ```
+/// # use my_crate::add;
+/// let result = add(2, 3);
+/// assert_eq!(result, 5);
+/// ```
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+````
+
+In Rust's documentation, when displaying a complete program including a `main` function, Rustdoc won't automatically add any additional code or functions to it. This is because code blocks containing the exact string `fn main` are considered complete programs by Rustdoc.
+
+````rs
+/// Demonstrates a complete program with a main function
+///
+/// # Examples
+///
+/// ```
+/// fn main() {
+///     println!("Hello, world!");
+/// }
+/// ```
+fn main() {
+    println!("This is the main function.");
+}
+````
+
+#### Disabling Test Execution
+
+- To compile an example but prevent Rust from executing it during testing, use a fenced code block with the `no_run` annotation.
+- This annotation indicates to Rustdoc that the code should compile but should not be executed during the testing process.
+
+````rs
+/// Demonstrates a code snippet that should not be executed during testing
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// fn main() {
+///     // This code is for demonstration and shouldn't be executed during testing
+///     println!("This won't be executed during tests.");
+/// }
+/// ```
+fn main() {
+    println!("This is the main function.");
+}
+````
+
+This feature allows displaying full program samples in documentation without automatically executing them during the testing phase.
+
+#### The `ignore` annotation
+
+Functionality:
+
+- **Compile Expectation**: `ignore` indicates that the code block isn't expected to compile or run successfully.
+- **Testing Behavior**: Unlike `no_run`, blocks marked with `ignore` don't appear in the output of `cargo run`.
+- **Test Outcomes**: In test reports, code blocks labeled with `ignore` won't show as passed tests, even if they compile successfully.
+
+Non-Rust Code or Plain Text:
+
+- For code blocks that contain non-Rust code or plain text, use the name of the relevant language (e.g., `c++`, `sh`) or `text` to denote plain text.
+- Rustdoc doesn't recognize all programming language names. An annotation it doesn't recognize signifies that the code block isn't Rust code.
+- This disables syntax highlighting and doc-tests for that specific block.
+
+````rs
+/// Demonstrates an invalid code block with ignore annotation
+///
+/// # Examples
+///
+/// ```ignore
+/// // This is not Rust code and won't be tested or compiled
+/// function myFunction() {
+///     console.log("This won't compile in Rust.");
+/// }
+/// ```
+fn main() {
+    println!("This is the main function.");
+}
+````
+
+In this example, the `ignore` annotation is used to label a block of code that isn't Rust code and won't be compiled or tested. Additionally, using language names other than Rust (e.g., `c++`, `sh`) or `text` indicates that the block contains code in another language or plain text, respectively. This helps Rustdoc understand that the enclosed code isn't intended for Rust compilation or testing.
