@@ -209,3 +209,94 @@ By default, items (functions, structs, etc.) in a module are not visible outside
       nested::specific_function();
   }
   ```
+
+### Modules in Separate Files
+
+Modules can be organized across separate files, aligning with the module structure to maintain a clean and manageable codebase. This approach helps in structuring larger projects and facilitates better organization and readability.
+
+Here's an example demonstrating how modules can span multiple files:
+
+Consider a project structure like this:
+
+```less
+math_crate/
+│
+├── Cargo.toml          // Package manifest
+└── src/
+    ├── main.rs         // Entry point (optional for binaries)
+    └── lib.rs          // Entry point for the library crate
+    └── math/
+        ├── mod.rs      // Module declaration file
+        ├── operations.rs // File containing operation functions
+        └── constants.rs  // File containing constant values
+```
+
+Contents of `Cargo.toml`:
+
+```toml
+[package]
+name = "math_crate"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "math_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+```
+
+The `main.rs` file is the entry point of the application, and within the `math` directory, there are three files:
+
+1. `mod.rs`: This file declares the module structure.
+
+   ```rs
+   // Declare the module 'math' and its contents
+   pub mod operations;
+   pub mod constants;
+   ```
+
+2. `operations.rs`: This file contains functions related to operations.
+
+   ```rs
+   // Define functions within the 'operations' module
+   pub fn add(a: i32, b: i32) -> i32 {
+       a + b
+   }
+
+   pub fn subtract(a: i32, b: i32) -> i32 {
+       a - b
+   }
+   ```
+
+3. `constants.rs`: This file contains constant values.
+
+   ```rs
+   // Define constant values within the 'constants' module
+   pub const PI: f64 = 3.14159;
+   pub const E: f64 = 2.71828;
+   ```
+
+In the `lib.rs` file:
+
+```rs
+// Declare the module structure within the crate
+pub mod math;
+```
+
+In `main.rs`, or any other file within the same crate:
+
+```rs
+// Access the 'math' module
+use math_crate::math;
+
+fn main() {
+    // Use functions and constants from the 'math' module
+    println!("Addition result: {}", math::operations::add(10, 5));
+    println!("Value of PI: {}", math::constants::PI);
+}
+```
+
+This structure allows developers to organize code within a module across multiple files, keeping related functionalities segregated for better code management and readability in larger projects. The `mod.rs` file acts as the entry point to declare the module's structure, and other files contain the actual implementations for various components of the module.
