@@ -885,3 +885,74 @@ The `Cargo.lock` file in Rust is an auto-generated file created by Cargo, Rust's
 - **Automatic Update**: Cargo automatically updates this file when changes are made to dependencies in Cargo.toml.
 
 The `Cargo.lock` file acts as a snapshot of dependency versions at a specific point in time, ensuring that subsequent builds use the same dependency versions to maintain build reliability and consistency.
+
+## Workspaces
+
+Workspaces are a way to manage multiple Rust projects within a single repository. They allow you to coordinate and manage dependencies between these projects more efficiently.
+
+In a Workspace, you use a `Cargo.toml` file at the root of the directory to define the workspace. This file specifies the members (individual projects) within the workspace, along with their respective dependencies and configurations.
+
+Each project within the workspace resides in its own directory under the root directory. These projects can share code or depend on each other as specified in their respective `Cargo.toml` files.
+
+Here's an example of setting up a basic Rust workspace:
+
+Let's say you have a directory structure like this:
+
+```less
+my_project/
+  |- Cargo.toml
+  |- app/
+  |   |- Cargo.toml
+  |   |- src/
+  |       |- main.rs
+  |- library/
+      |- Cargo.toml
+      |- src/
+          |- lib.rs
+```
+
+1. **Root `Cargo.toml`:**
+
+   ```toml
+   [workspace]
+
+   members = [
+       "app",
+       "library"
+   ]
+   default-members = ["app"]
+   resolver = "2"
+   ```
+
+   This `Cargo.toml` file at the root of the `my_project` directory indicates that `my_project` is a Rust workspace consisting of the `app` and `library` projects.
+
+2. **`app/Cargo.toml`:**
+
+   ```toml
+   [package]
+   name = "my_app"
+   version = "0.1.0"
+   edition = "2021"
+
+   [dependencies]
+   my_library = { path = "../library" }
+   ```
+
+   This `Cargo.toml` file inside the `app` directory represents a binary application that depends on the `my_library` crate, which is part of the workspace. The `path` attribute specifies the local path to the `library` crate.
+
+3. **`library/Cargo.toml`:**
+
+   ```toml
+   [package]
+   name = "my_library"
+   version = "0.1.0"
+   edition = "2021"
+   ```
+
+   This `Cargo.toml` file inside the `library` directory represents a library crate that can be used by other projects within the same workspace.
+
+With this setup, changes made in the `library` crate can be directly utilized by the `app` crate without publishing the library to crates.io or specifying it as an external dependency. This allows for easier code sharing and management within the workspace.
+
+You'd run commands like `cargo build` or `cargo run` from the root directory to build or run the projects within the workspace.
+
+In this case, if you run a Cargo command from the root directory without specifying a particular member, it will default to operating on the `app` project within the workspace.
