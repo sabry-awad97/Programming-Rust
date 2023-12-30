@@ -501,6 +501,38 @@ Attributes serve different purposes, including:
    }
    ```
 
+   Here's the commonly used options within the `#[cfg(...)]` attribute in Rust:
+
+   | #\[cfg(...)\] option        | Enabled when...                                                                                                                                                                                            |
+   | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | test                        | Tests are enabled (compiling with `cargo test` or `rustc --test`).                                                                                                                                         |
+   | debug_assertions            | Debug assertions are enabled (typically in non-optimized builds).                                                                                                                                          |
+   | unix                        | Compiling for Unix, including macOS.                                                                                                                                                                       |
+   | windows                     | Compiling for Windows.                                                                                                                                                                                     |
+   | target_pointer_width = "64" | Targeting a 64-bit platform. Other value: "32" for 32-bit platforms.                                                                                                                                       |
+   | target_arch = "x86_64"      | Targeting x86-64 in particular. Other values: "x86", "arm", "aarch64", "powerpc", "powerpc64", "mips".                                                                                                     |
+   | target_os = "macos"         | Compiling for macOS. Other values: "windows", "ios", "android", "linux", "freebsd", "openbsd", "netbsd", "dragonfly".                                                                                      |
+   | feature = "robots"          | The user-defined feature named "robots" is enabled (compiling with `cargo build --feature robots` or `rustc --cfg feature='"robots"'`). Features are declared in the `[features]` section of `Cargo.toml`. |
+   | not(A)                      | A is not satisfied. To provide two different implementations of a function, mark one with `#[cfg(X)]` and the other with `#[cfg(not(X))]`.                                                                 |
+   | all(A,B)                    | Both A and B are satisfied (equivalent of `&&`).                                                                                                                                                           |
+   | any(A,B)                    | Either A or B is satisfied (equivalent of `                                                                                                                                                                |
+
+   Here's a breakdown of them:
+
+   - **`test`**: Enabled when compiling with `cargo test` or `rustc --test`, indicating that tests are enabled.
+   - **`debug_assertions`**: Enabled in non-optimized builds, typically activating debug assertions.
+   - **`unix`**: Active when compiling for Unix-based systems, including macOS.
+   - **`windows`**: Active when compiling for Windows-based systems.
+   - **`target_pointer_width = "64"`**: Enabled when targeting a 64-bit platform; `"32"` for 32-bit platforms.
+   - **`target_arch = "x86_64"`**: Active when targeting the x86-64 architecture. Other options include `"x86"`, `"arm"`, `"aarch64"`, `"powerpc"`, `"powerpc64"`, and `"mips"`.
+   - **`target_os = "macos"`**: Active when compiling for macOS. Other options include `"windows"`, `"ios"`, `"android"`, `"linux"`, `"freebsd"`, `"openbsd"`, `"netbsd"`, and `"dragonfly"`.
+   - **`feature = "robots"`**: Enabled when the user-defined feature named `"robots"` is activated, such as with `cargo build --feature robots` or `rustc --cfg feature='"robots"'`. Features are declared in the `[features]` section of `Cargo.toml`.
+   - **`not(A)`**: Inactive when condition `A` is satisfied. Useful for providing different implementations based on the absence of a condition.
+   - **`all(A,B)`**: Active when both conditions `A` and `B` are satisfied (equivalent to `&&`).
+   - **`any(A,B)`**: Active when either condition `A` or `B` is satisfied (equivalent to `||`).
+
+   These options allow conditional compilation in Rust, enabling developers to write code that behaves differently depending on the target platform, features, or compilation conditions.
+
 3. **Documentation**: Rust uses `#[doc]` to generate documentation for items like functions, structs, and modules. This helps in generating documentation using tools like Rustdoc.
 
    ```rs
