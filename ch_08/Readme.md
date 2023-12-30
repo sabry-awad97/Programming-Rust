@@ -371,3 +371,19 @@ mod current_module {
     }
 }
 ```
+
+### The Standard Prelude
+
+The Standard Prelude refers to a set of pre-imported modules and traits that are automatically available in every Rust program without needing explicit imports. This prelude consists of fundamental types, traits, and functions that are frequently used in Rust programming.
+
+The Standard Prelude includes:
+
+1. **Primitive Types**: Such as `bool`, `char`, numeric types like `i32`, `u64`, and others.
+2. **Standard Traits**: Traits like `Copy`, `Clone`, `Debug`, `Default`, and `PartialEq` are part of the prelude.
+3. **Commonly Used Functions**: Functions like `println!`, `format!`, `panic!`, and `assert!` are also available by default.
+
+By having these items in the prelude, Rust code can directly use these fundamental types, traits, and functions without requiring explicit imports, making the code more concise and readable.
+
+Naming a module prelude is just a convention that tells users it's meant to be imported using `*`.
+
+Developers can also create their own prelude by defining modules and traits that they frequently use across multiple parts of their codebase. This allows them to have a set of common functionalities readily available without repetitive imports.
