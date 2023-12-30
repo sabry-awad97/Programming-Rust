@@ -40,7 +40,7 @@ The Rust compiler necessitates access to these .rlib files because they contain 
 
 One notable option is `cargo build --release`, which generates an optimized build. Release builds execute faster but take longer to compile. They bypass checks for integer overflow, omit `debug_assert!()` assertions, and generally produce less reliable stack traces in case of a panic.
 
-## Editions
+### Editions
 
 Rust takes pride in its robust compatibility guarantees. Code that compiled on Rust 1.0 is assured to compile equally well on Rust 1.50 or any subsequent version like Rust 1.900, if released. However, proposals for significant language extensions sometimes arise, presenting challenges when implementing changes that might render older code incompatible. For instance, adopting a syntax for asynchronous programming with async and await as keywords could break existing code using these identifiers as variable names.
 
@@ -51,3 +51,34 @@ In the Cargo.toml file's \[package\] section, crates indicate the Rust edition t
 Crucially, Rust assures that the compiler accepts all existing editions of the language, allowing programs to seamlessly integrate crates written in different editions. A crate's edition solely influences how its source code is interpreted; once compiled, edition distinctions are irrelevant. This eliminates the necessity of updating old crates solely to engage with the modern Rust ecosystem or forcing a crate to adhere to an older edition to accommodate users. Edition changes are only required when incorporating new language features into your code.
 
 The Rust project doesn't release editions annually; they're introduced when deemed necessary. It's generally recommended to utilize the latest edition, especially for new code, as `cargo new` defaults to creating projects on the latest edition. Additionally, for crates written in older Rust editions, the `cargo fix` command might assist in automatically upgrading the code to a newer edition. The Rust Edition Guide offers comprehensive coverage of edition changes and details the `cargo fix` command.
+
+### Build profiles
+
+Build profiles allow developers to configure and manage different build settings for various scenarios or purposes within their Cargo.toml file. These profiles offer a way to specify distinct configurations tailored to different use cases, such as development, testing, or production.
+
+There are several predefined build profiles:
+
+- **Default Profile**: This profile is utilized when no specific profile is chosen. It generally emphasizes speed and ease of debugging, ideal for day-to-day development work.
+
+- **Release Profile**: The release profile is optimized for producing efficient and optimized code for deployment in production. It typically includes compiler optimizations and excludes debug information to enhance performance.
+
+- **Custom Profiles**: Developers can create additional profiles as needed, allowing them to define unique configurations for specific purposes or environments. For instance, a custom profile optimized for testing might retain certain debugging features without compromising performance significantly.
+
+Here's a table mapping the Cargo.toml configuration settings sections to their respective command line usage:
+
+| Command                 | Cargo.toml Section  |
+| ----------------------- | ------------------- |
+| `cargo build`           | `[profile.dev]`     |
+| `cargo build --release` | `[profile.release]` |
+| `cargo test`            | `[profile.test]`    |
+
+These commands correspond to specific sections within the Cargo.toml file, enabling developers to specify different settings and configurations for various build scenarios. For instance, `[profile.dev]` is used to define settings for development builds, `[profile.release]` for optimized release builds, and `[profile.test]` for testing configurations.
+
+Typically, default build settings work well for most scenarios. However, there's an exception when using profilers, tools that track where a program spends its CPU time. To gather comprehensive data from a profiler, both optimizations (commonly enabled in release builds) and debug symbols (usually present in debug builds) are necessary. Combining these can be achieved by modifying your Cargo.toml file:
+
+```toml
+[profile.release]
+debug = true # enable debug symbols in release builds
+```
+
+This configuration controls the inclusion of debug symbols (-g option) in the Rust compiler (rustc). With this setup, executing `cargo build --release` results in a binary containing both debug symbols and the optimizations typically associated with release builds. The optimization settings remain unaffected by the addition of debug symbols.
