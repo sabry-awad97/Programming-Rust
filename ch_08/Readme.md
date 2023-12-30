@@ -82,3 +82,63 @@ debug = true # enable debug symbols in release builds
 ```
 
 This configuration controls the inclusion of debug symbols (-g option) in the Rust compiler (rustc). With this setup, executing `cargo build --release` results in a binary containing both debug symbols and the optimizations typically associated with release builds. The optimization settings remain unaffected by the addition of debug symbols.
+
+## Modules
+
+Modules are organizational units that help structure code within a crate. They allow developers to group related functionalities, types, and traits together, enhancing code organization and readability. Modules aid in managing code complexity by breaking it into smaller, more manageable parts.
+
+To create a module in Rust, you can use the `mod` keyword:
+
+```rs
+mod my_module {
+    // module code goes here
+}
+```
+
+Key aspects of modules include:
+
+1. **Encapsulation:** Modules encapsulate code, acting as a boundary that defines the visibility of items (functions, structs, enums, etc.). Items can be marked as public or private within a module, controlling their accessibility to code outside that module.
+2. **Namespace:** Modules provide a namespace, preventing naming collisions by allowing items with the same name to coexist within different modules.
+3. **Nesting:** Modules can be nested within each other, allowing for hierarchical organization of code. This nested structure is represented using the `mod` keyword.
+4. **File Organization:** Rust follows a convention where module structure often aligns with the file system structure. Each module may reside in its own file or be grouped together in a single file, aiding in code navigation and maintenance.
+
+### Nested modules
+
+Nested modules refer to the ability to organize modules within other modules, creating a hierarchical structure within a crate.
+
+```rs
+// Define an outer module named 'math'
+mod math {
+    // Declare a submodule named 'operations' within the 'math' module
+    pub mod operations {
+        // Define functions within the 'operations' submodule
+        pub fn add(a: i32, b: i32) -> i32 {
+            a + b
+        }
+
+        pub fn subtract(a: i32, b: i32) -> i32 {
+            a - b
+        }
+    }
+
+    // Declare another submodule named 'constants' within the 'math' module
+    pub mod constants {
+        // Define constant values within the 'constants' submodule
+        pub const PI: f64 = 3.14159;
+        pub const E: f64 = 2.71828;
+    }
+}
+
+fn main() {
+    // Access functions from the 'operations' submodule in the 'math' module
+    let result_add = math::operations::add(10, 5);
+    let result_subtract = math::operations::subtract(20, 8);
+
+    println!("Addition result: {}", result_add);
+    println!("Subtraction result: {}", result_subtract);
+
+    // Access constants from the 'constants' submodule in the 'math' module
+    println!("Value of PI: {}", math::constants::PI);
+    println!("Value of E: {}", math::constants::E);
+}
+```
