@@ -439,3 +439,29 @@ fn main() {
     println!("Private field value: {}", my_instance.get_private_field());
 }
 ```
+
+### Statics and Constants
+
+Statics and constants are used to declare values that remain unchanged throughout the execution of the program. Both are immutable, meaning their values cannot be modified after they are defined, ensuring consistency and reliability in the codebase.
+
+### Statics
+
+- **`static` Keyword**: Declares a static variable, which has a `'static` lifetime, meaning it lives for the entire duration of the program.
+- **Initialized at Runtime**: Static variables can be mutable but require the `mut` keyword. They are initialized at runtime.
+- **Access from Anywhere**: Statics can be accessed from any scope within the program.
+- **Example**:
+
+  ```rs
+  static MY_STATIC_VAR: i32 = 42;
+  ```
+
+### Constants
+
+- **`const` Keyword**: Declares a constant variable, which must be annotated with a type and can be set to a value known at compile time.
+- **Immutable and Known at Compile Time**: Constants are immutable and their values must be known at compile time.
+- **Bound to a Scope**: Constants are bound to a specific scope, meaning they are only accessible within the scope in which they are declared.
+- **Example**:
+
+  ```rs
+  const PI: f64 = 3.14159;
+  ```
