@@ -845,3 +845,26 @@ In this example:
 - `crate_name` is the name used within the project for the local crate and `path` points to the directory `my_crate` inside the `crates` directory of the project.
 
 Cargo fetches these dependencies when the project is built, ensuring the required crates are available for compilation and usage within the project.
+
+### Versions
+
+In Rust's Cargo.toml file, specifying versions for dependencies can be done using various version specifiers to control which versions of crates your project uses.
+
+#### Version Specifiers
+
+- **Exact Version**: `"1.2.3"` specifies an exact version.
+- **Caret Version**: `^1.2.0` specifies an exact version where the wildcard is positioned.
+- **Tilde Version**: `~1.2.0` means any version that's compatible with `1.2.0` but not above `2.0.0`.
+- **Wildcard Version**: `*` accepts any version.
+- **Range Versions**: Allows specifying a range of versions using comparison operators (`>`, `<`, `>=`, `<=`).
+
+```rs
+[dependencies]
+crate_name = "1.2.3"            # Exact version
+other_crate = "^1.2.0"          # Caret version
+third_crate = "~1.2.0"          # Tilde version
+wildcard_crate = "*"            # Any version
+range_crate = ">=1.2.0, <2.0.0" # Range version
+```
+
+These version specifiers ensure that when your project is built, Cargo fetches the compatible version of the specified crates based on the rules defined in your Cargo.toml file.
