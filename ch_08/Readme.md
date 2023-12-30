@@ -868,3 +868,20 @@ range_crate = ">=1.2.0, <2.0.0" # Range version
 ```
 
 These version specifiers ensure that when your project is built, Cargo fetches the compatible version of the specified crates based on the rules defined in your Cargo.toml file.
+
+### Cargo.lock
+
+The `Cargo.lock` file in Rust is an auto-generated file created by Cargo, Rust's package manager. It serves an essential role in managing dependencies within a Rust project.
+
+#### Role of Cargo.lock
+
+- **Dependency Management**: Stores detailed information about the dependencies and their versions used in your project.
+- **Versions Resolution**: Records the exact versions of all dependencies, including transitive dependencies, ensuring consistency across builds.
+- **Locking Versions**: Freezes the versions of dependencies, preventing unexpected updates and guaranteeing reproducibility of builds.
+
+#### Usage of Cargo.lock
+
+- **Commit to Version Control**: Best practice to include the `Cargo.lock` file in version control (like Git). It guarantees consistent builds across development environments and collaborators.
+- **Automatic Update**: Cargo automatically updates this file when changes are made to dependencies in Cargo.toml.
+
+The `Cargo.lock` file acts as a snapshot of dependency versions at a specific point in time, ensuring that subsequent builds use the same dependency versions to maintain build reliability and consistency.
