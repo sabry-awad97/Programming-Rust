@@ -300,3 +300,74 @@ fn main() {
 ```
 
 This structure allows developers to organize code within a module across multiple files, keeping related functionalities segregated for better code management and readability in larger projects. The `mod.rs` file acts as the entry point to declare the module's structure, and other files contain the actual implementations for various components of the module.
+
+### Paths and Imports
+
+#### Paths
+
+- **Absolute Paths**: Start from the crate root using the crate name or from a crate root using `crate`.
+- **Relative Paths**: Start from the current module using `self`, `super`, or a module's identifier.
+
+#### Imports
+
+- **Use Declarations**: Bring items (functions, structs, etc.) into scope, reducing the need for long path references.
+- **use Keyword**: Enables importing items from a path into the current scope.
+
+The `::` operator (path separator) is used to access features within modules or crates. It's employed to reference specific items, such as functions or constants, within the specified module or crate.
+
+For instance, in the code snippet:
+
+```rs
+use std::mem;
+
+if s1 > s2 {
+    mem::swap(&mut s1, &mut s2);
+}
+```
+
+Here, `std::mem` refers to the `mem` module within the `std` crate, and `mem::swap` accesses the `swap` function within the `mem` module.
+
+Importing with the `use` declaration allows creating local aliases for modules or items, making it more convenient to access them within the scope of the block or module where the import is specified.
+
+Additionally, the `use` declaration can import multiple items or modules at once, either by specifying each individually or using the shorthand syntax:
+
+```rs
+use std::collections::{HashMap, HashSet};
+use std::fs::{self, File};
+use std::io::prelude::*;
+```
+
+Using `as` with `use` allows importing an item while giving it a different name locally, as demonstrated in:
+
+```rs
+use std::io::Result as IOResult;
+```
+
+Modules don't inherently inherit names from their parent modules. Instead, each module begins with an empty scope and must explicitly import the names it requires. Paths within a module are by default relative to that module's context.
+
+The keyword `self` is also used as a synonym for the current module. It represents the module itself and allows referencing items within the same module without specifying the full path. This facilitates shorter and more concise references to items within the current module.
+
+```rs
+// File: my_module.rs
+
+// Define a submodule named 'sub_module'
+mod sub_module {
+    pub fn hello() {
+        println!("Hello from sub_module!");
+    }
+}
+
+// The current module
+mod current_module {
+    // Using `self` to reference the current module
+    pub fn greet() {
+        println!("Greetings from the current module!");
+    }
+
+    // Using relative paths to access items in the same module
+    pub fn perform_greeting() {
+        self::greet(); // Accessing 'greet' function using `self`
+        super::sub_module::hello(); // Accessing 'hello' function from the sibling module
+    }
+}
+```
