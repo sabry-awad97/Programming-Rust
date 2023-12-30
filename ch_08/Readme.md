@@ -561,3 +561,49 @@ Attributes serve different purposes, including:
        unused_var_function();
    }
    ```
+
+### `#[inline]`
+
+The `#[inline]` attribute is used to suggest the compiler to consider inlining a function at its call sites. Inlining is a compiler optimization where the code of the called function is inserted directly into the calling function, avoiding the overhead of a function call.
+
+When a function is marked with `#[inline]`, it's a hint to the compiler that the function is a good candidate for inlining. However, the compiler ultimately decides whether to honor this suggestion based on various factors such as function size, complexity, and optimization settings.
+
+This attribute can improve performance in certain cases by reducing the function call overhead. However, excessive use of `#[inline]` can potentially increase the code size and compilation time.
+
+Example:
+
+```rs
+#[inline]
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+fn main() {
+    let result = add(5, 7); // The 'add' function may be inlined at this call site
+    println!("Result: {}", result);
+}
+```
+
+In this example, the `add` function is marked with `#[inline]`, suggesting to the compiler that it can be inlined where it's called. The compiler may decide to honor this suggestion based on its optimizations.
+
+There's a scenario where inlining might not occur unless specified with `#[inline]`. When a function or method defined in one crate is invoked from another crate, Rust won't inline it by default unless it's generic (having type parameters) or explicitly marked with `#[inline]`. Otherwise, the compiler considers `#[inline]` as a suggestion rather than a strict directive.
+
+Rust offers more specific attributes to control inlining behavior:
+
+- **`#[inline(always)]`**: This requests the function to be expanded inline at every call site, prioritizing inlining aggressively. It's a stronger directive than `#[inline]`.
+- **`#[inline(never)]`**: This specifies that a function should never be inlined, even if the compiler might otherwise choose to inline it.
+
+These attributes provide developers with more control over inlining behavior in Rust code, ensuring functions are handled according to their intended usage and performance needs.
+
+#### Function Call Overhead
+
+The overhead of a function call refers to the additional computational cost incurred when invoking a function in a program. This overhead includes several elements:
+
+1. **Stack Operations**: The function call requires the allocation of memory on the stack for local variables, function arguments, and the return address.
+2. **Argument Passing**: Arguments passed to the function often involve copying or passing references to data, which can introduce additional computational cost.
+3. **Context Switching**: When a function is called, the program's execution context transitions to the function, and upon return, it reverts to the original context. This context switching introduces some overhead.
+4. **Branching Overhead**: Control flow moves from the current point in the code to the function, then returns. This transition involves branch prediction and instruction pipelining, which may incur some overhead.
+5. **Return Handling**: After the function execution, the return value needs to be handled and delivered back to the calling code, which adds to the overall cost.
+6. **Cache and Pipeline Effects**: Function calls might disrupt CPU caching and instruction pipeline efficiency, leading to additional overhead due to cache misses or pipeline stalls.
+
+Minimizing function call overhead is often crucial for optimizing code performance, especially in performance-sensitive applications. Techniques like inlining, where the function code is directly substituted into the calling code, aim to reduce this overhead by eliminating some of these costs associated with function invocation.
