@@ -805,3 +805,43 @@ fn main() {
 ````
 
 In this example, the `ignore` annotation is used to label a block of code that isn't Rust code and won't be compiled or tested. Additionally, using language names other than Rust (e.g., `c++`, `sh`) or `text` indicates that the block contains code in another language or plain text, respectively. This helps Rustdoc understand that the enclosed code isn't intended for Rust compilation or testing.
+
+## Specifying Dependencies
+
+Specifying dependencies in Rust is typically done using Cargo, Rust's package manager. Here's how it's done:
+
+### Cargo.toml
+
+- **Dependencies Section**: In the `Cargo.toml` file, there's a section named `[dependencies]`.
+- **Package Listing**: Inside `[dependencies]`, you specify the packages (crates) your project relies on along with their versions.
+
+### Syntax
+
+```toml
+[dependencies]
+crate_name = "version"
+```
+
+- **`crate_name`**: Replace this with the name of the crate you want to depend on.
+- **`version`**: Specify the version of the crate you want to use.
+  - Versions can be specified in different ways:
+    - Exact version: `"1.2.3"`
+    - Version range: `"^1.2.0"` (means any version compatible with `1.2.0` but not above `2.0.0`)
+    - Features or git paths for crates not published on crates.io.
+
+```toml
+[dependencies]
+rand = "0.8.5"
+serde = { version = "1.0.193", features = ["derive"] }
+reqwest = { version = "0.11.23", features = ["json"] }
+crate_name = { path = "crates/my_crate" }
+```
+
+In this example:
+
+- `rand` crate is specified at version `0.8.5`.
+- `serde` crate is at version `1.0.193` and includes the `"derive"` feature.
+- `reqwest` crate is at version `0.11.23` and uses the `"json"` feature.
+- `crate_name` is the name used within the project for the local crate and `path` points to the directory `my_crate` inside the `crates` directory of the project.
+
+Cargo fetches these dependencies when the project is built, ensuring the required crates are available for compilation and usage within the project.
