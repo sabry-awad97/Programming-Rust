@@ -9,5 +9,6 @@ members = [
     "ch_06",
     "ch_07",
     "ch_08",
+    "ch_09",
 ]
 resolver = "2"
