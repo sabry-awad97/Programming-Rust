@@ -395,3 +395,47 @@ pub use math::operations::add;
 ```
 
 By combining `pub` to mark items as public and `use` to import them into a scope, Rust enables developers to organize code effectively and make specific functionalities accessible across various parts of the codebase.
+
+### Making Struct Fields pub
+
+Struct fields are private by default, meaning they can only be accessed within the same module where the struct is defined. However, you can use the `pub` keyword to make specific fields of a struct public, allowing access from outside the module where the struct is declared.
+
+```rs
+// Define a struct with private and public fields
+pub struct MyStruct {
+    // Public field accessible from outside the module
+    pub public_field: i32,
+
+    // Private field accessible only within this module
+    private_field: f64,
+}
+
+impl MyStruct {
+    // Constructor function to create instances of MyStruct
+    pub fn new(public: i32, private: f64) -> Self {
+        Self {
+            public_field: public,
+            private_field: private,
+        }
+    }
+
+    // Method accessing private field within the same module
+    pub fn get_private_field(&self) -> f64 {
+        self.private_field
+    }
+}
+
+fn main() {
+    // Create an instance of MyStruct
+    let my_instance = MyStruct::new(10, 3.14);
+
+    // Accessing the public field from outside the module
+    println!("Public field value: {}", my_instance.public_field);
+
+    // Error: Cannot access private field outside its module
+    // println!("Private field value: {}", my_instance.private_field);
+
+    // Accessing private field using a method from within the module
+    println!("Private field value: {}", my_instance.get_private_field());
+}
+```
