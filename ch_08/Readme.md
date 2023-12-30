@@ -142,3 +142,70 @@ fn main() {
     println!("Value of E: {}", math::constants::E);
 }
 ```
+
+### Visibility
+
+By default, items (functions, structs, etc.) in a module are not visible outside of that module. Rust offers granular control over the visibility of items within modules using different pub modifiers.
+
+- `pub`: Marks an item (function, struct, enum, etc.) as public, allowing it to be accessed from outside its module or crate.
+
+  ```rs
+  mod my_module {
+      // This function is not visible outside of the module
+      fn my_private_function() {}
+
+      // This function is visible outside of the module
+      pub fn my_public_function() {}
+  }
+  ```
+
+- `pub(crate)`: Makes an item visible only within the current crate. It restricts visibility to the current crate but allows access from any module or function within that crate.
+
+  ```rs
+  // Define a module named 'my_module' in the same crate
+  mod my_module {
+      // Define a function accessible within the current crate
+      pub(crate) fn internal_function() {
+          println!("This function is accessible within the crate");
+      }
+  }
+
+  fn main() {
+      // Access the function from the same crate
+      my_module::internal_function();
+  }
+  ```
+
+- `pub(super)`: Specifies that an item is visible to the parent module only. It restricts visibility to the immediate parent module and hides it from sibling or descendant modules.
+
+  ```rs
+  mod parent_module {
+      // Define a submodule 'sub_module'
+      mod sub_module {
+          // Define a function visible only to the parent module
+          pub(super) fn restricted_function() {
+              println!("This function is accessible to the parent module only");
+          }
+      }
+
+      // Attempting to access 'restricted_function' from outside 'sub_module' will result in an error
+      // sub_module::restricted_function(); // Uncommenting this line will result in a compile-time error
+  }
+  ```
+
+- `pub(in <path>)`: Sets visibility for an item within a specific module path and its descendants. This form of visibility restricts access to a particular module and its nested modules, allowing the item to be accessed only from that specific path.
+
+  ```rs
+  mod my_module {
+      // Define a submodule 'nested'
+      mod nested {
+          // Define a function accessible within the 'my_module' and 'nested' modules
+          pub(in crate::my_module::nested) fn specific_function() {
+              println!("This function is accessible within 'my_module::nested' and its descendants");
+          }
+      }
+
+      // Access 'specific_function' from 'my_module' or 'nested' modules
+      nested::specific_function();
+  }
+  ```
