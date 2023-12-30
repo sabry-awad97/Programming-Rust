@@ -465,3 +465,67 @@ Statics and constants are used to declare values that remain unchanged throughou
   ```rs
   const PI: f64 = 3.14159;
   ```
+
+## Attributes
+
+Attributes are annotations that provide additional information about various constructs in the code, such as functions, structs, enums, and modules. They are prefixed with `#` and are typically placed just before the item they are affecting.
+
+Attributes serve different purposes, including:
+
+1. **Compiler Instructions**: Attributes can be used to provide instructions or hints to the compiler. For instance, `#[derive(Debug)]` automatically implements the `Debug` trait for a struct or enum, allowing it to be printed using `println!("{:?}", my_struct);`.
+
+   ```rs
+   // Deriving the Debug trait for printing the struct
+   #[derive(Debug)]
+   struct MyStruct {
+       value: i32,
+   }
+
+   fn main() {
+       let instance = MyStruct { value: 42 };
+       println!("{:?}", instance); // Using the Debug trait for printing
+   }
+   ```
+
+2. **Conditional Compilation**: Attributes like `#[cfg]` (configuration) enable or disable certain code blocks based on specific conditions. This is useful for platform-specific code or enabling features conditionally.
+
+   ```rs
+   // Code block only compiled for the 'debug' configuration
+   #[cfg(debug_assertions)]
+   fn debug_function() {
+       println!("Debug mode is active!");
+   }
+
+   fn main() {
+       debug_function(); // This function will only be compiled if debug_assertions is true
+   }
+   ```
+
+3. **Documentation**: Rust uses `#[doc]` to generate documentation for items like functions, structs, and modules. This helps in generating documentation using tools like Rustdoc.
+
+   ```rs
+   // Generating documentation for a function
+   #[doc = "Adds two numbers together"]
+   fn add(a: i32, b: i32) -> i32 {
+       a + b
+   }
+
+   fn main() {
+       let result = add(5, 7);
+       println!("Result: {}", result);
+   }
+   ```
+
+4. **Control over Warnings**: Attributes like `#[allow]` or `#[deny]` control compiler warnings or errors for specific pieces of code. For example, `#[allow(unused_variables)]` suppresses warnings about unused variables.
+
+   ```rs
+   // Suppressing the warning for unused variables
+   #[allow(unused_variables)]
+   fn unused_var_function() {
+       let x = 5; // This variable is unused but won't generate a warning
+   }
+
+   fn main() {
+       unused_var_function();
+   }
+   ```
